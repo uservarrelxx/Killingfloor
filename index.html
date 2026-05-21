@@ -28,7 +28,9 @@
         body {
             background: #060605;
             -webkit-font-smoothing: antialiased;
+            cursor: grab;
         }
+        body.dragging { cursor: grabbing; }
 
         /* ── BACKGROUND LAYER ── */
         .bg {
@@ -1545,6 +1547,50 @@
                 vY -= (e.touches[0].clientY - lastTY);
                 lastTY = e.touches[0].clientY;
             }, { passive: true });
+
+            // Mouse drag on background (not card)
+            let dragActive = false, dragStartY = 0, dragStartVY = 0;
+            let velocity = 0, lastDragY = 0, lastDragT = 0;
+
+            document.addEventListener('mousedown', e => {
+                if (e.target.closest('.card') || e.target.closest('#card-veil-wrap') || e.target.closest('#replay-intro')) return;
+                dragActive  = true;
+                dragStartY  = e.clientY;
+                dragStartVY = vY;
+                velocity    = 0;
+                lastDragY   = e.clientY;
+                lastDragT   = performance.now();
+                document.body.style.cursor = 'grabbing';
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', e => {
+                if (!dragActive) return;
+                const now = performance.now();
+                const dt  = now - lastDragT || 1;
+                velocity  = (lastDragY - e.clientY) / dt * 16; // px per frame
+                lastDragY = e.clientY;
+                lastDragT = now;
+                vY = dragStartVY + (dragStartY - e.clientY) * 1.2;
+            }, { passive: true });
+
+            function endDrag() {
+                if (!dragActive) return;
+                dragActive = false;
+                document.body.style.cursor = '';
+                // Apply momentum
+                const momentum = velocity;
+                let frames = 0;
+                function coast() {
+                    if (Math.abs(momentum) < 0.05 || frames > 120) return;
+                    vY += momentum * Math.pow(0.94, frames);
+                    frames++;
+                    requestAnimationFrame(coast);
+                }
+                coast();
+            }
+            document.addEventListener('mouseup',    endDrag);
+            document.addEventListener('mouseleave', endDrag);
 
             function tick() {
                 lerpY += (vY - lerpY) * 0.08;
