@@ -12,7 +12,7 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Killing Floor Consulting">
     <meta name="twitter:description" content="Operator-grade consulting. Six engagements per year.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>⬛</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B54400'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@500;600&display=swap" rel="stylesheet">
@@ -273,6 +273,19 @@
         .page { display: none; will-change: opacity, transform; }
         .page.active { display: block; padding: 3cqi 0 2.5cqi; }
 
+        /* ── STRUCTURAL REVEAL ── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none;
+        }
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
         /* ── HOME ── */
         .home-tagline {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
@@ -365,6 +378,11 @@
             height: 1px;
             background: var(--border);
             margin-bottom: 2.5cqi;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        [data-reveal].revealed + .work-detail-rule {
+            opacity: 1;
         }
         .work-detail-desc {
             font-family: 'Inter', sans-serif;
@@ -373,6 +391,12 @@
             color: var(--w70);
             line-height: 2;
             max-width: 60%;
+        }
+        .work-detail-desc p {
+            margin: 0 0 1.6em 0;
+        }
+        .work-detail-desc p:last-child {
+            margin-bottom: 0;
         }
 
         /* ── WORK ── */
@@ -1108,42 +1132,42 @@
             <div class="card-body-inner">
 
                 <div class="page active" id="page-home">
-                    <p class="home-tagline">
+                    <p class="home-tagline" data-reveal>
                         In business, you're either structured,<br>
                         or slaughtered.
                     </p>
-                    <div class="home-grid">
-                        <div class="home-cell">
-                            <div class="home-cell-label">Practice</div>
-                            <div class="home-cell-body">Operator-grade consulting for founders past product-market fit and short on time.</div>
+                    <div class="home-grid" data-reveal>
+                        <div class="home-cell" data-reveal>
+                            <div class="home-cell-label" data-reveal>Practice</div>
+                            <div class="home-cell-body" data-reveal>Operator-grade consulting for founders past product-market fit and short on time.</div>
                         </div>
-                        <div class="home-cell">
-                            <div class="home-cell-label">Engagement</div>
-                            <div class="home-cell-body">12-week sprints. Fixed scope. One principal, no juniors, no decks for the sake of decks.</div>
+                        <div class="home-cell" data-reveal>
+                            <div class="home-cell-label" data-reveal>Engagement</div>
+                            <div class="home-cell-body" data-reveal>12-week sprints. Fixed scope. One principal, no juniors, no decks for the sake of decks.</div>
                         </div>
-                        <div class="home-cell">
-                            <div class="home-cell-label">Capacity Q3 / 2026</div>
-                            <div class="home-cell-body home-cell-status"><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot">▯</span><span class="slot">▯</span> &nbsp; 02 OF 06 OPEN</div>
+                        <div class="home-cell" data-reveal>
+                            <div class="home-cell-label" data-reveal>Capacity Q3 / 2026</div>
+                            <div class="home-cell-body home-cell-status" data-reveal><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot">▯</span><span class="slot">▯</span> &nbsp; 02 OF 06 OPEN</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="page" id="page-services">
-                    <div class="page-head">
-                        <span class="page-head-num">01</span>
-                        <span class="page-head-title">Services</span>
+                    <div class="page-head" data-reveal>
+                        <span class="page-head-num" data-reveal>01</span>
+                        <span class="page-head-title" data-reveal>Services</span>
                     </div>
-                    <div class="service-row">
+                    <div class="service-row" data-reveal>
                         <span class="service-num">01</span>
                         <span class="service-name">Branding</span>
                         <span class="service-desc">Identity systems built to carry weight.<br>Marks that survive contact with the market.<br><span class="service-deliv">Positioning doc &nbsp;·&nbsp; Identity system &nbsp;·&nbsp; Launch kit</span></span>
                     </div>
-                    <div class="service-row">
+                    <div class="service-row" data-reveal>
                         <span class="service-num">02</span>
                         <span class="service-name">Copywriting</span>
                         <span class="service-desc">Language engineered to move people<br>closer to a decision. No filler.<br><span class="service-deliv">Voice guide &nbsp;·&nbsp; Core pages &nbsp;·&nbsp; Email &amp; onboarding</span></span>
                     </div>
-                    <div class="service-row">
+                    <div class="service-row" data-reveal>
                         <span class="service-num">03</span>
                         <span class="service-name">Scaling</span>
                         <span class="service-desc">Infrastructure that doesn't break<br>when growth arrives.<br><span class="service-deliv">Operating cadence &nbsp;·&nbsp; Metrics review &nbsp;·&nbsp; Org design</span></span>
@@ -1151,21 +1175,21 @@
                 </div>
 
                 <div class="page" id="page-work">
-                    <div class="page-head">
-                        <span class="page-head-num">02</span>
-                        <span class="page-head-title">Work</span>
+                    <div class="page-head" data-reveal>
+                        <span class="page-head-num" data-reveal>02</span>
+                        <span class="page-head-title" data-reveal>Work</span>
                     </div>
-                    <div class="work-row" data-work="work-01">
+                    <div class="work-row" data-reveal data-work="work-01">
                         <span class="work-num">01</span>
                         <span class="work-title">Atlas Foundry</span>
                         <span class="work-tag">Branding &nbsp; · &nbsp; 2025</span>
                     </div>
-                    <div class="work-row" data-work="work-02">
+                    <div class="work-row" data-reveal data-work="work-02">
                         <span class="work-num">02</span>
                         <span class="work-title">North &amp; Vector</span>
                         <span class="work-tag">Copywriting &nbsp; · &nbsp; 2025</span>
                     </div>
-                    <div class="work-row" data-work="work-03">
+                    <div class="work-row" data-reveal data-work="work-03">
                         <span class="work-num">03</span>
                         <span class="work-title">Confidential — Series B SaaS</span>
                         <span class="work-tag">Scaling &nbsp; · &nbsp; 2024</span>
@@ -1173,88 +1197,68 @@
                 </div>
 
                 <div class="page" id="page-work-01">
-                    <div class="work-detail-back" data-back="work">Back to Work</div>
-                    <div class="work-detail-num">01 — Branding</div>
-                    <div class="work-detail-title">Atlas Foundry</div>
-                    <div class="work-detail-meta">
+                    <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
+                    <div class="work-detail-num" data-reveal>01 — Branding</div>
+                    <div class="work-detail-title" data-reveal>Atlas Foundry</div>
+                    <div class="work-detail-meta" data-reveal>
                         <span>2025</span>
                         <span>Branding</span>
                         <span>B2B Industrial</span>
                     </div>
                     <div class="work-detail-rule"></div>
                     <div class="work-detail-desc">
-                        The client came in with a name that meant nothing and a product that meant everything. Our job was to close that gap. We started where most agencies stop — not with a logo, but with a question: what does this company need to be believed?
-
-                        Six weeks of positioning work preceded any visual output. We mapped competitors, stress-tested messaging, and identified the single tension the brand needed to hold. From that friction, a mark emerged — not designed, but derived.
-
-                        The identity system spans print, digital, packaging, and environmental. Every touchpoint runs off the same underlying logic: contrast as structure, restraint as voice. No decoration that doesn't carry meaning. No meaning that doesn't serve the sale.
-
-                        Launch metrics exceeded projections by 40%. Category recognition — the hardest number to move — shifted in quarter one. The client didn't get a rebrand. They got a reason to exist in the market.
-
-                        The brief arrived on a Tuesday. By Thursday we had dismantled it. Not out of arrogance — out of necessity. The original ask was for a logo refresh. What the company actually needed was a reckoning with what they stood for and who they were willing to lose in order to mean something to anyone.
-
-                        We spent the first two weeks doing nothing visible. Interviews with founders, sales teams, customers who had churned, customers who had stayed. We were looking for the contradiction at the center — every strong brand has one. The thing that shouldn't work but does. The tension that makes the product feel true.
-
-                        We found it in week three. The company sold certainty into an industry defined by uncertainty. But their internal culture was deeply, proudly experimental. That gap — between what they sold and how they operated — was the brand. We didn't paper over it. We built the identity on top of it.
-
-                        The mark itself took eleven days. Not because we were slow — because we were ruthless. Forty-three concepts killed. Three survived the first review. One survived the second. It was the quietest of the three and the most difficult to explain in a deck, which meant it was the right one. Good brand work is always slightly hard to justify and completely impossible to ignore.
-
-                        Rollout happened across six months. Internal communications first — you can't sell a brand externally that your own people don't believe. Then packaging. Then digital. Then the campaign that introduced the repositioned company to a market that had already made up its mind about them. Changing that mind was the job.
-
-                        It worked. Not immediately — nothing real works immediately — but by month four the numbers moved. By month eight the client's largest competitor had quietly updated their own positioning. Imitation is the only metric that matters at category scale.
-
-                        The client didn't get a rebrand. They got a reason to exist in the market. Those are different things. One is an output. The other is a foundation. We only do the second kind.
+                        <p data-reveal>The client came in with a name that meant nothing and a product that meant everything. Our job was to close that gap. We started where most agencies stop — not with a logo, but with a question: what does this company need to be believed?</p>
+                        <p data-reveal>The brief arrived on a Tuesday. By Thursday we had dismantled it. Not out of arrogance — out of necessity. The original ask was for a logo refresh. What the company actually needed was a reckoning with what they stood for and who they were willing to lose in order to mean something to anyone.</p>
+                        <p data-reveal>We spent the first two weeks doing nothing visible. Interviews with founders, sales teams, customers who had churned, customers who had stayed. We were looking for the contradiction at the center — every strong brand has one. The thing that shouldn't work but does. The tension that makes the product feel true.</p>
+                        <p data-reveal>We found it in week three. The company sold certainty into an industry defined by uncertainty. But their internal culture was deeply, proudly experimental. That gap — between what they sold and how they operated — was the brand. We didn't paper over it. We built the identity on top of it.</p>
+                        <p data-reveal>The mark itself took eleven days. Not because we were slow — because we were ruthless. Forty-three concepts killed. Three survived the first review. One survived the second. It was the quietest of the three and the most difficult to explain in a deck, which meant it was the right one. Good brand work is always slightly hard to justify and completely impossible to ignore.</p>
+                        <p data-reveal>Rollout happened across six months. Internal communications first — you can't sell a brand externally that your own people don't believe. Then packaging. Then digital. Then the campaign that introduced the repositioned company to a market that had already made up its mind about them. Changing that mind was the job.</p>
+                        <p data-reveal>It worked. Not immediately — nothing real works immediately — but by month four the numbers moved. By month eight the client's largest competitor had quietly updated their own positioning. Imitation is the only metric that matters at category scale. The client didn't get a rebrand. They got a reason to exist in the market. Those are different things. One is an output. The other is a foundation. We only do the second kind.</p>
                     </div>
                 </div>
 
                 <div class="page" id="page-work-02">
-                    <div class="work-detail-back" data-back="work">Back to Work</div>
-                    <div class="work-detail-num">02 — Copywriting</div>
-                    <div class="work-detail-title">North &amp; Vector</div>
-                    <div class="work-detail-meta">
+                    <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
+                    <div class="work-detail-num" data-reveal>02 — Copywriting</div>
+                    <div class="work-detail-title" data-reveal>North &amp; Vector</div>
+                    <div class="work-detail-meta" data-reveal>
                         <span>2025</span>
                         <span>Copywriting</span>
                         <span>DTC Outdoor</span>
                     </div>
                     <div class="work-detail-rule"></div>
                     <div class="work-detail-desc">
-                        North &amp; Vector arrived with a site that read like every other premium outdoor brand: "crafted," "intentional," "built for the long haul." Words anyone could write. Words no one would remember.
-
-                        We threw all of it out. Spent a week with the founder in the warehouse, with sales on the phone, with returning customers who had already decided. The pattern was clear: people weren't buying gear. They were buying permission to take themselves seriously outside.
-
-                        That insight became the voice. Direct, slightly impatient, allergic to filler. Every product page leads with the trade-off, not the feature. The about page is 47 words. The returns page is six. The newsletter has an unsubscribe rate of 0.3% and an open rate north of 50%.
-
-                        Conversion lifted 28% in the first quarter. Average order value held. Returns dropped. The work isn't loud — but it's saying exactly what needs saying, and nothing else.
+                        <p data-reveal>North &amp; Vector arrived with a site that read like every other premium outdoor brand: "crafted," "intentional," "built for the long haul." Words anyone could write. Words no one would remember.</p>
+                        <p data-reveal>We threw all of it out. Spent a week with the founder in the warehouse, with sales on the phone, with returning customers who had already decided. The pattern was clear: people weren't buying gear. They were buying permission to take themselves seriously outside.</p>
+                        <p data-reveal>That insight became the voice. Direct, slightly impatient, allergic to filler. Every product page leads with the trade-off, not the feature. The about page is 47 words. The returns page is six. The newsletter has an unsubscribe rate of 0.3% and an open rate north of 50%.</p>
+                        <p data-reveal>Conversion lifted 28% in the first quarter. Average order value held. Returns dropped. The work isn't loud — but it's saying exactly what needs saying, and nothing else.</p>
                     </div>
                 </div>
 
                 <div class="page" id="page-work-03">
-                    <div class="work-detail-back" data-back="work">Back to Work</div>
-                    <div class="work-detail-num">03 — Scaling</div>
-                    <div class="work-detail-title">Confidential — Series B SaaS</div>
-                    <div class="work-detail-meta">
+                    <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
+                    <div class="work-detail-num" data-reveal>03 — Scaling</div>
+                    <div class="work-detail-title" data-reveal>Confidential — Series B SaaS</div>
+                    <div class="work-detail-meta" data-reveal>
                         <span>2024</span>
                         <span>Scaling</span>
                         <span>Under NDA</span>
                     </div>
                     <div class="work-detail-rule"></div>
                     <div class="work-detail-desc">
-                        A Series B vertical SaaS company — 60 people, two product lines, four exec misfires in 18 months. They didn't have a strategy problem. They had a cadence problem. Decisions weren't getting made; they were getting deferred until the calendar made them for the company.
-
-                        We installed an operating rhythm: weekly metric review, biweekly hiring loop, monthly bet sizing. Killed the all-hands. Cut the leadership team from eleven to six. Rewrote the IC ladder so seniority stopped being a function of tenure.
-
-                        Net revenue retention moved from 102% to 121% over four quarters. Time-to-hire on engineering dropped from 84 days to 31. The CEO got their Fridays back. The board meeting got 40 minutes shorter and 200% more useful.
-
-                        We don't do retainers. We don't do scope creep. We do the work, install the system, and leave the building.
+                        <p data-reveal>A Series B vertical SaaS company — 60 people, two product lines, four exec misfires in 18 months. They didn't have a strategy problem. They had a cadence problem. Decisions weren't getting made; they were getting deferred until the calendar made them for the company.</p>
+                        <p data-reveal>We installed an operating rhythm: weekly metric review, biweekly hiring loop, monthly bet sizing. Killed the all-hands. Cut the leadership team from eleven to six. Rewrote the IC ladder so seniority stopped being a function of tenure.</p>
+                        <p data-reveal>Net revenue retention moved from 102% to 121% over four quarters. Time-to-hire on engineering dropped from 84 days to 31. The CEO got their Fridays back. The board meeting got 40 minutes shorter and 200% more useful.</p>
+                        <p data-reveal>We don't do retainers. We don't do scope creep. We do the work, install the system, and leave the building.</p>
                     </div>
                 </div>
 
                 <div class="page" id="page-contact">
                     <div class="contact-grid">
                         <div>
-                            <h2 class="contact-heading">Let's<br>Talk.</h2>
-                            <p class="contact-sub">Six engagements per year. We pick on fit, not fee. Tell us where you are and what you're trying to make true.</p>
-                            <div class="contact-direct">
+                            <h2 class="contact-heading" data-reveal>Let's<br>Talk.</h2>
+                            <p class="contact-sub" data-reveal>Six engagements per year. We pick on fit, not fee. Tell us where you are and what you're trying to make true.</p>
+                            <div class="contact-direct" data-reveal>
                                 <div class="contact-direct-label">Direct</div>
                                 <a class="contact-direct-link" href="mailto:hello@killingfloor.co">hello@killingfloor.co</a>
                             </div>
@@ -1262,15 +1266,15 @@
                         <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                             <input type="hidden" name="engagement" id="engagement-hidden">
                             <input type="hidden" name="stage" id="stage-hidden">
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>Name &nbsp; / &nbsp; Company</label>
                                 <input type="text" name="name" placeholder="Who's writing">
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>Email</label>
                                 <input type="email" name="email" placeholder="you@company.com">
                             </div>
-                            <div class="form-row form-row-pills" data-multi data-hidden="engagement-hidden">
+                            <div class="form-row form-row-pills" data-reveal data-multi data-hidden="engagement-hidden">
                                 <label>Engagement <span style="color:var(--w25);font-size:0.85em;">— select all that apply</span></label>
                                 <div class="pill-row">
                                     <button type="button" class="pill">Branding</button>
@@ -1279,7 +1283,7 @@
                                     <button type="button" class="pill">Unsure</button>
                                 </div>
                             </div>
-                            <div class="form-row form-row-pills" data-hidden="stage-hidden">
+                            <div class="form-row form-row-pills" data-reveal data-hidden="stage-hidden">
                                 <label>Stage</label>
                                 <div class="pill-row">
                                     <button type="button" class="pill">Pre-launch</button>
@@ -1288,19 +1292,19 @@
                                     <button type="button" class="pill">$10M+</button>
                                 </div>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>What are you building?</label>
                                 <textarea name="building" placeholder="The contradiction at the center. The thing you can't crack on your own."></textarea>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>What have you already tried?</label>
                                 <textarea name="tried" placeholder="Agencies, hires, pivots — what moved the needle and what didn't."></textarea>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>What does success look like in 12 weeks?</label>
                                 <textarea name="success" placeholder="Be specific. Vague answers get vague results."></textarea>
                             </div>
-                            <div class="form-row">
+                            <div class="form-row" data-reveal>
                                 <label>Timeline</label>
                                 <input type="text" name="timeline" placeholder="When do you need to start moving?">
                             </div>
@@ -1308,24 +1312,24 @@
                         </form>
                     </div>
                     <div class="faq-block">
-                        <div class="faq-head">Common questions</div>
-                        <div class="faq-row">
+                        <div class="faq-head" data-reveal>Common questions</div>
+                        <div class="faq-row" data-reveal>
                             <div class="faq-q">Why only six clients per year?</div>
                             <div class="faq-a">Because more than six means someone gets a junior. We don't have juniors. The math is the constraint.</div>
                         </div>
-                        <div class="faq-row">
+                        <div class="faq-row" data-reveal>
                             <div class="faq-q">Sprints vs. retainers?</div>
                             <div class="faq-a">Sprints only. Retainers reward presence over output. A 12-week sprint with a fixed deliverable rewards the opposite.</div>
                         </div>
-                        <div class="faq-row">
+                        <div class="faq-row" data-reveal>
                             <div class="faq-q">Vancouver-only or remote?</div>
                             <div class="faq-a">Remote by default. We've worked across North America and Europe. Location has never been the variable that mattered.</div>
                         </div>
-                        <div class="faq-row">
+                        <div class="faq-row" data-reveal>
                             <div class="faq-q">What's the budget range?</div>
                             <div class="faq-a">We don't post rates. Engagements are scoped to the problem. If fit is right, we'll talk numbers on the first call.</div>
                         </div>
-                        <div class="faq-row">
+                        <div class="faq-row" data-reveal>
                             <div class="faq-q">What you won't do.</div>
                             <div class="faq-a">Ads, SEO, full rebrands in two weeks, anything that needs a team of twelve to execute. We do focused, high-leverage work. Broad mandates belong somewhere else.</div>
                         </div>
@@ -1333,48 +1337,48 @@
                 </div>
 
                 <div class="page" id="page-about">
-                    <div class="page-head">
-                        <span class="page-head-num">04</span>
-                        <span class="page-head-title">About</span>
+                    <div class="page-head" data-reveal>
+                        <span class="page-head-num" data-reveal>04</span>
+                        <span class="page-head-title" data-reveal>About</span>
                     </div>
-                    <div class="about-principal">
-                        <div class="about-name">The Principal</div>
-                        <div class="about-bio">
+                    <div class="about-principal" data-reveal>
+                        <div class="about-name" data-reveal>The Principal</div>
+                        <div class="about-bio" data-reveal>
                             One consultant. Every engagement. No hand-offs.<br><br>
                             Killing Floor was built on a simple premise: the work that actually moves companies — positioning, voice, operating structure — gets diluted the moment it passes through layers. So it doesn't. Every client works directly with the principal from kickoff to handoff.<br><br>
                             Background spans brand strategy, B2B and DTC copywriting, and operating design across industrial, SaaS, and consumer. Prior to founding Killing Floor: agency-side, then operator-side, then here — which is the only order that makes sense.<br><br>
                             Based in Vancouver. Working with founders everywhere.
                         </div>
-                        <div class="about-contact-line">
+                        <div class="about-contact-line" data-reveal>
                             Questions before committing? &nbsp;<a href="mailto:hello@killingfloor.co" style="color:var(--white);text-decoration:underline;text-underline-offset:3px;">hello@killingfloor.co</a>
                         </div>
                     </div>
                 </div>
 
                 <div class="page" id="page-process">
-                    <div class="page-head">
-                        <span class="page-head-num">05</span>
-                        <span class="page-head-title">Process</span>
-                        <span class="page-head-meta">12-week sprint</span>
+                    <div class="page-head" data-reveal>
+                        <span class="page-head-num" data-reveal>05</span>
+                        <span class="page-head-title" data-reveal>Process</span>
+                        <span class="page-head-meta" data-reveal>12-week sprint</span>
                     </div>
                     <div class="process-list">
-                        <div class="process-row">
+                        <div class="process-row" data-reveal>
                             <span class="process-phase">Week 0</span>
                             <span class="process-body">Fit call, scope lock, kill list. We agree on exactly one thing to make true and everything we won't touch.</span>
                         </div>
-                        <div class="process-row">
+                        <div class="process-row" data-reveal>
                             <span class="process-phase">Weeks 1–4</span>
                             <span class="process-body">Discovery. Competitor mapping, customer interviews, internal audit. We find the contradiction at the center before any output is produced.</span>
                         </div>
-                        <div class="process-row">
+                        <div class="process-row" data-reveal>
                             <span class="process-phase">Weeks 5–8</span>
                             <span class="process-body">Build. Positioning locked, identity or copy or systems drafted and tested. First real output ships at week six.</span>
                         </div>
-                        <div class="process-row">
+                        <div class="process-row" data-reveal>
                             <span class="process-phase">Weeks 9–12</span>
                             <span class="process-body">Rollout, refinement, handoff. Operating rhythm installed. We leave the building with something running, not a deck explaining what to do next.</span>
                         </div>
-                        <div class="process-row">
+                        <div class="process-row" data-reveal>
                             <span class="process-phase">After</span>
                             <span class="process-body">No retainer. No scope creep. If something breaks in month four, we talk. That's different from being on call forever.</span>
                         </div>
@@ -1422,6 +1426,8 @@
             // Complete any in-progress segments immediately
             currentSegments.forEach(s => { s.node.textContent = s.full; });
             typeCaret.remove();
+            // Hide all revealable elements in the incoming page
+            container.querySelectorAll('[data-reveal]').forEach(el => el.classList.remove('revealed'));
 
             const walker = document.createTreeWalker(
                 container, NodeFilter.SHOW_TEXT,
@@ -1430,7 +1436,13 @@
             const segments = [];
             let n;
             while (n = walker.nextNode()) {
-                segments.push({ node: n, full: n.textContent });
+                // Pre-compute nearest [data-reveal] ancestor for reveal-on-reach
+                let rev = n.parentNode;
+                while (rev && rev !== container) {
+                    if (rev.hasAttribute && rev.hasAttribute('data-reveal')) break;
+                    rev = rev.parentNode;
+                }
+                segments.push({ node: n, full: n.textContent, revealEl: (rev && rev !== container) ? rev : null });
                 n.textContent = '';
             }
             currentSegments = segments;
@@ -1463,8 +1475,20 @@
                     node.parentNode.insertBefore(typeCaret, node.nextSibling);
                 }
 
-                if (segments[0]) placeCaretAfter(segments[0].node);
+                function revealAncestors(node) {
+                    let el = node.parentNode;
+                    while (el) {
+                        if (el.hasAttribute && el.hasAttribute('data-reveal')) el.classList.add('revealed');
+                        el = el.parentNode;
+                    }
+                }
 
+                if (segments[0]) {
+                    placeCaretAfter(segments[0].node);
+                    revealAncestors(segments[0].node);
+                }
+
+                let lastSi = 0;
                 typeTimer = setInterval(() => {
                     if (qi >= queue.length) {
                         clearInterval(typeTimer); typeTimer = null;
@@ -1477,6 +1501,11 @@
                     const [si, ci] = queue[qi++];
                     segments[si].node.textContent = segments[si].full.slice(0, ci + 1);
                     placeCaretAfter(segments[si].node);
+                    // Reveal all [data-reveal] ancestors when caret first enters a new segment
+                    if (si !== lastSi) {
+                        lastSi = si;
+                        revealAncestors(segments[si].node);
+                    }
                 }, charMs);
             });
         }
@@ -1489,6 +1518,9 @@
                 clearInterval(typeTimer); typeTimer = null;
                 typeCaret.remove();
                 currentSegments.forEach(s => { s.node.textContent = s.full; });
+                // Instantly reveal any still-hidden elements in the current page
+                const activePage = document.querySelector('.page.active');
+                if (activePage) activePage.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
                 currentSegments = [];
                 animating = false;
             }
@@ -1799,14 +1831,14 @@
                     [40,  80, 220], [200, 40, 40],
                     [140, 50, 200], [20, 130, 180], [200, 90, 20],
                 ];
-                for (let i = 0; i < 18; i++) {
+                for (let i = 0; i < 28; i++) {
                     const h1 = hash(i * 7 + 1, 0xCAFE);
                     const h2 = hash(i * 7 + 2, 0xCAFE);
                     const h3 = hash(i * 7 + 3, 0xCAFE);
                     const h4 = hash(i * 7 + 4, 0xCAFE);
                     const h6 = hash(i * 7 + 6, 0xCAFE);
                     n.push({
-                        wx: h1, wy: h2 * 10000,
+                        wx: h1, wy: h2 * 25600,
                         r: 0.35 + h3 * 0.45,
                         alpha: 0.04 + h6 * 0.04,
                         clr: palettes[Math.floor(h4 * palettes.length)],
@@ -1847,7 +1879,7 @@
             let nebulaResizeTimer;
             window.addEventListener('resize', () => { clearTimeout(nebulaResizeTimer); nebulaResizeTimer = setTimeout(() => { if (cfg.nebulae) buildNebulaCache(); }, 150); });
 
-            const WORLD_H = 9600; // loop world every 12 chunks
+            const WORLD_H = 25600; // loop world every 32 chunks
 
             function draw() {
                 ctx.clearRect(0, 0, W, H);
@@ -1884,15 +1916,15 @@
                 }
 
                 // Occasionally trigger a hard flash on a random bright star
-                if (now - lastFlashCheck > 0.4 + Math.random() * 0.8) {
+                if (now - lastFlashCheck > 1.2 + Math.random() * 2.0) {
                     lastFlashCheck = now;
-                    if (Math.random() < 0.55) {
+                    if (Math.random() < 0.25) {
                         const ci = Math.floor((bgY + Math.random() * H) / CHUNK_H);
                         const chunk = getChunk(ci);
                         const brightStars = chunk.filter(s => s.bright);
                         if (brightStars.length) {
                             const s = brightStars[Math.floor(Math.random() * brightStars.length)];
-                            flashes.add({ star: s, t0: now, dur: 0.18 + Math.random() * 0.25 });
+                            flashes.add({ star: s, t0: now, dur: 0.12 + Math.random() * 0.15 });
                         }
                     }
                 }
@@ -1944,7 +1976,7 @@
                         bb = Math.min(255, Math.round(bb + scintB * 90));
 
                         // Flash spike
-                        const flashAmt = flashMap.get(star) || 0;
+                        const flashAmt = (flashMap.get(star) || 0) * 0.5;
                         const baseAlpha = star.restAlpha * (0.4 + drift * 0.6) + shim * (star.bright ? 0.10 : 0.20);
                         const alpha = Math.max(0.01, Math.min(1, baseAlpha + flashAmt * 0.9));
 
@@ -2417,6 +2449,8 @@
                 card.style.opacity  = '1';
                 intro.style.display = 'none';
                 replay.classList.add('visible');
+                // Reveal all structural elements immediately (no typewriter on skip)
+                document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
             } else {
                 card.style.opacity    = '0';
                 card.style.transition = 'none';
