@@ -242,7 +242,7 @@
         /* Copperplate — light weight → white */
         .sub-left, .sub-right {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.2cqi;
+            font-size: clamp(14px, 1.2cqi, 18px);
             letter-spacing: 0.08em;
             color: var(--w70);
             line-height: 1.9;
@@ -264,7 +264,7 @@
         /* ── HOME ── */
         .home-tagline {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.68cqi;
+            font-size: clamp(15px, 1.68cqi, 20px);
             line-height: 2;
             color: var(--w70);
         }
@@ -284,7 +284,7 @@
         /* Mono 400 → white */
         .service-num {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.02cqi;
+            font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w45);
         }
 
@@ -292,7 +292,7 @@
         .service-name {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 3.6cqi;
+            font-size: clamp(24px, 3.6cqi, 42px);
             line-height: 1;
             letter-spacing: -0.01em;
             color: var(--dark);
@@ -301,7 +301,7 @@
         /* Copperplate → white */
         .service-desc {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.08cqi;
+            font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.9;
         }
@@ -309,7 +309,7 @@
         /* ── WORK DETAIL ── */
         .work-detail-back {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.96cqi;
+            font-size: clamp(13px, 0.96cqi, 16px);
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--w45);
@@ -323,7 +323,7 @@
 
         .work-detail-num {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.96cqi;
+            font-size: clamp(13px, 0.96cqi, 16px);
             color: var(--w25);
             letter-spacing: 0.2em;
             margin-bottom: 0.8cqi;
@@ -331,7 +331,7 @@
         .work-detail-title {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 8.4cqi;
+            font-size: clamp(40px, 8.4cqi, 88px);
             line-height: 0.9;
             letter-spacing: -0.01em;
             color: var(--dark);
@@ -344,7 +344,7 @@
         }
         .work-detail-meta span {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.96cqi;
+            font-size: clamp(13px, 0.96cqi, 16px);
             color: var(--w45);
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -356,7 +356,7 @@
         }
         .work-detail-desc {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.2cqi;
+            font-size: clamp(14px, 1.2cqi, 18px);
             color: var(--w70);
             line-height: 2;
             max-width: 60%;
@@ -379,7 +379,7 @@
 
         .work-num {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.02cqi;
+            font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w45);
         }
 
@@ -387,7 +387,7 @@
         .work-title {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 3.6cqi;
+            font-size: clamp(24px, 3.6cqi, 42px);
             line-height: 1;
             letter-spacing: -0.01em;
             color: var(--dark);
@@ -395,7 +395,7 @@
 
         .work-tag {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.02cqi;
+            font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w45);
             white-space: nowrap;
         }
@@ -412,7 +412,7 @@
         .contact-heading {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 6.0cqi;
+            font-size: clamp(32px, 6.0cqi, 64px);
             line-height: 0.9;
             letter-spacing: -0.01em;
             color: var(--dark);
@@ -421,7 +421,7 @@
 
         .contact-sub {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.08cqi;
+            font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.9;
         }
@@ -435,7 +435,7 @@
         .form-row label {
             display: block;
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.9cqi;
+            font-size: clamp(12px, 0.9cqi, 14px);
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--w45);
@@ -449,7 +449,7 @@
             border: none;
             outline: none;
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.14cqi;
+            font-size: clamp(14px, 1.14cqi, 18px);
             color: var(--white);
             padding: 0.3cqi 0 1cqi;
             resize: none;
@@ -461,7 +461,7 @@
 
         .btn {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.96cqi;
+            font-size: clamp(13px, 0.96cqi, 16px);
             font-weight: 500;
             letter-spacing: 0.25em;
             text-transform: uppercase;
@@ -488,7 +488,7 @@
 
         .card-nav a {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 1.14cqi;
+            font-size: clamp(14px, 1.14cqi, 18px);
             font-weight: 400;
             letter-spacing: 0.07em;
             color: var(--w45);
@@ -739,7 +739,7 @@
         /* ── SESSION COUNTER ── */
         .session-count {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.96cqi;
+            font-size: clamp(13px, 0.96cqi, 16px);
             color: var(--w25);
             letter-spacing: 0.1em;
         }
@@ -755,7 +755,7 @@
         }
         .home-cell-label {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.86cqi;
+            font-size: clamp(12px, 0.86cqi, 14px);
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--w45);
@@ -763,7 +763,7 @@
         }
         .home-cell-body {
             font-family: 'Copperplate', 'Copperplate Gothic Light', 'Cormorant SC', serif;
-            font-size: 1.14cqi;
+            font-size: clamp(14px, 1.14cqi, 18px);
             color: var(--w70);
             line-height: 1.7;
         }
@@ -791,14 +791,14 @@
         }
         .page-head-num {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.94cqi;
+            font-size: clamp(13px, 0.94cqi, 16px);
             letter-spacing: 0.25em;
             color: var(--w45);
         }
         .page-head-title {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 1.92cqi;
+            font-size: clamp(18px, 1.92cqi, 28px);
             letter-spacing: -0.01em;
             text-transform: uppercase;
             color: var(--dark);
@@ -808,7 +808,7 @@
         }
         .page-head-meta {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.02cqi;
+            font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w70);
             text-align: right;
         }
@@ -816,7 +816,7 @@
         /* ── SERVICE DELIVERABLES LINE ── */
         .service-deliv {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.86cqi;
+            font-size: clamp(12px, 0.86cqi, 14px);
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--w45);
@@ -831,7 +831,7 @@
         }
         .contact-direct-label {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.86cqi;
+            font-size: clamp(12px, 0.86cqi, 14px);
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--w45);
@@ -840,7 +840,7 @@
         .contact-direct-link {
             font-family: 'Barlow', sans-serif;
             font-weight: 900;
-            font-size: 2.4cqi;
+            font-size: clamp(18px, 2.4cqi, 28px);
             letter-spacing: -0.01em;
             color: var(--dark);
             text-decoration: none;
@@ -860,7 +860,7 @@
         }
         .pill {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.94cqi;
+            font-size: clamp(13px, 0.94cqi, 16px);
             letter-spacing: 0.18em;
             text-transform: uppercase;
             background: transparent;
@@ -948,7 +948,7 @@
         }
         .about-name {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.86cqi;
+            font-size: clamp(12px, 0.86cqi, 14px);
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--w45);
@@ -956,14 +956,14 @@
         }
         .about-bio {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.2cqi;
+            font-size: clamp(14px, 1.2cqi, 18px);
             color: var(--w70);
             line-height: 1.8;
             max-width: 70%;
         }
         .about-contact-line {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.9cqi;
+            font-size: clamp(12px, 0.9cqi, 14px);
             color: var(--w45);
             margin-top: 2cqi;
             letter-spacing: 0.08em;
@@ -981,7 +981,7 @@
         }
         .process-phase {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.9cqi;
+            font-size: clamp(12px, 0.9cqi, 14px);
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--w45);
@@ -990,7 +990,7 @@
         }
         .process-body {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.08cqi;
+            font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.7;
             flex: 1;
@@ -1004,7 +1004,7 @@
         }
         .faq-head {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.86cqi;
+            font-size: clamp(12px, 0.86cqi, 14px);
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--w25);
@@ -1019,12 +1019,12 @@
         }
         .faq-q {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.94cqi;
+            font-size: clamp(13px, 0.94cqi, 16px);
             color: var(--w70);
         }
         .faq-a {
             font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
-            font-size: 1.02cqi;
+            font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w45);
             line-height: 1.7;
         }
