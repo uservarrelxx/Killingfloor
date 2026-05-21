@@ -15,7 +15,7 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>⬛</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@500;600&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -164,6 +164,8 @@
             width: min(calc(100vw - 80px), 1050px);
             background: var(--card);
             padding: 0 4.5cqi;
+            position: relative;
+            isolation: isolate;
             will-change: opacity;
             display: flex;
             flex-direction: column;
@@ -173,6 +175,11 @@
                 0 0  60px  8px rgba(181, 90, 10, 0.35),
                 0 0 140px 30px rgba(160, 60,  0, 0.22),
                 0 0 280px 60px rgba(130, 40,  0, 0.12);
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 1;
         }
 
         .card-header {
@@ -222,9 +229,13 @@
         .headline .the,
         .headline .killing,
         .headline .floor {
-            font-size: calc((4.2cqi - var(--ls) * 2cqi) * var(--headline-size, 1));
+            font-size: calc((4.2cqi - var(--ls) * 1.35cqi) * var(--headline-size, 1));
             display: inline-block;
-            transition: font-size 600ms cubic-bezier(0.76, 0, 0.24, 1);
+            transform: translateX(var(--x, 0px));
+            transition:
+                font-size 600ms cubic-bezier(0.76, 0, 0.24, 1),
+                transform 750ms var(--word-ease, cubic-bezier(0.165, 0.84, 0.44, 1));
+            will-change: transform;
         }
 
         .rule {
@@ -300,9 +311,9 @@
             color: var(--dark);
         }
 
-        /* Copperplate → white */
         .service-desc {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.9;
@@ -357,7 +368,8 @@
             margin-bottom: 2.5cqi;
         }
         .work-detail-desc {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
             font-size: clamp(14px, 1.2cqi, 18px);
             color: var(--w70);
             line-height: 2;
@@ -422,7 +434,8 @@
         }
 
         .contact-sub {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.9;
@@ -450,7 +463,8 @@
             background: transparent;
             border: none;
             outline: none;
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
             font-size: clamp(14px, 1.14cqi, 18px);
             color: var(--white);
             padding: 0.3cqi 0 1cqi;
@@ -479,9 +493,9 @@
 
         /* ── NAV — Mono 400/500 → white ── */
         .card-nav {
-            border-top: 1px solid var(--border);
-            padding-top: 1.2cqi;
-            padding-bottom: 1.2cqi;
+            border-top: none;
+            padding-top: 1.8cqi;
+            padding-bottom: 2.45cqi;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -491,7 +505,7 @@
         .card-nav a {
             font-family: 'IBM Plex Mono', monospace;
             font-size: clamp(11px, 0.95cqi, 13px);
-            font-weight: 400;
+            font-weight: 500;
             letter-spacing: 0.07em;
             color: var(--w45);
             text-decoration: none;
@@ -675,6 +689,17 @@
         .card-nav {
             position: relative;
         }
+        .card-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border);
+            pointer-events: none;
+            z-index: 0;
+        }
         #nav-indicator {
             position: absolute;
             bottom: -1px;
@@ -688,7 +713,6 @@
         }
 
         /* ── SCROLL PROGRESS BAR ── */
-        .card-nav.scrollable
         #scroll-progress {
             position: absolute;
             top: 0;
@@ -701,6 +725,7 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 1;
         }
         .card-nav.scrollable #scroll-progress { opacity: 1; }
 
@@ -747,7 +772,8 @@
             margin-bottom: 1cqi;
         }
         .home-cell-body {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', 'Cormorant SC', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
             font-size: clamp(14px, 1.14cqi, 18px);
             color: var(--w70);
             line-height: 1.7;
@@ -792,7 +818,8 @@
             margin-left: 1.2cqi;
         }
         .page-head-meta {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w70);
             text-align: right;
@@ -940,7 +967,8 @@
             margin-bottom: 1.2cqi;
         }
         .about-bio {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(14px, 1.2cqi, 18px);
             color: var(--w70);
             line-height: 1.8;
@@ -974,7 +1002,8 @@
             flex-shrink: 0;
         }
         .process-body {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(13px, 1.08cqi, 16px);
             color: var(--w70);
             line-height: 1.7;
@@ -1008,7 +1037,8 @@
             color: var(--w70);
         }
         .faq-a {
-            font-family: 'Copperplate', 'Copperplate Gothic Light', serif;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
             font-size: clamp(13px, 1.02cqi, 16px);
             color: var(--w45);
             line-height: 1.7;
@@ -2026,13 +2056,35 @@
 
             const intro = document.getElementById('intro');
 
-            function applyVeil() {
-                const v = input.value / 100;
-                card.style.background = `rgba(181, 68, 0, ${v.toFixed(3)})`;
+            const highEndBlur =
+                window.matchMedia('(pointer: fine)').matches &&
+                !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+                window.innerWidth >= 1100 &&
+                (navigator.hardwareConcurrency || 0) >= 8 &&
+                (navigator.deviceMemory || 8) >= 8;
+            const MAX_BLUR = 2;
+            let veilRaf = null;
+            let blurTimer = null;
 
-                const blur = Math.round((1 - v) * 8);
-                card.style.backdropFilter = blur > 0 ? `blur(${blur}px)` : '';
-                card.style.webkitBackdropFilter = card.style.backdropFilter;
+            function clearBlur() {
+                card.style.backdropFilter = '';
+                card.style.webkitBackdropFilter = '';
+            }
+
+            function applyRestingBlur(v) {
+                if (!highEndBlur) {
+                    clearBlur();
+                    return;
+                }
+
+                const blur = Math.round((1 - v) * MAX_BLUR);
+                const value = blur > 0 ? `blur(${blur}px)` : '';
+                card.style.backdropFilter = value;
+                card.style.webkitBackdropFilter = value;
+            }
+
+            function applyVeilFrame(v) {
+                card.style.background = `rgba(181, 68, 0, ${v.toFixed(3)})`;
 
                 const dark = Math.round((1 - v) * 255);
                 card.style.setProperty('--dark', `rgb(${dark},${dark},${dark})`);
@@ -2047,6 +2099,18 @@
                     0 0 280px 60px rgba(130,40, 0,${o3})`;
             }
 
+            function applyVeil() {
+                clearBlur();
+                if (!veilRaf) {
+                    veilRaf = requestAnimationFrame(() => {
+                        veilRaf = null;
+                        applyVeilFrame(input.value / 100);
+                    });
+                }
+                clearTimeout(blurTimer);
+                blurTimer = setTimeout(() => applyRestingBlur(input.value / 100), 160);
+            }
+
             function isIntroVisible() {
                 return intro && intro.style.display !== 'none' && intro.style.opacity !== '0';
             }
@@ -2055,106 +2119,77 @@
             applyVeil();
         })();
 
-        // ── HEADLINE CURSOR FOLLOW + HOVER REVEAL ──
+        // ── HEADLINE WORD SLIDE ──
         (function() {
             const logo    = document.getElementById('logo');
             const theWord = logo.querySelector('.the');
             const killing = logo.querySelector('.killing');
             const floor   = logo.querySelector('.floor');
             const card    = document.querySelector('.card');
+            const words = [theWord, killing, floor];
+            let widths = null;
+            let raf = null;
+            let resetTimer = null;
 
-            // All measurements relative to the headline element (logo), not the card
-            let naturalT = 0, naturalK = 0, naturalF = 0;
-            let wT = 0, wK = 0, wF = 0, containerW = 0;
+            function setWordEase(value) {
+                logo.style.setProperty('--word-ease', value);
+            }
+
+            function resetWords() {
+                setWordEase('cubic-bezier(0.76, 0, 0.24, 1)');
+                words.forEach(word => word.style.setProperty('--x', '0px'));
+            }
 
             function measureLayout() {
-                theWord.style.transform = '';
-                killing.style.transform = '';
-                floor.style.transform   = '';
-                const lr = logo.getBoundingClientRect();
-                const tR = theWord.getBoundingClientRect();
-                const kR = killing.getBoundingClientRect();
-                const fR = floor.getBoundingClientRect();
-                // natural centers relative to headline's own left edge
-                naturalT    = (tR.left + tR.right)  / 2 - lr.left;
-                naturalK    = (kR.left + kR.right)  / 2 - lr.left;
-                naturalF    = (fR.left + fR.right)  / 2 - lr.left;
-                wT          = tR.width;
-                wK          = kR.width;
-                wF          = fR.width;
-                containerW  = lr.width;
+                resetWords();
+                widths = words.map(word => word.offsetWidth);
             }
+
             requestAnimationFrame(() => requestAnimationFrame(measureLayout));
             window.addEventListener('resize', measureLayout);
+            if ('ResizeObserver' in window) {
+                new ResizeObserver(measureLayout).observe(logo);
+            }
             remeasureLogo = measureLayout;
 
-            let ttX = 0, tkX = 0, tfX = 0;
-            let ctX = 0, ckX = 0, cfX = 0;
+            function updateFromPointer(e) {
+                if (!widths) measureLayout();
+                if (!widths) return;
 
-            document.addEventListener('mousemove', e => {
-                const r = logo.getBoundingClientRect();
-                const inCard = e.clientX >= r.left && e.clientX <= r.right &&
-                               e.clientY >= card.getBoundingClientRect().top  &&
-                               e.clientY <= card.getBoundingClientRect().bottom;
-                if (!inCard) { ttX = 0; tkX = 0; tfX = 0; return; }
-
-                // cursorX relative to the headline container (0 = left word, containerW = right word)
-                const cursorX    = Math.max(0, Math.min(containerW, e.clientX - r.left));
-                const normOffset = (cursorX / containerW - 0.5) * 2; // -1 to +1
-                const pull       = normOffset * normOffset * 0.6;
-
-                ttX = (cursorX - naturalT) * pull;
-                tkX = (cursorX - naturalK) * pull;
-                tfX = (cursorX - naturalF) * pull;
-            }, { passive: true });
-
-            card.addEventListener('mouseleave', () => { ttX = 0; tkX = 0; tfX = 0; });
-
-            function clampTargets(tt, tk, tf) {
-                // Boundaries are headline-relative: 0 = headline left, containerW = headline right
-                const tMin = -naturalT + wT / 2;
-                const tMax =  containerW - naturalT - wT / 2;
-                tt = Math.max(tMin, Math.min(tMax, tt));
-
-                const kMin = -naturalK + wK / 2;
-                const kMax =  containerW - naturalK - wK / 2;
-                tk = Math.max(kMin, Math.min(kMax, tk));
-
-                const fMin = -naturalF + wF / 2;
-                const fMax =  containerW - naturalF - wF / 2;
-                tf = Math.max(fMin, Math.min(fMax, tf));
-
-                // Collision THE–KILLING: THE's right must not exceed KILLING's left
-                const gapTK = (naturalK + tk - wK / 2) - (naturalT + tt + wT / 2);
-                if (gapTK < 0) {
-                    const half = gapTK / 2;
-                    tt += half;
-                    tk -= half;
+                const rect = logo.getBoundingClientRect();
+                const cardRect = card.getBoundingClientRect();
+                const inCard = e.clientX >= rect.left && e.clientX <= rect.right &&
+                               e.clientY >= cardRect.top && e.clientY <= cardRect.bottom;
+                if (!inCard || e.target.closest('.btn, .pill, a, input, textarea')) {
+                    resetWords();
+                    return;
                 }
 
-                // Collision KILLING–FLOOR
-                const gapKF = (naturalF + tf - wF / 2) - (naturalK + tk + wK / 2);
-                if (gapKF < 0) {
-                    const half = gapKF / 2;
-                    tk += half;
-                    tf -= half;
-                }
+                clearTimeout(resetTimer);
+                cancelAnimationFrame(raf);
+                setWordEase('cubic-bezier(0.165, 0.84, 0.44, 1)');
 
-                return [tt, tk, tf];
+                raf = requestAnimationFrame(() => {
+                    const [leftW, middleW, rightW] = widths;
+                    const total = logo.offsetWidth;
+                    const pad = parseFloat(getComputedStyle(logo).fontSize) * 0.3;
+                    const min = leftW + pad;
+                    const max = total - middleW - rightW - pad;
+                    const cursor = Math.max(0, Math.min(total, e.clientX - rect.left));
+                    const pivot = Math.max(min, Math.min(max, cursor - middleW / 2));
+                    const mix = max > min ? (pivot - min) / (max - min) : 0.5;
+
+                    theWord.style.setProperty('--x', `${mix * (pivot - min)}px`);
+                    killing.style.setProperty('--x', `${pivot - (min + max) / 2}px`);
+                    floor.style.setProperty('--x', `${(mix - 1) * (max - pivot)}px`);
+                });
             }
 
-            (function tick() {
-                const [ct, ck, cf] = clampTargets(ttX, tkX, tfX);
-                ctX += (ct - ctX) * 0.08;
-                ckX += (ck - ckX) * 0.08;
-                cfX += (cf - cfX) * 0.08;
-
-                theWord.style.transform = `translateX(${ctX}px)`;
-                killing.style.transform = `translateX(${ckX}px)`;
-                floor.style.transform   = `translateX(${cfX}px)`;
-
-                requestAnimationFrame(tick);
-            })();
+            document.addEventListener('mousemove', updateFromPointer, { passive: true });
+            card.addEventListener('mouseleave', () => {
+                clearTimeout(resetTimer);
+                resetTimer = setTimeout(resetWords, 500);
+            });
         })();
 
 
