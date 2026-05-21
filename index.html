@@ -1847,34 +1847,38 @@
             let nebulaResizeTimer;
             window.addEventListener('resize', () => { clearTimeout(nebulaResizeTimer); nebulaResizeTimer = setTimeout(() => { if (cfg.nebulae) buildNebulaCache(); }, 150); });
 
+            const WORLD_H = 9600; // loop world every 12 chunks
+
             function draw() {
                 ctx.clearRect(0, 0, W, H);
                 const now = performance.now() * 0.001;
-                const bgY = window.bgLerpY || 0;
+                const raw = window.bgLerpY || 0;
+                const bgY = ((raw % WORLD_H) + WORLD_H) % WORLD_H; // wrap to [0, WORLD_H)
                 const BARREL_K = 0.28;
 
                 // Probe FPS for first 90 frames then lock quality tier
                 probeFPS(performance.now());
 
-                // Draw nebula clouds beneath stars
+                // Draw nebula clouds beneath stars (tiled across world seam)
                 if (cfg.nebulae) {
                     for (const nb of NEBULAE) {
                         const sx = nb.wx * W;
-                        const sy = nb.wy - bgY * nb.parallax;
-                        if (sy < -H * 2 || sy > H * 3) continue;
-                        if (nb.bitmap) {
-                            ctx.drawImage(nb.bitmap, sx - nb._rad, sy - nb._rad);
-                        } else {
-                            // Fallback: direct gradient draw (no OffscreenCanvas)
-                            const [r, g, b] = nb.clr;
-                            const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, nb._rad);
-                            grad.addColorStop(0,    `rgba(${r},${g},${b},${nb.alpha.toFixed(3)})`);
-                            grad.addColorStop(0.45, `rgba(${r},${g},${b},${(nb.alpha * 0.5).toFixed(3)})`);
-                            grad.addColorStop(1,    'rgba(0,0,0,0)');
-                            ctx.fillStyle = grad;
-                            ctx.beginPath();
-                            ctx.arc(sx, sy, nb._rad, 0, Math.PI * 2);
-                            ctx.fill();
+                        for (const offset of [0, WORLD_H]) {
+                            const sy = (nb.wy + offset) - bgY * nb.parallax;
+                            if (sy < -H * 2 || sy > H * 3) continue;
+                            if (nb.bitmap) {
+                                ctx.drawImage(nb.bitmap, sx - nb._rad, sy - nb._rad);
+                            } else {
+                                const [r, g, b] = nb.clr;
+                                const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, nb._rad);
+                                grad.addColorStop(0,    `rgba(${r},${g},${b},${nb.alpha.toFixed(3)})`);
+                                grad.addColorStop(0.45, `rgba(${r},${g},${b},${(nb.alpha * 0.5).toFixed(3)})`);
+                                grad.addColorStop(1,    'rgba(0,0,0,0)');
+                                ctx.fillStyle = grad;
+                                ctx.beginPath();
+                                ctx.arc(sx, sy, nb._rad, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
                         }
                     }
                 }
@@ -1907,7 +1911,9 @@
                     for (const star of getChunk(ci)) {
                         // Parallax: each layer scrolls at its own rate
                         const sx = star.wx * W;
-                        const sy = star.wy - bgY * star.parallax;
+                        // Tile wy across world seam
+                        const wyT = star.wy % WORLD_H;
+                        const sy = wyT - bgY * star.parallax + (wyT < bgY * star.parallax - H ? WORLD_H : 0);
                         if (sy < -40 || sy > H + 40) continue;
 
                         // Barrel distortion
