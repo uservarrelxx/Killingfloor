@@ -478,8 +478,8 @@
         /* ── NAV — Mono 400/500 → white ── */
         .card-nav {
             border-top: 1px solid var(--border);
-            padding-top: 1.8cqi;
-            padding-bottom: 3.5cqi;
+            padding-top: 1.5cqi;
+            padding-bottom: 2.5cqi;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -488,7 +488,7 @@
 
         .card-nav a {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: clamp(14px, 1.14cqi, 18px);
+            font-size: clamp(11px, 0.95cqi, 13px);
             font-weight: 400;
             letter-spacing: 0.07em;
             color: var(--w45);
@@ -690,20 +690,7 @@
         }
 
         /* ── SCROLL PROGRESS BAR ── */
-        #scroll-label {
-            position: absolute;
-            top: -14px;
-            left: 0;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            letter-spacing: 0.1em;
-            color: rgba(255,255,255,0.2);
-            pointer-events: none;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.45s ease;
-        }
-        .card-nav.scrollable #scroll-label { opacity: 1; }
+        .card-nav.scrollable
         #scroll-progress {
             position: absolute;
             top: 0;
@@ -1367,7 +1354,6 @@
         </div>
 
         <nav class="card-nav">
-            <span id="scroll-label">0%</span>
             <div id="scroll-progress"></div>
             <div id="nav-indicator"></div>
             <a href="#" data-page="services" data-label="shift + 1"><span class="num">01</span>Services</a>
@@ -1576,7 +1562,6 @@
             const card     = document.querySelector('.card');
             const nav      = document.querySelector('.card-nav');
             const progress = document.getElementById('scroll-progress');
-            const label    = document.getElementById('scroll-label');
             const SHRINK_OVER = 120;
 
             function updateScroll() {
@@ -1586,7 +1571,6 @@
                     : 0;
                 card.style.setProperty('--ls', Math.min(cardBody.scrollTop / SHRINK_OVER, 1));
                 progress.style.transform = `scaleX(${ratio})`;
-                label.textContent = Math.round(ratio * 100) + '%';
                 nav.classList.toggle('scrollable', scrollable);
             }
 
