@@ -54,15 +54,14 @@
             height: 100vh;
         }
 
-        #dot-bg, #lens-overlay {
+        #dot-bg {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
         }
-        #dot-bg      { z-index: 0; }
-        #lens-overlay { z-index: 1; }
+        #dot-bg { z-index: 0; }
 
         .bg-rect {
             position: absolute;
@@ -1061,7 +1060,6 @@
 <body>
 
     <canvas id="dot-bg"></canvas>
-    <canvas id="lens-overlay"></canvas>
 
     <div id="card-veil-wrap">
         <input type="range" id="card-veil" min="0" max="100" value="100" step="1">
@@ -1455,7 +1453,12 @@
                 const charMs = Math.min(CHAR_MS, Math.floor(MAX_TYPE_MS / total));
                 let qi = 0;
 
-                if (segments[0]) segments[0].node.parentNode.appendChild(typeCaret);
+                function placeCaretAfter(node) {
+                    if (!node.parentNode) return;
+                    node.parentNode.insertBefore(typeCaret, node.nextSibling);
+                }
+
+                if (segments[0]) placeCaretAfter(segments[0].node);
 
                 typeTimer = setInterval(() => {
                     if (qi >= queue.length) {
@@ -1468,10 +1471,7 @@
                     }
                     const [si, ci] = queue[qi++];
                     segments[si].node.textContent = segments[si].full.slice(0, ci + 1);
-                    const node = segments[si].node;
-                    if (node.parentNode && typeCaret.parentNode !== node.parentNode) {
-                        node.parentNode.appendChild(typeCaret);
-                    }
+                    placeCaretAfter(segments[si].node);
                 }, charMs);
             });
         }
@@ -1992,38 +1992,6 @@
             });
             draw();
         } catch(e) { console.error('Starfield error:', e); } })();
-
-        // ── LENS OVERLAY (barrel vignette above stars) ──
-        (function() {
-            const ov  = document.getElementById('lens-overlay');
-            const ctx = ov.getContext('2d');
-            let W, H;
-
-            function resize() {
-                W = ov.width  = window.innerWidth;
-                H = ov.height = window.innerHeight;
-                drawLens();
-            }
-            let lensResizeTimer;
-            window.addEventListener('resize', () => { clearTimeout(lensResizeTimer); lensResizeTimer = setTimeout(resize, 150); });
-
-            function drawLens() {
-                ctx.clearRect(0, 0, W, H);
-                const CX = W / 2, CY = H / 2;
-                const R  = Math.sqrt(CX * CX + CY * CY);
-
-                // CRT vignette — corners fully black where barrel pushes stars off screen
-                const vig = ctx.createRadialGradient(CX, CY, R * 0.55, CX, CY, R * 1.05);
-                vig.addColorStop(0,   'rgba(0,0,0,0)');
-                vig.addColorStop(0.6, 'rgba(0,0,0,0.45)');
-                vig.addColorStop(1,   'rgba(0,0,0,0.92)');
-                ctx.fillStyle = vig;
-                ctx.fillRect(0, 0, W, H);
-            }
-
-            resize();
-        })();
-
 
         // ── CARD VEIL / OPACITY SLIDER ──
         (function() {
