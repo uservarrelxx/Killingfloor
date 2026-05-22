@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Killing Floor Consulting</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#B54400">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B54400'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background: #060605;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+        .wrap {
+            max-width: 520px;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+        .code {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 900;
+            font-size: clamp(80px, 18vw, 160px);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            color: #B54400;
+        }
+        .label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.40);
+            margin: 18px 0 14px;
+        }
+        .msg {
+            font-size: clamp(15px, 2.4vw, 19px);
+            font-weight: 600;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 32px;
+        }
+        a.home {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.30);
+            padding: 12px 22px;
+            border-radius: 2px;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        a.home:hover {
+            background: #B54400;
+            border-color: #B54400;
+        }
+        .glow {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(181,68,0,0.18), transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="wrap">
+        <div class="code">404</div>
+        <div class="label">Page not found</div>
+        <p class="msg">This page never existed, or it was killed off. Either way, it's not here. Let's get you back to the floor.</p>
+        <a class="home" href="/">← Return home</a>
+    </div>
+</body>
+</html>

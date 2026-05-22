@@ -2,16 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Killing Floor Consulting — Branding, Copy, Scaling for Founders</title>
-    <meta name="description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Killing Floor Consulting — Branding, Copy &amp; Scaling for Founders</title>
+    <meta name="description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit and short on time.">
+    <meta name="keywords" content="consulting, branding, copywriting, scaling, startup consulting, founder consulting, brand strategy, B2B, DTC, operating design">
+    <meta name="author" content="Killing Floor Consulting">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#B54400">
+    <link rel="canonical" href="https://killingfloor.studio/">
+
+    <!-- Open Graph -->
     <meta property="og:title" content="Killing Floor Consulting">
     <meta property="og:description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://killingfloor.co">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:url" content="https://killingfloor.studio/">
+    <meta property="og:site_name" content="Killing Floor Consulting">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://killingfloor.studio/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Killing Floor Consulting">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Killing Floor Consulting">
-    <meta name="twitter:description" content="Operator-grade consulting. Six engagements per year.">
+    <meta name="twitter:description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling for founders.">
+    <meta name="twitter:image" content="https://killingfloor.studio/og-image.png">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Killing Floor Consulting",
+        "description": "Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit.",
+        "url": "https://killingfloor.studio/",
+        "email": "hello@killingfloor.studio",
+        "areaServed": "Worldwide",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Vancouver",
+            "addressRegion": "BC",
+            "addressCountry": "CA"
+        },
+        "knowsAbout": ["Brand Strategy", "Copywriting", "Operating Design", "Scaling"],
+        "priceRange": "$$$"
+    }
+    </script>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23B54400'/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +69,64 @@
             cursor: grab;
         }
         body.dragging { cursor: grabbing; }
+
+        /* ── ACCESSIBILITY ── */
+        .skip-link {
+            position: fixed;
+            top: -100px;
+            left: 12px;
+            z-index: 9999;
+            background: #B54400;
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            padding: 10px 16px;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 12px;
+        }
+        /* Visible focus rings for keyboard users only */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.85);
+            outline-offset: 3px;
+            border-radius: 1px;
+        }
+        /* FPS meter — discreet, always visible */
+        #fps-meter {
+            position: fixed;
+            bottom: 8px;
+            left: 8px;
+            z-index: 400;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.45);
+            background: rgba(0,0,0,0.78);
+            padding: 3px 7px;
+            border-radius: 2px;
+            pointer-events: none;
+            user-select: none;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Reduced-motion: calm everything down */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
 
         /* ── BACKGROUND LAYER ── */
         .bg {
@@ -91,36 +187,90 @@
         }
 
         /* ── CARD VEIL SLIDER ── */
-        #card-veil-wrap {
+        /* ── SETTINGS PANEL ── */
+        #settings-toggle {
             position: fixed;
-            bottom: 28px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
+            top: 20px;
+            left: 28px;
+            z-index: 250;
+            width: 22px;
+            height: 22px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: rgba(255,255,255,0.35);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, color 0.3s ease, transform 0.5s ease;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        #card-veil-wrap.visible {
+        #settings-toggle.visible {
             opacity: 1;
             pointer-events: auto;
         }
-        #card-veil-label {
+        #settings-toggle:hover,
+        #settings-toggle.open {
+            color: rgba(255,255,255,0.75);
+            transform: rotate(60deg);
+        }
+        #settings-toggle svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        #settings-panel {
+            position: fixed;
+            top: 54px;
+            left: 28px;
+            z-index: 250;
+            background: rgba(0,0,0,0.88);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 18px 20px;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+        }
+        #settings-panel.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        #settings-panel.intro-mode [data-card-only] {
+            display: none;
+        }
+        .settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .settings-label {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            letter-spacing: 0.12em;
-            color: rgba(255,255,255,0.28);
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            user-select: none;
+            color: rgba(255,255,255,0.35);
+        }
+        .settings-options {
+            display: flex;
+            gap: 14px;
         }
         #card-veil {
             -webkit-appearance: none;
             appearance: none;
-            width: 120px;
+            width: 100%;
             height: 1px;
             background: rgba(255,255,255,0.18);
             outline: none;
@@ -170,6 +320,7 @@
             flex-direction: column;
             max-height: calc(100vh - 160px);
             overflow: hidden;
+            /* Needed for nav drawer to clip within card bounds */
             box-shadow:
                 0 0  60px  8px rgba(181, 90, 10, 0.35),
                 0 0 140px 30px rgba(160, 60,  0, 0.22),
@@ -186,30 +337,41 @@
             flex-shrink: 0;
         }
 
+        .quality-option {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.40);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.2s ease;
+        }
+        .quality-option:hover {
+            color: rgba(255,255,255,0.70);
+        }
+        .quality-option.active {
+            color: rgba(255,255,255,0.85);
+            font-weight: 600;
+        }
         #replay-intro {
-            position: fixed;
-            top: 22px;
-            left: 28px;
-            z-index: 200;
             background: none;
             border: none;
             padding: 0;
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            letter-spacing: 0.12em;
-            color: rgba(255,255,255,0.22);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.07em;
+            color: rgba(255,255,255,0.40);
             cursor: pointer;
             text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 0.4s ease, color 0.25s ease;
-            pointer-events: none;
-        }
-        #replay-intro.visible {
-            opacity: 1;
-            pointer-events: auto;
+            text-align: left;
+            transition: color 0.25s ease;
         }
         #replay-intro:hover {
-            color: rgba(255,255,255,0.75);
+            color: rgba(255,255,255,0.70);
         }
 
         /* ── HEADLINE — weight 900 → dark ── */
@@ -399,13 +561,73 @@
             margin-bottom: 0;
         }
 
+        /* Client wordmark — preface badge */
+        .work-client {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7em;
+            padding: 0.55em 0.95em;
+            margin-bottom: 2.2cqi;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            background: rgba(0,0,0,0.10);
+        }
+        .work-client-mark {
+            width: 1.45em;
+            height: 1.45em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 900;
+            font-size: clamp(13px, 1.0cqi, 17px);
+            color: var(--card);
+            background: var(--dark);
+            flex-shrink: 0;
+        }
+        .work-client-name {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(11px, 0.86cqi, 14px);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        /* Testimonial pull-quote */
+        .work-quote {
+            margin-top: 3cqi;
+            padding-top: 2.5cqi;
+            border-top: 1px solid var(--border);
+            max-width: 70%;
+        }
+        .work-quote blockquote {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: clamp(17px, 1.7cqi, 26px);
+            line-height: 1.5;
+            color: var(--dark);
+            margin: 0 0 1.2em 0;
+        }
+        .work-quote blockquote::before { content: '“'; }
+        .work-quote blockquote::after  { content: '”'; }
+        .work-quote cite {
+            font-family: 'IBM Plex Mono', monospace;
+            font-style: normal;
+            font-size: clamp(11px, 0.86cqi, 14px);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--w45);
+        }
+
         /* ── WORK ── */
         .work-row {
             display: grid;
             grid-template-columns: 2.5cqi 1fr auto;
             gap: 2cqi;
             align-items: baseline;
-            padding: 1.8cqi 0;
+            padding: 1.8cqi 1.2cqi 1.8cqi 0;
             border-bottom: 1px solid var(--border);
             cursor: pointer;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -513,6 +735,38 @@
         }
 
         .btn:hover { color: var(--white); border-color: var(--white); }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        /* ── PAGE & HOME CTAs ── */
+        .home-cta {
+            margin: 1.4cqi 0 0;
+        }
+        .home-cta-link, .page-cta-link {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(12px, 0.94cqi, 15px);
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--dark);
+            cursor: pointer;
+            border-bottom: 1px solid rgba(46,18,0,0.3);
+            padding-bottom: 1px;
+            transition: border-color 0.2s ease, opacity 0.2s ease;
+        }
+        .home-cta-link:hover, .page-cta-link:hover {
+            border-color: var(--dark);
+        }
+        .page-cta {
+            padding: 2cqi 0 0.5cqi;
+        }
+        .form-notice {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(12px, 0.9cqi, 14px);
+            letter-spacing: 0.12em;
+            padding: 1cqi 0;
+            display: none;
+        }
+        .form-notice.visible { display: block; }
+        .form-notice.success { color: #5fca6e; }
+        .form-notice.error   { color: rgba(255,255,255,0.55); }
 
         /* ── NAV — Mono 400/500 → white ── */
         .card-nav {
@@ -619,50 +873,159 @@
         .cursor-label.active { display: block; opacity: 1; }
 
 
-        /* ── INTRO OVERLAY ── */
-        #intro {
-            position: fixed;
+        /* ── TERMINAL MODE — the card itself, shrunk down ── */
+        .card.terminal-mode {
+            width: min(560px, 86vw);
+            height: clamp(300px, 48vh, 400px);
+            max-height: none;
+            cursor: default;
+            justify-content: flex-start;
+        }
+        /* Hide site content while in / entering terminal */
+        .card .card-header,
+        .card .card-body,
+        .card .card-nav {
+            transition: opacity 0.45s ease;
+        }
+        .card.content-hidden .card-header,
+        .card.content-hidden .card-body,
+        .card.content-hidden .card-nav {
+            opacity: 0;
+            pointer-events: none;
+        }
+        /* Terminal overlay — fills the card */
+        .card-terminal {
+            position: absolute;
             inset: 0;
-            z-index: 500;
-            background: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 0;
+            font-family: Menlo, Monaco, 'SF Mono', 'Courier New', monospace;
+            font-size: clamp(12px, 1.5cqi, 15px);
+            line-height: 1.65;
+            color: var(--dark);
+            z-index: 6;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            overflow: hidden;
+        }
+        .card-terminal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        /* Window chrome — title bar */
+        .term-titlebar {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            padding: 0 8vw;
+            padding: 9px 12px;
+            background: rgba(0,0,0,0.13);
+            border-bottom: 1px solid rgba(0,0,0,0.10);
+            flex-shrink: 0;
+            user-select: none;
+            cursor: grab;
         }
-        #intro-body {
-            font-family: Menlo, Monaco, 'SF Mono', 'Courier New', monospace;
-            font-size: clamp(15px, 1.6vw, 20px);
-            font-weight: 400;
-            letter-spacing: 0em;
-            line-height: 1.6;
-            width: min(600px, 84vw);
-            position: relative;
-            z-index: 1;
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2.5em 3em;
-            border-left: 1px solid rgba(255,255,255,0.08);
+        .term-titlebar:active { cursor: grabbing; }
+        .term-dots {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
         }
-        #intro-log { white-space: pre; line-height: 1.6; }
-        .iline { color: rgba(255,255,255,0.85); display: block; }
-        .iline-dim { color: rgba(255,255,255,0.35); display: block; }
+        .term-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+        .dot-red    { background: #FF5F57; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green  { background: #28C840; }
+        .term-title {
+            flex: 1;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            color: rgba(46,18,0,0.45);
+        }
+        .term-dots-spacer { width: 41px; flex-shrink: 0; }
+        /* Terminal scrollable body */
+        .term-body {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px 16px 8px;
+            overflow: hidden;
+        }
+        /* Status bar */
+        .term-statusbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 12px;
+            background: rgba(0,0,0,0.10);
+            border-top: 1px solid rgba(0,0,0,0.08);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.10em;
+            color: rgba(46,18,0,0.40);
+            flex-shrink: 0;
+            user-select: none;
+        }
+        /* Resize handle — bottom-right corner grip */
+        .term-resize {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 18px;
+            height: 18px;
+            cursor: nwse-resize;
+            z-index: 10;
+        }
+        .term-resize::before {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 10px;
+            height: 10px;
+            background: repeating-linear-gradient(
+                -45deg,
+                rgba(46,18,0,0.22) 0px, rgba(46,18,0,0.22) 1px,
+                transparent 1px, transparent 3.5px
+            );
+        }
+        /* Log lines */
+        #intro-log { white-space: pre; line-height: 1.65; }
+        .card-terminal .iline     { color: var(--dark); display: flex; align-items: baseline; }
+        .card-terminal .iline-dim { color: rgba(46,18,0,0.45); display: flex; align-items: baseline; }
+        /* Line numbers */
+        .term-ln {
+            min-width: 1.8em;
+            margin-right: 10px;
+            color: rgba(46,18,0,0.28);
+            font-size: 0.82em;
+            flex-shrink: 0;
+            user-select: none;
+        }
+        /* Prompt characters */
+        .term-ps1 { color: rgba(46,18,0,0.45); margin-right: 0.5em; }
+        .term-cmd { color: var(--dark); font-weight: 600; }
         #intro-prompt {
-            display: inline-block;
-            margin-top: 0.2em;
-            color: rgba(255,255,255,0.85);
-            font-weight: 400;
-            letter-spacing: 0em;
+            display: flex;
+            align-items: baseline;
+            margin-top: 0.15em;
             opacity: 0;
             cursor: pointer;
-            min-height: 1em;
+            min-height: 1.65em;
         }
         #intro-caret {
             display: inline-block;
             width: 0.55em;
             height: 1em;
-            background: rgba(255,255,255,0.85);
+            background: var(--dark);
             margin-left: 2px;
             vertical-align: text-bottom;
             animation: caret-blink 0.9s step-end infinite;
@@ -818,6 +1181,62 @@
             font-size: 1.1em;
         }
         .home-cell-status .slot.taken { color: var(--white); }
+        @keyframes slot-pop {
+            from { opacity: 0; transform: scale(0.3) translateY(4px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .home-cell-status .slot {
+            animation: slot-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .capacity-next {
+            display: block;
+            margin-top: 0.6em;
+            font-size: 0.8em;
+            color: var(--w25);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .capacity-waitlist {
+            display: inline-block;
+            margin-top: 0.5em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.82em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--w45);
+            background: none;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding: 0;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .capacity-waitlist:hover { color: var(--white); border-bottom-color: rgba(255,255,255,0.7); }
+        /* Interactive availability */
+        .capacity-cta {
+            display: inline-block;
+            margin-left: 0.4em;
+            color: var(--white);
+            text-decoration: none;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: border-color 0.2s ease, color 0.2s ease;
+            font-size: inherit;
+            font-family: inherit;
+            letter-spacing: inherit;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding: 0;
+        }
+        .capacity-cta:hover {
+            color: var(--white);
+            border-bottom-color: rgba(255,255,255,0.85);
+        }
+        .capacity-full {
+            color: var(--w45);
+        }
 
         /* ── PAGE HEADERS ── */
         .page-head {
@@ -1071,39 +1490,225 @@
             color: var(--w45);
             line-height: 1.7;
         }
-    </style>
+        /* ══════════════════════════════════════════
+           RESPONSIVE — continuous scaling via cqi,
+           layout shifts at 899px and 599px
+           ══════════════════════════════════════════ */
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Killing Floor Consulting",
-  "description": "Operator-grade consulting for founders past product-market fit.",
-  "url": "https://killingfloor.co",
-  "areaServed": "Worldwide",
-  "email": "hello@killingfloor.co",
-  "address": { "@type": "PostalAddress", "addressLocality": "Vancouver", "addressRegion": "BC", "addressCountry": "CA" }
-}
-</script>
+        /* ── HAMBURGER BUTTON ── */
+        .nav-hamburger {
+            display: none; /* shown only on touch breakpoints */
+            flex-direction: column;
+            justify-content: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        .nav-hamburger span {
+            display: block;
+            width: 20px;
+            height: 1.5px;
+            background: var(--w45);
+            transition: transform 0.25s ease, opacity 0.2s ease, background 0.2s ease;
+        }
+        .nav-hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); background: var(--white); }
+        .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+        .nav-hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); background: var(--white); }
+
+        /* ── NAV DRAWER ── */
+        .nav-drawer {
+            display: none; /* hidden on desktop */
+            position: absolute;
+            inset: 0;
+            z-index: 30;
+            background: var(--card);
+            flex-direction: column;
+            justify-content: center;
+            padding: 5cqi 5cqi;
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+        }
+        .nav-drawer.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .nav-drawer-close {
+            position: absolute;
+            top: 3cqi;
+            right: 4cqi;
+            background: none;
+            border: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+            color: var(--w45);
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: color 0.2s ease;
+        }
+        .nav-drawer-close:hover { color: var(--white); }
+        .nav-drawer-link {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 900;
+            font-size: clamp(28px, 7cqi, 52px);
+            letter-spacing: -0.01em;
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5em;
+            padding: 0.6cqi 0;
+            border-bottom: 1px solid rgba(46,18,0,0.15);
+            transition: color 0.2s ease;
+        }
+        .nav-drawer-link:last-child { border-bottom: none; }
+        .nav-drawer-link .num {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 400;
+            font-size: 0.38em;
+            color: rgba(46,18,0,0.35);
+            letter-spacing: 0.1em;
+        }
+        .nav-drawer-link:hover { color: rgba(46,18,0,0.6); }
+
+        /* ══ TABLET — 600px to 899px ══ */
+        @media (max-width: 899px) {
+
+            /* Kill custom cursor */
+            * { cursor: auto !important; }
+            .cursor, .cursor-box, .cursor-label { display: none !important; }
+            #fps-meter { display: none; }
+            body { cursor: auto; }
+
+            /* Card — full width with small margin */
+            .card {
+                width: calc(100vw - 48px);
+                max-height: calc(100vh - 100px);
+            }
+
+            /* Show hamburger, hide normal nav links */
+            .nav-hamburger { display: flex; }
+            .card-nav a { display: none; }
+            #nav-indicator, #scroll-progress { display: none; }
+            .nav-drawer { display: flex; }
+
+            /* Mobile bg — static gradient instead of canvas */
+            body { background: #060605; }
+
+            /* Home grid: 2 col */
+            .home-grid { grid-template-columns: 1fr 1fr; }
+
+            /* Contact: 1 col */
+            .contact-grid { grid-template-columns: 1fr; gap: 3cqi; }
+
+            /* FAQ: 1 col */
+            .faq-row { grid-template-columns: 1fr; gap: 0.8cqi; }
+            .faq-q { font-size: clamp(14px, 1.1cqi, 18px); }
+
+            /* Work rows: hide year tag (shown in detail) */
+            .work-tag { display: none; }
+            .work-row { grid-template-columns: 2.5cqi 1fr; }
+
+            /* Detail page: remove max-width constraints */
+            .work-detail-desc { max-width: 100%; }
+            .work-quote { max-width: 100%; }
+            .about-bio { max-width: 100%; }
+
+            /* Bigger tap targets */
+            .card-nav { padding-bottom: 1.8cqi; min-height: 44px; }
+            .pill { padding: 0.9cqi 1.6cqi; }
+
+            /* Terminal: no drag chrome */
+            .term-resize { display: none; }
+            .term-titlebar { cursor: default; }
+        }
+
+        /* ══ MOBILE — below 600px ══ */
+        @media (max-width: 599px) {
+
+            /* Card: edge to edge */
+            .card {
+                width: calc(100vw - 16px);
+                max-height: calc(100svh - 60px);
+            }
+
+            /* Headline: floor size so it never goes tiny */
+            .headline .the,
+            .headline .killing,
+            .headline .floor {
+                font-size: clamp(28px, 10vw, 48px) !important;
+            }
+
+            /* Home grid: 1 col */
+            .home-grid { grid-template-columns: 1fr; gap: 2cqi; }
+
+            /* Process: stack phase + body */
+            .process-row { flex-direction: column; gap: 0.6cqi; }
+            .process-phase { width: 100%; }
+
+            /* Service rows: tighter */
+            .service-row { grid-template-columns: 0fr 1fr; gap: 1cqi; }
+            .service-num { display: none; }
+
+            /* Settings panel: right-aligned on small screens */
+            #settings-panel { left: auto; right: 12px; min-width: 160px; }
+            #settings-toggle { left: auto; right: 20px; }
+
+            /* Ticker: hide on very small to avoid overlap */
+            .ticker { display: none; }
+
+            /* Card nav padding */
+            .card-nav { padding-bottom: 1.4cqi; }
+
+            /* Sub-row: hide location on very small */
+            .sub-right { display: none; }
+        }
+
+        /* ══ TABLET: medium screens need static bg ══ */
+        @media (max-width: 899px) {
+            #dot-bg { display: none; }
+            .bg { background: radial-gradient(ellipse at 30% 60%, rgba(60,20,0,0.35) 0%, transparent 65%),
+                             radial-gradient(ellipse at 75% 20%, rgba(40,10,0,0.25) 0%, transparent 55%); }
+        }
+    </style>
 </head>
 <body>
 
-    <canvas id="dot-bg"></canvas>
+    <a href="#main-content" class="skip-link">Skip to content</a>
 
-    <div id="card-veil-wrap">
-        <input type="range" id="card-veil" min="0" max="100" value="100" step="1">
-        <span id="card-veil-label">card opacity</span>
-    </div>
+    <canvas id="dot-bg" aria-hidden="true"></canvas>
 
-    <button id="replay-intro" aria-label="Replay intro">↩ intro</button>
-
-
-    <div id="intro">
-        <div id="intro-body">
-            <div id="intro-log"><span id="intro-caret"></span></div>
-            <span id="intro-prompt"></span>
+    <button id="settings-toggle" aria-label="Open settings" aria-expanded="false" aria-controls="settings-panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    </button>
+    <div id="settings-panel" role="region" aria-label="Site settings">
+        <div class="settings-section">
+            <label class="settings-label" for="card-veil">Card Opacity</label>
+            <input type="range" id="card-veil" min="0" max="100" value="100" step="1" aria-label="Card opacity">
+        </div>
+        <div class="settings-section">
+            <div class="settings-label" id="quality-label">Render Quality</div>
+            <div class="settings-options" role="radiogroup" aria-labelledby="quality-label">
+                <button class="quality-option" data-tier="low"    role="radio" aria-checked="false">Low</button>
+                <button class="quality-option" data-tier="medium" role="radio" aria-checked="false">Mid</button>
+                <button class="quality-option" data-tier="high"   role="radio" aria-checked="false">High</button>
+                <button class="quality-option" data-tier="ultra"  role="radio" aria-checked="false">Ultra</button>
+                <button class="quality-option" data-tier="auto"   role="radio" aria-checked="false">Auto</button>
+            </div>
+        </div>
+        <div class="settings-section" data-card-only>
+            <button id="replay-intro" aria-label="Replay intro">↩ Replay Intro</button>
         </div>
     </div>
+
 
     <div class="bg">
         <div class="bg-scroll">
@@ -1113,10 +1718,32 @@
         <span class="bg-placeholder">[ circuit grid — infinite scroll ]</span>
     </div>
 
-    <div class="card">
+    <main class="card terminal-mode content-hidden" id="main-content" role="main">
+
+        <div class="card-terminal show" id="card-terminal">
+            <div class="term-titlebar" id="term-titlebar">
+                <div class="term-dots">
+                    <span class="term-dot dot-red"></span>
+                    <span class="term-dot dot-yellow"></span>
+                    <span class="term-dot dot-green"></span>
+                </div>
+                <span class="term-title">zsh — killingfloor.studio</span>
+                <div class="term-dots-spacer"></div>
+            </div>
+            <div class="term-body">
+                <div id="intro-log"><span id="intro-caret"></span></div>
+                <div id="intro-prompt"></div>
+            </div>
+            <div class="term-statusbar">
+                <span>~/killingfloor</span>
+                <span id="term-status-center">zsh</span>
+                <span>UTF-8 · LF</span>
+            </div>
+            <div class="term-resize" id="term-resize"></div>
+        </div>
 
         <div class="card-header">
-            <div class="headline" id="logo" style="cursor:pointer;">
+            <div class="headline" id="logo" style="cursor:pointer;" role="button" tabindex="0" aria-label="Killing Floor — go to home">
                 <span class="the">THE</span>
                 <span class="killing">KILLING</span>
                 <span class="floor">FLOOR</span>
@@ -1136,6 +1763,9 @@
                         In business, you're either structured,<br>
                         or slaughtered.
                     </p>
+                    <p class="home-cta" data-reveal>
+                        <span class="home-cta-link" data-page="contact" role="button" tabindex="0">Apply for an engagement →</span>
+                    </p>
                     <div class="home-grid" data-reveal>
                         <div class="home-cell" data-reveal>
                             <div class="home-cell-label" data-reveal>Practice</div>
@@ -1146,8 +1776,8 @@
                             <div class="home-cell-body" data-reveal>12-week sprints. Fixed scope. One principal, no juniors, no decks for the sake of decks.</div>
                         </div>
                         <div class="home-cell" data-reveal>
-                            <div class="home-cell-label" data-reveal>Capacity Q3 / 2026</div>
-                            <div class="home-cell-body home-cell-status" data-reveal><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot taken">▮</span><span class="slot">▯</span><span class="slot">▯</span> &nbsp; 02 OF 06 OPEN</div>
+                            <div class="home-cell-label" data-reveal id="capacity-label">Capacity</div>
+                            <div class="home-cell-body home-cell-status" data-reveal id="capacity-status"></div>
                         </div>
                     </div>
                 </div>
@@ -1172,6 +1802,9 @@
                         <span class="service-name">Scaling</span>
                         <span class="service-desc">Infrastructure that doesn't break<br>when growth arrives.<br><span class="service-deliv">Operating cadence &nbsp;·&nbsp; Metrics review &nbsp;·&nbsp; Org design</span></span>
                     </div>
+                    <div class="page-cta" data-reveal>
+                        <span class="page-cta-link" data-page="contact" role="button" tabindex="0">Start a conversation →</span>
+                    </div>
                 </div>
 
                 <div class="page" id="page-work">
@@ -1194,11 +1827,18 @@
                         <span class="work-title">Confidential — Series B SaaS</span>
                         <span class="work-tag">Scaling &nbsp; · &nbsp; 2024</span>
                     </div>
+                    <div class="page-cta" data-reveal>
+                        <span class="page-cta-link" data-page="contact" role="button" tabindex="0">Work with us →</span>
+                    </div>
                 </div>
 
                 <div class="page" id="page-work-01">
                     <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
                     <div class="work-detail-num" data-reveal>01 — Branding</div>
+                    <div class="work-client" data-reveal>
+                        <span class="work-client-mark" aria-hidden="true">A</span>
+                        <span class="work-client-name">Atlas Foundry</span>
+                    </div>
                     <div class="work-detail-title" data-reveal>Atlas Foundry</div>
                     <div class="work-detail-meta" data-reveal>
                         <span>2025</span>
@@ -1215,11 +1855,19 @@
                         <p data-reveal>Rollout happened across six months. Internal communications first — you can't sell a brand externally that your own people don't believe. Then packaging. Then digital. Then the campaign that introduced the repositioned company to a market that had already made up its mind about them. Changing that mind was the job.</p>
                         <p data-reveal>It worked. Not immediately — nothing real works immediately — but by month four the numbers moved. By month eight the client's largest competitor had quietly updated their own positioning. Imitation is the only metric that matters at category scale. The client didn't get a rebrand. They got a reason to exist in the market. Those are different things. One is an output. The other is a foundation. We only do the second kind.</p>
                     </div>
+                    <div class="work-quote" data-reveal>
+                        <blockquote>They didn't redesign our logo. They told us who we were and dared us to mean it. Sales stopped explaining what we did within a quarter.</blockquote>
+                        <cite>— CEO, Atlas Foundry</cite>
+                    </div>
                 </div>
 
                 <div class="page" id="page-work-02">
                     <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
                     <div class="work-detail-num" data-reveal>02 — Copywriting</div>
+                    <div class="work-client" data-reveal>
+                        <span class="work-client-mark" aria-hidden="true">N</span>
+                        <span class="work-client-name">North &amp; Vector</span>
+                    </div>
                     <div class="work-detail-title" data-reveal>North &amp; Vector</div>
                     <div class="work-detail-meta" data-reveal>
                         <span>2025</span>
@@ -1233,11 +1881,19 @@
                         <p data-reveal>That insight became the voice. Direct, slightly impatient, allergic to filler. Every product page leads with the trade-off, not the feature. The about page is 47 words. The returns page is six. The newsletter has an unsubscribe rate of 0.3% and an open rate north of 50%.</p>
                         <p data-reveal>Conversion lifted 28% in the first quarter. Average order value held. Returns dropped. The work isn't loud — but it's saying exactly what needs saying, and nothing else.</p>
                     </div>
+                    <div class="work-quote" data-reveal>
+                        <blockquote>Every page sounds like us now — sharper than us, honestly. The unsubscribe rate is a rounding error and people actually reply to the emails.</blockquote>
+                        <cite>— Founder, North &amp; Vector</cite>
+                    </div>
                 </div>
 
                 <div class="page" id="page-work-03">
                     <div class="work-detail-back" data-back="work" data-reveal>Back to Work</div>
                     <div class="work-detail-num" data-reveal>03 — Scaling</div>
+                    <div class="work-client" data-reveal>
+                        <span class="work-client-mark" aria-hidden="true">▮</span>
+                        <span class="work-client-name">Confidential — Under NDA</span>
+                    </div>
                     <div class="work-detail-title" data-reveal>Confidential — Series B SaaS</div>
                     <div class="work-detail-meta" data-reveal>
                         <span>2024</span>
@@ -1251,6 +1907,10 @@
                         <p data-reveal>Net revenue retention moved from 102% to 121% over four quarters. Time-to-hire on engineering dropped from 84 days to 31. The CEO got their Fridays back. The board meeting got 40 minutes shorter and 200% more useful.</p>
                         <p data-reveal>We don't do retainers. We don't do scope creep. We do the work, install the system, and leave the building.</p>
                     </div>
+                    <div class="work-quote" data-reveal>
+                        <blockquote>We brought them in to fix strategy. They fixed how we made decisions, which turned out to be the actual problem. Best operating money we've spent.</blockquote>
+                        <cite>— CEO, Series B SaaS (Under NDA)</cite>
+                    </div>
                 </div>
 
                 <div class="page" id="page-contact">
@@ -1260,10 +1920,10 @@
                             <p class="contact-sub" data-reveal>Six engagements per year. We pick on fit, not fee. Tell us where you are and what you're trying to make true.</p>
                             <div class="contact-direct" data-reveal>
                                 <div class="contact-direct-label">Direct</div>
-                                <a class="contact-direct-link" href="mailto:hello@killingfloor.co">hello@killingfloor.co</a>
+                                <a class="contact-direct-link" href="mailto:hello@killingfloor.studio">hello@killingfloor.studio</a>
                             </div>
                         </div>
-                        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                        <form id="contact-form" data-formspree="https://formspree.io/f/xojbdojj" novalidate>
                             <input type="hidden" name="engagement" id="engagement-hidden">
                             <input type="hidden" name="stage" id="stage-hidden">
                             <div class="form-row" data-reveal>
@@ -1308,7 +1968,8 @@
                                 <label>Timeline</label>
                                 <input type="text" name="timeline" placeholder="When do you need to start moving?">
                             </div>
-                            <button type="submit" class="btn">Send → Killing Floor</button>
+                            <button type="submit" class="btn" id="form-submit">Send → Killing Floor</button>
+                            <div class="form-notice" id="form-notice"></div>
                         </form>
                     </div>
                     <div class="faq-block">
@@ -1350,7 +2011,7 @@
                             Based in Vancouver. Working with founders everywhere.
                         </div>
                         <div class="about-contact-line" data-reveal>
-                            Questions before committing? &nbsp;<a href="mailto:hello@killingfloor.co" style="color:var(--white);text-decoration:underline;text-underline-offset:3px;">hello@killingfloor.co</a>
+                            Questions before committing? &nbsp;<a href="mailto:hello@killingfloor.studio" style="color:var(--white);text-decoration:underline;text-underline-offset:3px;">hello@killingfloor.studio</a>
                         </div>
                     </div>
                 </div>
@@ -1388,7 +2049,7 @@
             </div>
         </div>
 
-        <nav class="card-nav">
+        <nav class="card-nav" aria-label="Primary">
             <div id="scroll-progress"></div>
             <div id="nav-indicator"></div>
             <a href="#" data-page="services" data-label="shift + 1"><span class="num">01</span>Services</a>
@@ -1396,16 +2057,152 @@
             <a href="#" data-page="contact" data-label="shift + 3"><span class="num">03</span>Contact</a>
             <a href="#" data-page="about" data-label="shift + 4"><span class="num">04</span>About</a>
             <a href="#" data-page="process" data-label="shift + 5"><span class="num">05</span>Process</a>
+            <button class="nav-hamburger" id="nav-hamburger" aria-label="Open navigation" aria-expanded="false" aria-controls="nav-drawer">
+                <span></span><span></span><span></span>
+            </button>
         </nav>
 
-    </div>
+        <!-- Mobile / tablet nav drawer -->
+        <div class="nav-drawer" id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation">
+            <button class="nav-drawer-close" id="nav-drawer-close" aria-label="Close navigation">✕</button>
+            <a href="#" class="nav-drawer-link" data-page="services"><span class="num">01</span>Services</a>
+            <a href="#" class="nav-drawer-link" data-page="work"><span class="num">02</span>Work</a>
+            <a href="#" class="nav-drawer-link" data-page="contact"><span class="num">03</span>Contact</a>
+            <a href="#" class="nav-drawer-link" data-page="about"><span class="num">04</span>About</a>
+            <a href="#" class="nav-drawer-link" data-page="process"><span class="num">05</span>Process</a>
+        </div>
 
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-box" id="cursorBox"></div>
-    <div class="cursor-label" id="cursorLabel"></div>
-    <div id="hud"></div>
+    </main>
+
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="cursor-box" id="cursorBox" aria-hidden="true"></div>
+    <div class="cursor-label" id="cursorLabel" aria-hidden="true"></div>
+    <div id="hud" aria-hidden="true"></div>
+    <div id="fps-meter" aria-hidden="true">-- FPS</div>
 
     <script>
+        // ── DEVICE CLASS ──
+        // Evaluated once at load; drives feature gating throughout.
+        const _vw = window.innerWidth;
+        const DEVICE = _vw >= 900 ? 'desktop' : _vw >= 600 ? 'tablet' : 'mobile';
+        const IS_TOUCH  = DEVICE !== 'desktop'; // no custom cursor, no hover, no drag
+        const IS_MOBILE = DEVICE === 'mobile';  // skip intro, single-col, static bg
+        document.documentElement.setAttribute('data-device', DEVICE);
+
+        // ── AVAILABILITY / CAPACITY ──
+        // Single source of truth — update these two numbers to change the indicator everywhere.
+        const CAPACITY = {
+            total:     6,
+            taken:     4,
+            period:    'Q3 / 2026',
+            nextOpen:  'Q4 / 2026',      // shown below slots when full — set null to hide
+            waitlist:  true,             // show "join waitlist" CTA when full
+            // One entry per slot. Taken slots get a label on hover; null = open.
+            slotTypes: ['Branding', 'Scaling', 'Copywriting', 'Branding', null, null],
+        };
+        (function renderCapacity() {
+            const labelEl = document.getElementById('capacity-label');
+            const status  = document.getElementById('capacity-status');
+            if (!labelEl || !status) return;
+            const open = Math.max(0, CAPACITY.total - CAPACITY.taken);
+            const pad  = n => String(n).padStart(2, '0');
+            labelEl.textContent = 'Capacity ' + CAPACITY.period;
+
+            // Build slot squares with stagger delay + hover tooltip
+            const slotsWrap = document.createElement('span');
+            for (let i = 0; i < CAPACITY.total; i++) {
+                const taken = i < CAPACITY.taken;
+                const sp = document.createElement('span');
+                sp.className = 'slot' + (taken ? ' taken' : '');
+                sp.textContent = taken ? '▮' : '▯';
+                sp.style.animationDelay = (i * 60) + 'ms';
+                // Hover tooltip
+                const type = CAPACITY.slotTypes && CAPACITY.slotTypes[i];
+                sp.title = taken
+                    ? (type ? type + ' — reserved' : 'Reserved')
+                    : 'Open slot — apply now';
+                if (!taken) {
+                    sp.style.cursor = 'pointer';
+                    sp.addEventListener('click', goToContact);
+                }
+                slotsWrap.appendChild(sp);
+            }
+            status.innerHTML = '';
+            status.appendChild(slotsWrap);
+
+            // Status text / CTA
+            const gap = document.createTextNode('  ');
+            status.appendChild(gap);
+
+            if (open === 0) {
+                // Full — show "FULL" + optional next-open + waitlist
+                const fullSpan = document.createElement('span');
+                fullSpan.className = 'capacity-full';
+                fullSpan.textContent = 'FULL';
+                status.appendChild(fullSpan);
+
+                if (CAPACITY.nextOpen) {
+                    const next = document.createElement('span');
+                    next.className = 'capacity-next';
+                    next.textContent = 'Next opening ' + CAPACITY.nextOpen;
+                    status.appendChild(next);
+                }
+                if (CAPACITY.waitlist) {
+                    const wl = document.createElement('button');
+                    wl.className = 'capacity-waitlist';
+                    wl.textContent = 'Join waitlist →';
+                    wl.setAttribute('aria-label', 'Join waitlist for future engagement slots');
+                    wl.addEventListener('click', goToContact);
+                    status.appendChild(wl);
+                }
+            } else {
+                const word = open === 1
+                    ? '01 of ' + pad(CAPACITY.total) + ' open'
+                    : pad(open) + ' of ' + pad(CAPACITY.total) + ' open';
+                const cta = document.createElement('button');
+                cta.className = 'capacity-cta';
+                cta.textContent = word.toUpperCase();
+                cta.setAttribute('aria-label', open + ' slot' + (open > 1 ? 's' : '') + ' open — apply now');
+                cta.addEventListener('click', goToContact);
+                status.appendChild(cta);
+            }
+
+            status.setAttribute('aria-label', open === 0
+                ? 'Currently at full capacity for ' + CAPACITY.period
+                : open + ' of ' + CAPACITY.total + ' engagement slots open for ' + CAPACITY.period);
+
+            function goToContact() {
+                const contactLink = document.querySelector('.card-nav a[data-page="contact"]');
+                if (contactLink) {
+                    document.querySelectorAll('.card-nav a').forEach(l => l.classList.remove('active'));
+                    contactLink.classList.add('active');
+                    if (window._moveNavIndicator) window._moveNavIndicator(contactLink);
+                }
+                navigate('contact');
+            }
+        })();
+
+        // ── LIVE FPS METER ──
+        (function() {
+            const meter = document.getElementById('fps-meter');
+            if (!meter) return;
+            let frames = 0;
+            let last = performance.now();
+            function tick(now) {
+                frames++;
+                const elapsed = now - last;
+                if (elapsed >= 500) {            // update twice a second
+                    const fps = Math.round((frames * 1000) / elapsed);
+                    const tier = (window._activeTier || '').toUpperCase();
+                    meter.textContent = tier ? fps + ' FPS · ' + tier : fps + ' FPS';
+                    frames = 0;
+                    last = now;
+                }
+                requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        })();
+
         let remeasureLogo = null; // set by logo IIFE, called after font-size transitions
         const navLinks  = document.querySelectorAll('.card-nav a');
         const bodyInner = document.querySelector('.card-body-inner');
@@ -1611,12 +2408,14 @@
                 lastTY = e.touches[0].clientY;
             }, { passive: true });
 
-            // Mouse drag on background (not card)
+            // Mouse drag on background (desktop only)
             let dragActive = false, dragStartY = 0, dragStartVY = 0;
             let velocity = 0, lastDragY = 0, lastDragT = 0;
+            if (IS_TOUCH) { dragActive = false; }
 
             document.addEventListener('mousedown', e => {
-                if (e.target.closest('.card') || e.target.closest('#card-veil-wrap') || e.target.closest('#replay-intro')) return;
+                if (IS_TOUCH) return;
+                if (e.target.closest('.card') || e.target.closest('#settings-panel') || e.target.closest('#settings-toggle')) return;
                 dragActive  = true;
                 dragStartY  = e.clientY;
                 dragStartVY = vY;
@@ -1710,39 +2509,84 @@
         })();
 
         // ── DOT GRID BACKGROUND ──
-        (function() { try {
+        // On mobile: skip canvas entirely — CSS background handles it
+        if (IS_MOBILE) { document.getElementById('dot-bg').style.display = 'none'; }
+        if (!IS_MOBILE) (function() { try {
             const canvas = document.getElementById('dot-bg');
             const ctx    = canvas.getContext('2d');
+
+            // Respect reduced-motion: hold the field still (no twinkle/flares)
+            const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             // ── Quality tier (set after FPS probe) ──
             // low: no bloom, fewer stars, no nebulae
             // mid: bloom, full stars, nebulae
             // high: bloom, full stars, nebulae, scintillation
-            let TIER = 'high'; // optimistic default, probe will downgrade
+            let TIER = 'ultra'; // optimistic default, probe will downgrade
             const TIER_CFG = {
-                low:  { starsPerChunk: 600,  bloom: false, nebulae: false, scint: false },
-                mid:  { starsPerChunk: 1200, bloom: true,  nebulae: true,  scint: false },
-                high: { starsPerChunk: 1800, bloom: true,  nebulae: true,  scint: true  },
+                // bloomMult scales bloom alpha; cardGlow controls card box-shadow; cursorLerp controls cursor lag (1.0 = instant)
+                low:    { starsPerChunk: 250,  bloom: false, bloomMult: 0,   nebulae: false, scint: false, cardGlow: false, cursorLerp: 1.0  },
+                medium: { starsPerChunk: 600,  bloom: false, bloomMult: 0,   nebulae: false, scint: false, cardGlow: true,  cursorLerp: 0.55 },
+                high:   { starsPerChunk: 1200, bloom: true,  bloomMult: 1.0, nebulae: true,  scint: false, cardGlow: true,  cursorLerp: 0.55 },
+                ultra:  { starsPerChunk: 2400, bloom: true,  bloomMult: 1.4, nebulae: true,  scint: true,  cardGlow: true,  cursorLerp: 0.55 },
             };
             let cfg = TIER_CFG[TIER];
+            let forcedTier = null; // set by quality panel if user overrides
+            const TIER_ORDER = ['low', 'medium', 'high', 'ultra'];
 
-            // FPS probe — measure over first 90 frames, then lock tier
-            let probeFrames = 0, probeT0 = null, probeDone = false;
+            // Expose the resolved tier so the FPS meter can display it
+            window._activeTier = TIER;
+
+            function applyTier() {
+                cfg = TIER_CFG[TIER];
+                window._activeTier  = TIER;
+                window._tierCardGlow = cfg.cardGlow;
+                window._cursorLerp  = cfg.cursorLerp;
+                chunkCache.clear();           // regenerate with new star count
+                if (cfg.nebulae) buildNebulaCache();
+                // Immediately refresh card glow if veil is live
+                if (window._applyCardGlow) window._applyCardGlow();
+            }
+
+            function stepDownTier() {
+                const idx = TIER_ORDER.indexOf(TIER);
+                if (idx > 0) { TIER = TIER_ORDER[idx - 1]; applyTier(); return true; }
+                return false;
+            }
+
+            // Adaptive FPS monitor — in Auto mode, keep measuring and step DOWN
+            // a tier whenever we can't sustain ~60fps. Only steps down (never thrashes
+            // back up across the vsync cliff). One noisy warmup window is ignored.
+            let probeFrames = 0, probeT0 = null, warmupDone = false;
             function probeFPS(now) {
-                if (probeDone) return;
-                if (!probeT0) { probeT0 = now; return; }
+                if (forcedTier) return; // user override → no auto-adjust
+                if (!probeT0) { probeT0 = now; probeFrames = 0; return; }
                 probeFrames++;
                 if (probeFrames >= 90) {
                     const fps = probeFrames / ((now - probeT0) / 1000);
-                    if      (fps < 40) TIER = 'low';
-                    else if (fps < 55) TIER = 'mid';
-                    else               TIER = 'high';
-                    cfg = TIER_CFG[TIER];
-                    chunkCache.clear(); // regenerate with new star count
-                    if (cfg.nebulae) buildNebulaCache();
-                    probeDone = true;
+                    if (!warmupDone) {
+                        warmupDone = true;          // skip first (jittery) window
+                    } else if (fps < 50 && TIER !== 'low') {
+                        stepDownTier();             // sustained low → drop a tier
+                    }
+                    probeFrames = 0;
+                    probeT0 = now;
                 }
             }
+
+            // Expose tier override function for quality panel
+            window._forceQualityTier = function(tier) {
+                if (tier === 'auto') {
+                    forcedTier = null;
+                    TIER = 'ultra';                 // re-evaluate from the top
+                    applyTier();
+                    probeFrames = 0; probeT0 = null; warmupDone = false;
+                } else if (TIER_CFG[tier]) {
+                    forcedTier = tier;
+                    TIER = tier;
+                    applyTier();
+                }
+            };
 
             const CHUNK_H = 800;
 
@@ -1916,7 +2760,7 @@
                 }
 
                 // Occasionally trigger a hard flash on a random bright star
-                if (now - lastFlashCheck > 1.2 + Math.random() * 2.0) {
+                if (!REDUCED_MOTION && now - lastFlashCheck > 1.2 + Math.random() * 2.0) {
                     lastFlashCheck = now;
                     if (Math.random() < 0.25) {
                         const ci = Math.floor((bgY + Math.random() * H) / CHUNK_H);
@@ -1957,12 +2801,13 @@
                         const dy  = H/2 + bny * bf * (H/2);
                         if (dx < 0 || dx > W || dy < 0 || dy > H) continue;
 
-                        // Slow drift + fast shimmer
-                        const drift = 0.5 + 0.5 * Math.sin(now * star.driftSpeed * Math.PI * 2 + star.driftPhase);
-                        const shim  = 0.5 + 0.5 * Math.sin(now * star.shimSpeed  * Math.PI * 2 + star.shimPhase);
+                        // Slow drift + fast shimmer (frozen under reduced-motion)
+                        const tNow = REDUCED_MOTION ? 0 : now;
+                        const drift = 0.5 + 0.5 * Math.sin(tNow * star.driftSpeed * Math.PI * 2 + star.driftPhase);
+                        const shim  = 0.5 + 0.5 * Math.sin(tNow * star.shimSpeed  * Math.PI * 2 + star.shimPhase);
 
                         // Scintillation — colour shift on all stars
-                        const scint = Math.sin(now * star.scintSpeed * Math.PI * 2 + star.scintPhase);
+                        const scint = Math.sin(tNow * star.scintSpeed * Math.PI * 2 + star.scintPhase);
                         const scintR = scint >  0.3 ?  (scint - 0.3) / 0.7 : 0;
                         const scintB = scint < -0.3 ? (-scint - 0.3) / 0.7 : 0;
 
@@ -1984,24 +2829,27 @@
                         const cProx = Math.max(0, 1 - Math.sqrt(cdx*cdx + cdy*cdy) / 80);
                         const radius = Math.max(0.1, star.sz * (1 + flashAmt * 1.5) + cProx * 1.4);
 
-                        // Bloom / glare — mid/high tier only, skip if star is near edge (bloom invisible anyway)
+                        // Bloom / glare — high/ultra tiers only, scaled by bloomMult
                         const edgeDist = Math.min(dx, W - dx, dy, H - dy);
                         if (cfg.bloom && edgeDist > 20 && (star.bright || flashAmt > 0.1)) {
-                            const bloomStr = (star.bright ? 0.5 : 0) + flashAmt * 0.7;
-                            // Outer wide glow
-                            const g1 = ctx.createRadialGradient(dx, dy, 0, dx, dy, radius * (12 + flashAmt * 18));
+                            const bm = cfg.bloomMult;
+                            const bloomStr = ((star.bright ? 0.5 : 0) + flashAmt * 0.7) * bm;
+                            // Outer wide glow (ultra: larger radius too)
+                            const outerR = radius * (12 + flashAmt * 18) * (0.85 + bm * 0.15);
+                            const g1 = ctx.createRadialGradient(dx, dy, 0, dx, dy, outerR);
                             g1.addColorStop(0,   `rgba(${rr},${gg},${bb},${(bloomStr * 0.12).toFixed(3)})`);
                             g1.addColorStop(1,   'rgba(0,0,0,0)');
                             ctx.beginPath();
-                            ctx.arc(dx, dy, radius * (12 + flashAmt * 18), 0, Math.PI * 2);
+                            ctx.arc(dx, dy, outerR, 0, Math.PI * 2);
                             ctx.fillStyle = g1;
                             ctx.fill();
                             // Inner tight glow
-                            const g2 = ctx.createRadialGradient(dx, dy, 0, dx, dy, radius * (4 + flashAmt * 6));
+                            const innerR = radius * (4 + flashAmt * 6);
+                            const g2 = ctx.createRadialGradient(dx, dy, 0, dx, dy, innerR);
                             g2.addColorStop(0,   `rgba(${rr},${gg},${bb},${(bloomStr * 0.35).toFixed(3)})`);
                             g2.addColorStop(1,   'rgba(0,0,0,0)');
                             ctx.beginPath();
-                            ctx.arc(dx, dy, radius * (4 + flashAmt * 6), 0, Math.PI * 2);
+                            ctx.arc(dx, dy, innerR, 0, Math.PI * 2);
                             ctx.fillStyle = g2;
                             ctx.fill();
                         }
@@ -2030,38 +2878,13 @@
                 if (!document.hidden) requestAnimationFrame(draw);
             });
             draw();
-        } catch(e) { console.error('Starfield error:', e); } })();
+        } catch(e) { console.error('Starfield error:', e); } })(); // end !IS_MOBILE starfield
 
         // ── CARD VEIL / OPACITY SLIDER ──
         (function() {
-            const wrap  = document.getElementById('card-veil-wrap');
             const input = document.getElementById('card-veil');
             const card  = document.querySelector('.card');
-            if (!wrap || !input || !card) return;
-
-            let hideTimer = null;
-
-            function showSlider() {
-                clearTimeout(hideTimer);
-                wrap.classList.add('visible');
-            }
-            function scheduleHide() {
-                clearTimeout(hideTimer);
-                hideTimer = setTimeout(() => wrap.classList.remove('visible'), 1800);
-            }
-
-            // Show when cursor within 80px of bottom, but never during intro
-            document.addEventListener('mousemove', e => {
-                if (isIntroVisible()) return;
-                if (window.innerHeight - e.clientY < 80) {
-                    showSlider();
-                    scheduleHide();
-                }
-            }, { passive: true });
-            wrap.addEventListener('mouseenter', showSlider);
-            wrap.addEventListener('mouseleave', scheduleHide);
-
-            const intro = document.getElementById('intro');
+            if (!input || !card) return;
 
             const highEndBlur =
                 window.matchMedia('(pointer: fine)').matches &&
@@ -2096,15 +2919,22 @@
                 const dark = Math.round((1 - v) * 255);
                 card.style.setProperty('--dark', `rgb(${dark},${dark},${dark})`);
 
-                // Outer beacon stays strong; inner rim fades with card opacity
-                const o1 = (0.35 * (0.4 + v * 0.6)).toFixed(3);
-                const o2 = (0.22 * (0.4 + v * 0.6)).toFixed(3);
-                const o3 = (0.12 * (0.4 + v * 0.6)).toFixed(3);
-                card.style.boxShadow = `
-                    0 0  60px  8px rgba(181,90,10,${o1}),
-                    0 0 140px 30px rgba(160,60, 0,${o2}),
-                    0 0 280px 60px rgba(130,40, 0,${o3})`;
+                // Card glow — suppressed on low quality tier
+                if (window._tierCardGlow === false) {
+                    card.style.boxShadow = 'none';
+                } else {
+                    const o1 = (0.35 * (0.4 + v * 0.6)).toFixed(3);
+                    const o2 = (0.22 * (0.4 + v * 0.6)).toFixed(3);
+                    const o3 = (0.12 * (0.4 + v * 0.6)).toFixed(3);
+                    card.style.boxShadow = `
+                        0 0  60px  8px rgba(181,90,10,${o1}),
+                        0 0 140px 30px rgba(160,60, 0,${o2}),
+                        0 0 280px 60px rgba(130,40, 0,${o3})`;
+                }
             }
+
+            // Expose so applyTier() can force a glow refresh without slider event
+            window._applyCardGlow = () => applyVeilFrame(input.value / 100);
 
             function applyVeil() {
                 clearBlur();
@@ -2118,16 +2948,12 @@
                 blurTimer = setTimeout(() => applyRestingBlur(input.value / 100), 160);
             }
 
-            function isIntroVisible() {
-                return intro && intro.style.display !== 'none' && intro.style.opacity !== '0';
-            }
-
             input.addEventListener('input', applyVeil);
             applyVeil();
         })();
 
         // ── HEADLINE WORD SLIDE ──
-        (function() {
+        if (!IS_TOUCH) (function() {
             const logo    = document.getElementById('logo');
             const theWord = logo.querySelector('.the');
             const killing = logo.querySelector('.killing');
@@ -2227,11 +3053,11 @@
         });
 
         // ── CURSOR ──
-        (function() {
+        if (!IS_TOUCH) (function() {
             const cursor = document.getElementById('cursor');
             const box    = document.getElementById('cursorBox');
             const label  = document.getElementById('cursorLabel');
-            const INTERACTIVE = 'a[data-page], .btn, .work-detail-back, .work-row, #intro-prompt';
+            const INTERACTIVE = 'a[data-page], .btn, .work-detail-back, .work-row, #intro-prompt, .capacity-cta, .home-cta-link, .page-cta-link';
             let cx = -100, cy = -100, tx = -100, ty = -100;
             let lastMx = -1, lastMy = -1;
 
@@ -2291,8 +3117,9 @@
             }, { passive: true });
 
             (function animCursor() {
-                cx += (tx - cx) * 0.18;
-                cy += (ty - cy) * 0.18;
+                const lerp = window._cursorLerp !== undefined ? window._cursorLerp : 0.55;
+                cx += (tx - cx) * lerp;
+                cy += (ty - cy) * lerp;
                 cursor.style.left = cx + 'px';
                 cursor.style.top  = cy + 'px';
                 requestAnimationFrame(animCursor);
@@ -2300,7 +3127,7 @@
         })();
 
         // ── BG RECT REPULSION ──
-        (function() {
+        if (!IS_TOUCH) (function() {
             const rects = document.querySelectorAll('.bg-rect');
             document.addEventListener('mousemove', e => {
                 const mx = e.clientX, my = e.clientY;
@@ -2327,50 +3154,183 @@
             });
         })();
 
-        // ── INTRO SEQUENCE ──
+        // ── INTRO SEQUENCE — the card itself is the terminal ──
         (function() {
-            const intro  = document.getElementById('intro');
-            const log    = document.getElementById('intro-log');
-            const prompt = document.getElementById('intro-prompt');
-            const card   = document.querySelector('.card');
-            const replay = document.getElementById('replay-intro');
-            const caret  = document.getElementById('intro-caret');
+            const terminal = document.getElementById('card-terminal');
+            const log      = document.getElementById('intro-log');
+            const prompt   = document.getElementById('intro-prompt');
+            const card     = document.querySelector('.card');
+            const replay   = document.getElementById('replay-intro');
+            const caret    = document.getElementById('intro-caret');
 
             const SESS_KEY = 'kf_intro_done';
+            const MORPH_MS = 700;
+            const MORPH_EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
 
-            function typeWithCaret(text, ms, onDone) {
-                const span = document.createElement('span');
-                span.className = 'iline';
-                const textNode = document.createTextNode('');
-                span.appendChild(textNode);
-                span.appendChild(caret);
-                log.appendChild(span);
+            // Reveal the home page content (data-reveal fade-in)
+            function revealHomeContent() {
+                const home = document.getElementById('page-home');
+                if (home) home.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
+            }
+
+            // Animate the card between its terminal footprint (any position, possibly
+            // dragged) and its full centered footprint. Animates top/left/width/height.
+            function resizeCard(addClass, removeClass, done) {
+                const from = card.getBoundingClientRect();
+                card.style.transition = 'none';
+                // Reset to CSS centering so we can measure the target natural size
+                card.style.top = '50%';
+                card.style.left = '50%';
+                card.style.transform = 'translate(-50%, -50%)';
+                if (removeClass) card.classList.remove(removeClass);
+                if (addClass)    card.classList.add(addClass);
+                card.style.width = '';
+                card.style.height = '';
+                void card.offsetWidth;
+                const to = card.getBoundingClientRect();
+                // Lock back to from (explicit px, no transform)
+                card.style.transform = 'none';
+                card.style.top    = from.top  + 'px';
+                card.style.left   = from.left + 'px';
+                card.style.width  = from.width  + 'px';
+                card.style.height = from.height + 'px';
+                void card.offsetWidth;
+                card.style.transition =
+                    `top ${MORPH_MS}ms ${MORPH_EASE}, left ${MORPH_MS}ms ${MORPH_EASE}, ` +
+                    `width ${MORPH_MS}ms ${MORPH_EASE}, height ${MORPH_MS}ms ${MORPH_EASE}`;
+                requestAnimationFrame(() => {
+                    card.style.top    = to.top  + 'px';
+                    card.style.left   = to.left + 'px';
+                    card.style.width  = to.width  + 'px';
+                    card.style.height = to.height + 'px';
+                });
+                setTimeout(() => {
+                    card.style.transition = 'none';
+                    card.style.top = '';
+                    card.style.left = '';
+                    card.style.width  = '';
+                    card.style.height = '';
+                    card.style.transform = ''; // CSS takes back: translate(-50%,-50%)
+                    if (done) done();
+                }, MORPH_MS + 30);
+            }
+
+            // ── TERMINAL DRAG & RESIZE (desktop only) ──
+            if (!IS_TOUCH) (function() {
+                const titlebar  = document.getElementById('term-titlebar');
+                const resizeHdl = document.getElementById('term-resize');
+                const MIN_W = 300, MIN_H = 220;
+
+                // Switch card to explicit pixel positioning (needed before drag/resize)
+                function lockPosition() {
+                    if (card.style.transform !== 'none') {
+                        const r = card.getBoundingClientRect();
+                        card.style.transition = 'none';
+                        card.style.top    = r.top  + 'px';
+                        card.style.left   = r.left + 'px';
+                        card.style.width  = r.width  + 'px';
+                        card.style.height = r.height + 'px';
+                        card.style.transform = 'none';
+                    }
+                }
+
+                // Drag by titlebar
+                let dragDx = 0, dragDy = 0, dragging = false, didDrag = false;
+                titlebar.addEventListener('mousedown', e => {
+                    if (!card.classList.contains('terminal-mode')) return;
+                    e.preventDefault();
+                    lockPosition();
+                    dragging = true;
+                    didDrag = false;
+                    dragDx = e.clientX - card.getBoundingClientRect().left;
+                    dragDy = e.clientY - card.getBoundingClientRect().top;
+                });
+                document.addEventListener('mousemove', e => {
+                    if (!dragging) return;
+                    didDrag = true;
+                    card.style.left = (e.clientX - dragDx) + 'px';
+                    card.style.top  = (e.clientY - dragDy) + 'px';
+                }, { passive: true });
+                document.addEventListener('mouseup', () => { dragging = false; });
+                // Prevent the terminal's click→enter from firing after a drag
+                terminal.addEventListener('click', e => {
+                    if (didDrag) { didDrag = false; e.stopImmediatePropagation(); }
+                }, true);
+
+                // Resize from bottom-right corner
+                let resizing = false, resizeStartX = 0, resizeStartY = 0, resizeStartW = 0, resizeStartH = 0;
+                resizeHdl.addEventListener('mousedown', e => {
+                    if (!card.classList.contains('terminal-mode')) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    lockPosition();
+                    resizing = true;
+                    resizeStartX = e.clientX;
+                    resizeStartY = e.clientY;
+                    resizeStartW = card.getBoundingClientRect().width;
+                    resizeStartH = card.getBoundingClientRect().height;
+                });
+                document.addEventListener('mousemove', e => {
+                    if (!resizing) return;
+                    const newW = Math.max(MIN_W, resizeStartW + (e.clientX - resizeStartX));
+                    const newH = Math.max(MIN_H, resizeStartH + (e.clientY - resizeStartY));
+                    card.style.width  = newW + 'px';
+                    card.style.height = newH + 'px';
+                }, { passive: true });
+                document.addEventListener('mouseup', () => { resizing = false; });
+            })();
+
+            let _lineNum = 0;
+            function nextLn() { return String(++_lineNum).padStart(2, '0'); }
+            function resetLn() { _lineNum = 0; }
+
+            function makeLnSpan() {
+                const ln = document.createElement('span');
+                ln.className = 'term-ln';
+                ln.textContent = nextLn();
+                return ln;
+            }
+
+            function typeWithCaret(ps1, text, ms, onDone) {
+                const row = document.createElement('span');
+                row.className = 'iline';
+                const ps = document.createElement('span');
+                ps.className = 'term-ps1';
+                ps.textContent = ps1;
+                const cmd = document.createElement('span');
+                cmd.className = 'term-cmd';
+                cmd.textContent = '';
+                row.appendChild(makeLnSpan());
+                row.appendChild(ps);
+                row.appendChild(cmd);
+                row.appendChild(caret);
+                log.appendChild(row);
                 let i = 0;
                 const iv = setInterval(() => {
-                    textNode.textContent = text.slice(0, ++i);
+                    cmd.textContent = text.slice(0, ++i);
                     if (i >= text.length) { clearInterval(iv); onDone(); }
                 }, ms);
             }
 
             function addDimLine(text) {
-                const span = document.createElement('span');
-                span.className = 'iline-dim';
-                span.textContent = text;
-                log.appendChild(span);
+                const row = document.createElement('span');
+                row.className = 'iline-dim';
+                row.appendChild(makeLnSpan());
+                row.appendChild(document.createTextNode(text));
+                log.appendChild(row);
             }
 
+            // Enter: the terminal card grows into the full site card.
             function showCard() {
                 sessionStorage.setItem(SESS_KEY, '1');
-                intro.style.transition = 'opacity 0.45s ease';
-                intro.style.opacity    = '0';
-                setTimeout(() => {
-                    intro.style.display   = 'none';
-                    card.style.transition = 'opacity 0.6s ease';
-                    card.style.opacity    = '1';
-                    card.classList.add('entering');
-                    setTimeout(() => card.classList.remove('entering'), 1400);
-                    replay.classList.add('visible');
-                }, 460);
+                // Fade the terminal text out as the card begins to grow
+                terminal.classList.remove('show');
+                // Grow from terminal footprint → full card footprint
+                resizeCard(null, 'terminal-mode', () => {
+                    card.classList.remove('content-hidden'); // fade site content in
+                    showControlPanel();
+                    requestAnimationFrame(revealHomeContent);
+                });
             }
 
             function enter() {
@@ -2380,11 +3340,11 @@
             }
 
             function enterKey(e) {
-                if (e.key === 'Enter') enter();
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') enter();
             }
 
             function runLines() {
-                // Reset log to just the caret
+                resetLn();
                 log.innerHTML = '';
                 log.appendChild(caret);
                 prompt.innerHTML = '';
@@ -2404,17 +3364,27 @@
 
                 addDimLine(loginStr);
                 setTimeout(() => {
-                    typeWithCaret('> killing floor', 80, () => {
+                    typeWithCaret('~/killingfloor %', 'killing floor', 75, () => {
                         setTimeout(() => {
-                            const fullPrompt = 'enter';
+                            // Build prompt row with line number + ps1 + typed 'enter'
                             prompt.innerHTML = '';
-                            const promptText = document.createTextNode('');
-                            prompt.appendChild(promptText);
+                            const lnSpan = document.createElement('span');
+                            lnSpan.className = 'term-ln';
+                            lnSpan.textContent = nextLn();
+                            const ps1Span = document.createElement('span');
+                            ps1Span.className = 'term-ps1';
+                            ps1Span.textContent = '~/killingfloor %';
+                            const cmdText = document.createTextNode('');
+                            prompt.appendChild(lnSpan);
+                            prompt.appendChild(ps1Span);
+                            prompt.appendChild(cmdText);
                             prompt.appendChild(caret);
                             prompt.style.opacity = '1';
+
+                            const fullPrompt = ' enter';
                             let pi = 0;
                             const piv = setInterval(() => {
-                                promptText.textContent = fullPrompt.slice(0, ++pi);
+                                cmdText.textContent = fullPrompt.slice(0, ++pi);
                                 if (pi >= fullPrompt.length) {
                                     clearInterval(piv);
                                     setTimeout(() => {
@@ -2428,39 +3398,122 @@
                 }, 200);
             }
 
-            // Exposed so replay button and external callers can trigger it
-            window.replayIntro = function() {
-                sessionStorage.removeItem(SESS_KEY);
-                replay.classList.remove('visible');
-                card.style.transition = 'opacity 0.3s ease';
-                card.style.opacity    = '0';
-                setTimeout(() => {
-                    intro.style.display    = 'flex';
-                    intro.style.transition = 'opacity 0.35s ease';
-                    intro.style.opacity    = '1';
-                    setTimeout(() => runLines(), 200);
-                }, 320);
-            };
+            // ── UNIFIED SETTINGS PANEL ──
+            const settingsToggle = document.getElementById('settings-toggle');
+            const settingsPanel  = document.getElementById('settings-panel');
 
+            function closeSettings() {
+                settingsToggle.classList.remove('open');
+                settingsPanel.classList.remove('open');
+                settingsToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            settingsToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = settingsToggle.classList.toggle('open');
+                settingsPanel.classList.toggle('open');
+                settingsToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            });
+
+            // Close panel when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
+                    closeSettings();
+                }
+            });
+
+            // Close panel on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && settingsPanel.classList.contains('open')) {
+                    closeSettings();
+                    settingsToggle.focus();
+                }
+            });
+
+            // Replay intro — the full card shrinks back into the terminal.
+            window.replayIntro = function() {
+                closeSettings();
+                sessionStorage.removeItem(SESS_KEY);
+                enterIntroMode();
+
+                // Hide site content and reset home reveals for next time
+                card.classList.add('content-hidden');
+                const home = document.getElementById('page-home');
+                if (home) home.querySelectorAll('[data-reveal]').forEach(el => el.classList.remove('revealed'));
+
+                // Shrink from full footprint → terminal footprint
+                resizeCard('terminal-mode', null, () => {
+                    resetLn();
+                    log.innerHTML = '';
+                    log.appendChild(caret);
+                    prompt.innerHTML = '';
+                    prompt.style.opacity = '0';
+                    terminal.classList.add('show');
+                    runLines();
+                });
+            };
             if (replay) replay.addEventListener('click', window.replayIntro);
 
-            // Skip intro on soft refresh / back-navigation within same session
-            if (sessionStorage.getItem(SESS_KEY)) {
-                card.style.opacity  = '1';
-                intro.style.display = 'none';
-                replay.classList.add('visible');
-                // Reveal all structural elements immediately (no typewriter on skip)
+            // Quality tier selection
+            const qualityOptions = document.querySelectorAll('.quality-option');
+            // Migrate old tier names (mid→high, high→ultra) from localStorage
+            const _rawTier = localStorage.getItem('kf_quality_tier') || 'auto';
+            const _tierMigration = { mid: 'high', high: 'ultra' };
+            let storedTier = _tierMigration[_rawTier] || _rawTier;
+
+            function updateQualityDisplay() {
+                qualityOptions.forEach(opt => {
+                    const on = opt.dataset.tier === storedTier;
+                    opt.classList.toggle('active', on);
+                    opt.setAttribute('aria-checked', on ? 'true' : 'false');
+                });
+            }
+
+            qualityOptions.forEach(opt => {
+                opt.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    storedTier = opt.dataset.tier;
+                    localStorage.setItem('kf_quality_tier', storedTier);
+                    updateQualityDisplay();
+                    if (typeof window._forceQualityTier === 'function') {
+                        window._forceQualityTier(storedTier);
+                    }
+                });
+            });
+
+            updateQualityDisplay();
+
+            // Apply saved quality tier immediately if not auto
+            if (storedTier !== 'auto' && window._forceQualityTier) {
+                window._forceQualityTier(storedTier);
+            }
+
+            // Gear is always visible; intro-mode hides card-only settings during intro
+            function showControlPanel() {
+                settingsToggle.classList.add('visible');
+                settingsPanel.classList.remove('intro-mode');
+            }
+            function enterIntroMode() {
+                settingsToggle.classList.add('visible');
+                settingsPanel.classList.add('intro-mode');
+            }
+
+            // Mobile skips intro entirely — go straight to the card
+            if (IS_MOBILE || sessionStorage.getItem(SESS_KEY)) {
+                card.classList.remove('terminal-mode', 'content-hidden');
+                terminal.classList.remove('show');
+                showControlPanel();
                 document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
+                if (IS_MOBILE) sessionStorage.setItem(SESS_KEY, '1');
             } else {
-                card.style.opacity    = '0';
-                card.style.transition = 'none';
+                enterIntroMode();
                 setTimeout(() => runLines(), 500);
             }
         })();
 
 
         // ── HOTKEYS ──
-        (function() {
+        if (!IS_TOUCH) (function() {
             const hud = document.getElementById('hud');
             let hudTimer = null;
 
@@ -2482,11 +3535,11 @@
                 navigate(page);
             }
 
-            const introEl = document.getElementById('intro');
+            const cardEl = document.querySelector('.card');
 
             document.addEventListener('keydown', e => {
-                // Ignore hotkeys while intro is showing
-                if (introEl && introEl.style.display !== 'none' && introEl.style.opacity !== '0') return;
+                // Ignore hotkeys while the card is still in terminal (intro) mode
+                if (cardEl && cardEl.classList.contains('terminal-mode')) return;
 
                 if (e.key === 'Escape') {
                     hotkeyNavigate('home', 'home');
@@ -2518,27 +3571,144 @@
             });
         });
 
-        document.getElementById('logo').addEventListener('click', () => {
+        const logoEl = document.getElementById('logo');
+        logoEl.addEventListener('click', () => {
             setActiveLink(null);
             navigate('home');
+        });
+        logoEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActiveLink(null);
+                navigate('home');
+            }
         });
 
         // Work rows → detail pages
         document.querySelectorAll('.work-row[data-work]').forEach(row => {
-            row.addEventListener('click', () => {
-                setActiveLink(null);
-                navigate(row.dataset.work);
+            row.setAttribute('role', 'link');
+            row.setAttribute('tabindex', '0');
+            const title = row.querySelector('.work-title');
+            row.setAttribute('aria-label', 'View case study: ' + (title ? title.textContent : row.dataset.work));
+            const go = () => { setActiveLink(null); navigate(row.dataset.work); };
+            row.addEventListener('click', go);
+            row.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
             });
         });
 
         // Back buttons → work list
         document.querySelectorAll('.work-detail-back[data-back]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.setAttribute('role', 'link');
+            btn.setAttribute('tabindex', '0');
+            const go = () => {
                 const workLink = document.querySelector('.card-nav a[data-page="work"]');
                 setActiveLink(workLink);
                 navigate(btn.dataset.back);
+            };
+            btn.addEventListener('click', go);
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
             });
         });
+
+        // ── HAMBURGER NAV DRAWER ──
+        (function() {
+            const hamburger = document.getElementById('nav-hamburger');
+            const drawer    = document.getElementById('nav-drawer');
+            const closeBtn  = document.getElementById('nav-drawer-close');
+            if (!hamburger || !drawer) return;
+
+            function openDrawer() {
+                drawer.classList.add('open');
+                drawer.setAttribute('aria-hidden', 'false');
+                hamburger.setAttribute('aria-expanded', 'true');
+                hamburger.classList.add('open');
+            }
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                drawer.setAttribute('aria-hidden', 'true');
+                hamburger.setAttribute('aria-expanded', 'false');
+                hamburger.classList.remove('open');
+            }
+
+            hamburger.addEventListener('click', () => {
+                drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+            });
+            if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+            drawer.querySelectorAll('.nav-drawer-link').forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    closeDrawer();
+                    const page = link.dataset.page;
+                    // sync active state on both navs
+                    const navLink = document.querySelector(`.card-nav a[data-page="${page}"]`);
+                    setActiveLink(navLink || null);
+                    navigate(page);
+                });
+            });
+
+            // Close on Escape
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+            });
+        })();
+
+        // ── PAGE / HOME CTA LINKS ──
+        document.querySelectorAll('.home-cta-link, .page-cta-link').forEach(el => {
+            const go = () => {
+                const link = document.querySelector('.card-nav a[data-page="contact"]');
+                setActiveLink(link);
+                navigate('contact');
+            };
+            el.addEventListener('click', go);
+            el.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+            });
+        });
+
+        // ── CONTACT FORM — fetch intercept ──
+        (function() {
+            const form    = document.getElementById('contact-form');
+            const btn     = document.getElementById('form-submit');
+            const notice  = document.getElementById('form-notice');
+            if (!form) return;
+
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                btn.disabled = true;
+                btn.textContent = 'Sending…';
+                notice.className = 'form-notice';
+                notice.textContent = '';
+
+                try {
+                    const res = await fetch(form.dataset.formspree, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (res.ok) {
+                        notice.textContent = '✓ Received. We\'ll be in touch.';
+                        notice.classList.add('visible', 'success');
+                        form.reset();
+                        form.querySelectorAll('.pill.on').forEach(p => p.classList.remove('on'));
+                        btn.textContent = 'Sent';
+                    } else {
+                        const data = await res.json().catch(() => ({}));
+                        notice.textContent = (data.errors && data.errors[0]?.message) || 'Something went wrong — try emailing directly.';
+                        notice.classList.add('visible', 'error');
+                        btn.disabled = false;
+                        btn.textContent = 'Send → Killing Floor';
+                    }
+                } catch {
+                    notice.textContent = 'Network error — try emailing directly.';
+                    notice.classList.add('visible', 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Send → Killing Floor';
+                }
+            });
+        })();
     </script>
 
 

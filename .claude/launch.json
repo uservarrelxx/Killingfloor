@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "killing-floor",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/Users/varrel/Documents/KILLING FLOOR SITE/.claude/serve.py"],
+      "port": 4174,
+      "autoPort": true
+    }
+  ]
+}
