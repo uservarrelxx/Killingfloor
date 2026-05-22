@@ -2063,7 +2063,7 @@
         </nav>
 
         <!-- Mobile / tablet nav drawer -->
-        <div class="nav-drawer" id="nav-drawer" aria-hidden="true" role="dialog" aria-label="Navigation">
+        <div class="nav-drawer" id="nav-drawer" inert role="dialog" aria-label="Navigation">
             <button class="nav-drawer-close" id="nav-drawer-close" aria-label="Close navigation">✕</button>
             <a href="#" class="nav-drawer-link" data-page="services"><span class="num">01</span>Services</a>
             <a href="#" class="nav-drawer-link" data-page="work"><span class="num">02</span>Work</a>
@@ -3621,13 +3621,18 @@
 
             function openDrawer() {
                 drawer.classList.add('open');
-                drawer.setAttribute('aria-hidden', 'false');
+                drawer.removeAttribute('inert');
                 hamburger.setAttribute('aria-expanded', 'true');
                 hamburger.classList.add('open');
+                // Move focus into drawer
+                const first = drawer.querySelector('.nav-drawer-link');
+                if (first) first.focus();
             }
             function closeDrawer() {
+                // Move focus out before hiding so aria-hidden isn't blocked
+                hamburger.focus();
                 drawer.classList.remove('open');
-                drawer.setAttribute('aria-hidden', 'true');
+                drawer.setAttribute('inert', '');
                 hamburger.setAttribute('aria-expanded', 'false');
                 hamburger.classList.remove('open');
             }
