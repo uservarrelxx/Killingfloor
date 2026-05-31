@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Killing Floor Consulting — Branding, Copy &amp; Scaling for Founders</title>
-    <meta name="description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit and short on time.">
+    <title>Killing Floor Consulting — Diagnosis, Messaging &amp; Operating Structure</title>
+    <meta name="description" content="Killing Floor is a specialist intervention for founder-led companies that have outgrown the systems that built them. Six engagements per year.">
     <meta name="author" content="Killing Floor Consulting">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#7A3522">
@@ -12,7 +12,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="Killing Floor Consulting">
-    <meta property="og:description" content="Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling for founders past product-market fit.">
+    <meta property="og:description" content="A specialist intervention for founder-led companies that have outgrown the systems that built them. Six engagements per year.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://killingfloor.studio/">
     <meta property="og:site_name" content="Killing Floor Consulting">
@@ -22,7 +22,7 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Killing Floor Consulting">
-    <meta name="twitter:description" content="Operator-grade consulting. Six engagements per year.">
+    <meta name="twitter:description" content="A specialist intervention for founder-led companies that have outgrown the systems that built them.">
     <meta name="twitter:image" content="https://killingfloor.studio/og-image.png">
 
     <!-- Structured data -->
@@ -31,12 +31,12 @@
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         "name": "Killing Floor Consulting",
-        "description": "Operator-grade consulting. Six engagements per year. Branding, copywriting, and scaling work for founders past product-market fit.",
+        "description": "A specialist intervention for founder-led companies that have outgrown the systems that built them. Six engagements per year.",
         "url": "https://killingfloor.studio/",
         "email": "hello@killingfloor.studio",
         "areaServed": "Worldwide",
         "address": { "@type": "PostalAddress", "addressLocality": "Vancouver", "addressRegion": "BC", "addressCountry": "CA" },
-        "knowsAbout": ["Brand Strategy", "Copywriting", "Operating Design", "Scaling"],
+        "knowsAbout": ["Positioning", "Messaging", "Operating Structure", "Brand Strategy"],
         "priceRange": "$$$"
     }
     </script>
@@ -45,20 +45,26 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --brick:  #7A3522;
-            --ink:    #1E0A06;
-            --white:  #FFFFFF;
-            --w85:    rgba(255,255,255,0.85);
-            --w60:    rgba(255,255,255,0.60);
-            --w40:    rgba(255,255,255,0.40);
-            --w20:    rgba(255,255,255,0.18);
-            --ink40:  rgba(30,10,6,0.40);
-            --ink20:  rgba(30,10,6,0.20);
+            /* dark, ink-dominant field. --brick is the base background (and what
+               edge-fades dissolve into); --ink is now the PRIMARY content colour
+               (warm cream) since everything sits on a dark field; --rust is accent. */
+            --brick:  #0d0807;
+            --ink:    #efe7df;
+            --rust:   #7d3925;
+            --ghost:  #180907;
+            --white:  #efe7df;
+            --w85:    rgba(239,231,223,0.85);
+            --w60:    rgba(239,231,223,0.60);
+            --w40:    rgba(239,231,223,0.46);
+            --w20:    rgba(239,231,223,0.12);
+            --ink40:  rgba(239,231,223,0.42);
+            --ink20:  rgba(239,231,223,0.20);
             --gutter: clamp(24px, 5vw, 90px);
             --ease:   cubic-bezier(0.76, 0, 0.24, 1);
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,22 +73,112 @@
         html, body { height: 100%; overflow: hidden; }
 
         body {
-            background: var(--brick);
+            --field-x: 0px;
+            --field-y: 0px;
+            --field-scroll: 0px;
+            /* base vertical gradient — top warmer/lighter, bottom heavier — so the
+               field reads as atmosphere, not a flat slab. */
+            background:
+                linear-gradient(180deg, #160c08 0%, #0d0807 55%, #080503 100%);
             color: var(--white);
             font-family: 'Barlow', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-
-        /* Film grain over the brick field */
-        body::before {
-            content: '';
+        .preloader {
             position: fixed;
             inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.55;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background:
+                linear-gradient(180deg, rgba(22,12,8,0.98) 0%, rgba(13,8,7,0.98) 60%, rgba(8,5,3,0.99) 100%);
+            transition: opacity 0.45s ease, visibility 0.45s ease;
         }
+        .preloader.is-done {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .preloader__inner {
+            position: absolute;
+            top: 50%;
+            right: clamp(28px, 9vw, 128px);
+            transform: translateY(-50%);
+            width: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-end;
+        }
+        .preloader__pct {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(18px, 2.2vw, 28px);
+            letter-spacing: 0.22em;
+            color: var(--ink);
+        }
+
+        #blob-bg {
+            position: fixed; inset: -12vh -10vw; z-index: 0;
+            pointer-events: none;
+            opacity: 0.96;
+            overflow: hidden;
+            contain: strict;
+            transform: translate3d(var(--field-x), calc(var(--field-y) + var(--field-scroll)), 0);
+            transition: transform 0.45s var(--ease-out);
+        }
+        .ambient-blob {
+            position: absolute;
+            left: var(--x); top: var(--y);
+            width: var(--s); height: var(--s);
+            border-radius: var(--br);
+            opacity: var(--a);
+            background:
+                radial-gradient(ellipse at var(--gx) var(--gy),
+                    rgba(var(--c), 0.42) 0%,
+                    rgba(var(--c), 0.24) 30%,
+                    rgba(var(--c), 0.08) 55%,
+                    rgba(var(--c), 0) 78%),
+                linear-gradient(var(--ang), rgba(var(--c), 0.18), rgba(0,0,0,0) 62%);
+            transform: translate3d(-50%, calc(-50% + var(--sy, 0px)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp));
+            animation: blob-drift var(--d) ease-in-out infinite alternate;
+            will-change: transform;
+        }
+        @keyframes blob-drift {
+            0%   { transform: translate3d(calc(-50% - var(--dx)), calc(-50% + var(--sy, 0px) - var(--dy)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp)) scale(0.96); }
+            100% { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--sy, 0px) + var(--dy)), 0) rotate(var(--rot3)) scaleX(var(--sx3)) scaleY(var(--syp3)) scale(1.04); }
+        }
+        /* rendered ambient fallback behind the animated blob layer. */
+        body::before {
+            content: ''; position: fixed; inset: -8vmax; z-index: 0; pointer-events: none;
+            transform: translate3d(var(--field-x), calc(var(--field-y) + var(--field-scroll)), 0);
+            transition: transform 0.18s var(--ease-out);
+            background:
+                radial-gradient(ellipse 42vw 34vh at 11% 10%, rgba(138,62,38,0.42), transparent 64%),
+                radial-gradient(ellipse 38vw 32vh at 76% 18%, rgba(239,201,164,0.13), transparent 62%),
+                radial-gradient(ellipse 34vw 28vh at 46% 52%, rgba(125,57,37,0.20), transparent 68%),
+                radial-gradient(ellipse 50vw 36vh at 92% 86%, rgba(60,25,16,0.36), transparent 68%),
+                radial-gradient(ellipse 32vw 26vh at 20% 82%, rgba(239,231,223,0.055), transparent 66%),
+                linear-gradient(180deg, rgba(22,12,8,0.42), rgba(7,4,3,0.76));
+            filter: saturate(1.05);
+            opacity: 0.38;
+        }
+        /* faint engineering grid */
+        .grid {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(to right, rgba(239,231,223,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(239,231,223,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+
+        /* visible site padding — inset border box */
+        .frame-border {
+            position: fixed; inset: clamp(14px, 2.4vh, 42px);
+            border: 1px solid var(--w20); z-index: 58; pointer-events: none;
+            opacity: 0; transition: opacity 0.8s ease;
+        }
+        body.loaded .frame-border { opacity: 1; }
 
         ::selection { background: var(--ink); color: var(--brick); }
 
@@ -123,9 +219,9 @@
             content: ''; position: fixed; left: 0; right: 0; z-index: -1; pointer-events: none;
         }
         .frame::before { top: 0; height: clamp(48px, 8vh, 84px);
-            background: linear-gradient(to bottom, var(--brick) 35%, transparent); }
+            background: linear-gradient(to bottom, #160c08 35%, transparent); }
         .frame::after { bottom: 0; height: clamp(64px, 11vh, 120px);
-            background: linear-gradient(to top, var(--brick) 45%, transparent); }
+            background: linear-gradient(to top, #080503 45%, transparent); }
         .frame > * {
             position: fixed; opacity: 0;
             transition: opacity 0.6s ease;
@@ -144,15 +240,6 @@
         body.loaded .mark { transform: translateY(0); }
         .mark .reg { color: var(--ink40); font-size: 0.85em; }
         body[data-view="home"] .mark { opacity: 0 !important; pointer-events: none; }
-
-        /* top-right status */
-        .status { top: clamp(20px, 3.4vh, 34px); right: var(--gutter); color: var(--w40); text-align: right; }
-        .status .dot {
-            display: inline-block; width: 6px; height: 6px; margin-right: 0.7em;
-            background: var(--ink); vertical-align: middle;
-            animation: blink 1.8s ease-in-out infinite;
-        }
-        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         /* bottom-left index nav */
         .index {
@@ -179,6 +266,57 @@
         /* bottom-right location + count */
         .count { bottom: clamp(18px, 3.2vh, 34px); right: var(--gutter); color: var(--w40); text-align: right; }
         .count .here { color: var(--white); }
+        .capacity-note {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--w40);
+        }
+        .capacity-note::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            margin-right: 0.75em;
+            background: var(--ink);
+            vertical-align: middle;
+        }
+        .site-footer {
+            margin-top: clamp(42px, 8vh, 88px);
+            padding-top: clamp(18px, 3vh, 28px);
+            border-top: 1px solid var(--w20);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 14px 24px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--w40);
+        }
+        .site-footer strong { color: var(--white); font-weight: 500; }
+        .site-footer a:hover,
+        .site-footer a:focus-visible { color: var(--white); }
+        .kf-pressed {
+            animation: pressFlash 180ms var(--ease-out) both;
+        }
+        @keyframes pressFlash {
+            0%   { transform: translateY(0) scale(1); box-shadow: none; }
+            45%  { transform: translateY(1px) scale(0.985); box-shadow: inset 0 0 0 1px var(--white); }
+            100% { transform: translateY(0) scale(1); box-shadow: none; }
+        }
+        .pill.kf-pressed,
+        .send.kf-pressed,
+        .home-cta.kf-pressed,
+        .split-cta.kf-pressed,
+        .work-row.kf-pressed {
+            background: rgba(239,231,223,0.14);
+            border-color: var(--white);
+            color: var(--white);
+        }
+        .cursor.is-press .c-fill { opacity: 0.12; }
 
         /* ════════════════════════════════════════════
            STAGE + VIEWS
@@ -195,102 +333,6 @@
         .view.active {
             opacity: 1; visibility: visible; pointer-events: auto;
         }
-        /* incoming view rises a touch as it's uncovered */
-        .view.incoming { animation: view-rise 0.85s var(--ease-out) both; }
-        @keyframes view-rise {
-            from { opacity: 0; transform: translateY(18px) scale(1.012); }
-            to   { opacity: 1; transform: translateY(0)  scale(1); }
-        }
-        /* outgoing view sinks + softens as the slabs cover it */
-        .view.outgoing { animation: view-sink 0.5s var(--ease) forwards; }
-        @keyframes view-sink {
-            from { opacity: 1; transform: translateY(0)    scale(1); }
-            to   { opacity: 0.55; transform: translateY(-14px) scale(0.985); }
-        }
-
-        /* ════════════════════════════════════════════
-           CURTAIN — zajno-style slab sweep with a curved
-           leading edge. Two panels offset in time so the
-           wipe reads as a wave, not a wall. A target label
-           rides through at the midpoint.
-           ════════════════════════════════════════════ */
-        .curtain {
-            position: fixed; inset: 0; z-index: 80;
-            pointer-events: none;
-            overflow: hidden;
-            visibility: hidden;
-        }
-        .curtain.firing { visibility: visible; }
-
-        .curtain .panel {
-            position: absolute;
-            top: -2px; bottom: -2px;
-            left: 0; right: 0;
-            transform: translate3d(-130%, 0, 0);
-            will-change: transform;
-        }
-        /* curved leading edge — protrudes past the right edge of the slab */
-        .curtain .panel::after {
-            content: '';
-            position: absolute;
-            top: -2px; bottom: -2px;
-            left: 100%;
-            width: 22vw;
-            background: inherit;
-            border-radius: 0 50% 50% 0 / 0 50% 50% 0;
-        }
-        .curtain .panel.p-ink   { background: var(--ink); }
-        .curtain .panel.p-brick { background: #8E3F28; /* slightly lifted brick — registers against the field */ }
-
-        .curtain.firing .panel.p-ink   { animation: curtain-sweep 1.05s cubic-bezier(0.86, 0, 0.07, 1) forwards; }
-        .curtain.firing .panel.p-brick { animation: curtain-sweep 1.05s cubic-bezier(0.86, 0, 0.07, 1) 0.08s forwards; }
-
-        @keyframes curtain-sweep {
-            0%   { transform: translate3d(-130%, 0, 0); }
-            46%  { transform: translate3d(0, 0, 0); }
-            54%  { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(130%, 0, 0); }
-        }
-
-        /* label that rides the cover — peaks while screen is fully masked */
-        .curtain .label {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -42%);
-            font-family: 'Barlow', sans-serif;
-            font-weight: 900;
-            color: var(--brick);
-            font-size: clamp(54px, 11vw, 168px);
-            line-height: 0.9;
-            letter-spacing: -0.025em;
-            text-transform: uppercase;
-            text-align: center;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .curtain .label .num {
-            display: block;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.12em;
-            letter-spacing: 0.34em;
-            color: rgba(255,228,210,0.5);
-            margin-bottom: 1em;
-            font-weight: 400;
-        }
-        .curtain.firing .label { animation: curtain-label 1.05s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        @keyframes curtain-label {
-            0%, 30% { opacity: 0; transform: translate(-50%, -42%); }
-            48%, 56% { opacity: 1; transform: translate(-50%, -50%); }
-            72%, 100% { opacity: 0; transform: translate(-50%, -58%); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .curtain.firing .panel.p-ink,
-            .curtain.firing .panel.p-brick,
-            .curtain.firing .label,
-            .view.incoming, .view.outgoing { animation: none !important; }
-        }
 
         .wrap {
             width: 100%; max-width: 1180px; margin: 0 auto;
@@ -298,28 +340,17 @@
             min-height: 100%;
         }
 
-        /* ── sequential "appear" reveal (thedeepend / movie-trailer) ──
-           content materialises in place, one block after another, with deliberate
-           beats. A whisper of blur clears as it lands — it arrives, it doesn't travel. */
+        /* CSS transition reveals — blur clears as the element lands; it arrives, it
+           doesn't travel. NOTE: no persistent will-change here — the scheduler adds it
+           just before each reveal and strips it on transitionend, so we never pin a
+           GPU layer on dozens of idle elements. The slow stagger also means only one
+           or two blurs animate at once, which is what keeps it cheap. */
         [data-reveal] {
             opacity: 0;
             filter: blur(7px);
-            transition: opacity 1.05s var(--ease-out), filter 1.05s var(--ease-out);
-            will-change: opacity, filter;
+            transition: opacity 0.95s var(--ease-out), filter 0.95s var(--ease-out);
         }
         [data-reveal].revealed { opacity: 1; filter: blur(0); }
-
-        /* ── slide-in (mask-rise) — kept as an opt-in via [data-rise].
-           Content rises from behind a fixed edge; rule lines + spacing ride on the
-           .rise-mask wrapper so the lines hold still. Not applied by default. */
-        .rise-mask { overflow: hidden; }
-        span.rise-mask { display: inline-block; max-width: 100%; vertical-align: top; }
-        [data-rise] {
-            transform: translateY(110%);
-            transition: transform 0.9s var(--ease-out);
-            will-change: transform;
-        }
-        [data-rise].revealed { transform: translateY(0); }
 
         /* ── view heading shared rhythm ── */
         .v-head {
@@ -334,6 +365,7 @@
             font-weight: 900; color: var(--ink);
             font-size: clamp(44px, 8vw, 116px); line-height: 0.9;
             letter-spacing: -0.02em; text-transform: uppercase;
+            display: block;
         }
         .v-head .v-meta {
             margin-left: auto; font-family: 'IBM Plex Mono', monospace;
@@ -342,49 +374,172 @@
         }
 
         /* ════════════════════════════════════════════
-           HOME
+           HOME — scroll-snap narrative
            ════════════════════════════════════════════ */
-        .view-home .wrap {
-            display: flex; flex-direction: column; justify-content: center;
-            padding-top: clamp(70px, 10vh, 120px);
+        .view-home { scroll-snap-type: y mandatory; scroll-padding: 0; }
+        .home-sec {
+            scroll-snap-align: start; scroll-snap-stop: always;
+            min-height: 100svh; display: flex; align-items: center;
+            padding: clamp(96px, 15vh, 168px) var(--gutter);
+            position: relative;
+        }
+
+        /* 1 · HERO */
+        .sec-hero .hero-layout {
+            width: 100%; max-width: 1240px; margin: 0 auto;
+            display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 9vw; align-items: center;
+            position: relative; z-index: 2;
+        }
+        .hero-left { position: relative; z-index: 2; }
+        /* placeholder hero image — grayscale, vignetted, behind the right column */
+        .hero-image {
+            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+            width: 36vw; height: 72vh; z-index: 1; pointer-events: none;
+            background:
+                linear-gradient(to bottom, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+                url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+            opacity: 0.15; filter: grayscale(1) contrast(1.15);
+            box-shadow: inset 0 0 160px rgba(0,0,0,.9);
         }
         .headline {
-            font-weight: 900; color: var(--ink);
-            line-height: 0.82; letter-spacing: -0.025em;
-            text-transform: uppercase;
+            font-weight: 900; color: var(--ghost);
+            line-height: 0.82; letter-spacing: -0.025em; text-transform: uppercase;
         }
+        /* headline — clip-rise via CSS transition (not GSAP) so it can't freeze in bg tabs */
         .headline .word { display: block; overflow: hidden; }
         .headline .word i {
             display: block; font-style: normal;
-            /* capped by viewport height so all three lines + the foot always fit */
-            font-size: clamp(46px, min(15vw, 17.5vh), 210px);
+            font-size: clamp(46px, min(13vw, 17vh), 190px);
             transform: translateY(110%);
             transition: transform 1s var(--ease-out);
+            will-change: transform;
         }
-        /* transition-based (not @keyframes) so it can't freeze hidden behind its
-           mask in a background tab — it snaps to its end state regardless */
         body.loaded .headline .word i { transform: translateY(0); }
         .headline .w1 i { transition-delay: 0.10s; }
         .headline .w2 i { transition-delay: 0.22s; }
         .headline .w3 i { transition-delay: 0.34s; }
-
-        .home-foot {
-            display: flex; align-items: flex-end; justify-content: space-between;
-            gap: 3vw; margin-top: clamp(32px, 6vh, 72px); flex-wrap: wrap;
+        .hero-sub {
+            margin-top: clamp(24px, 4vh, 44px);
+            font-weight: 500; font-size: clamp(16px, 1.5vw, 24px);
+            line-height: 1.45; color: var(--w85); max-width: 22em;
         }
-        .tagline {
-            font-weight: 500; font-size: clamp(18px, 2vw, 30px);
-            line-height: 1.25; color: var(--w85); max-width: 16em;
+        .hero-right {
+            position: relative; z-index: 2;
+            display: flex; flex-direction: column; align-items: flex-start;
+            gap: clamp(24px, 4vh, 48px);
         }
-        .tagline .tl { display: block; }
-        .home-cta {
+        .hero-label {
+            font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--w40);
+        }
+        .hero-quote {
+            font-weight: 900; text-transform: uppercase; color: var(--ink);
+            font-size: clamp(30px, 3.8vw, 64px); line-height: 0.98; letter-spacing: -0.035em;
+            max-width: 11em;
+        }
+        .hero-cta, .split-cta {
             font-family: 'IBM Plex Mono', monospace; font-size: 13px;
             letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
-            cursor: pointer; white-space: nowrap;
+            cursor: pointer; white-space: nowrap; align-self: flex-start;
             border-bottom: 1px solid var(--ink40); padding-bottom: 4px;
             transition: border-color 0.25s ease;
         }
-        .home-cta:hover { border-color: var(--ink); }
+        .hero-cta:hover, .split-cta:hover { border-color: var(--ink); }
+        .scroll-hint {
+            position: absolute;
+            left: 50%;
+            bottom: clamp(72px, 12vh, 150px);   /* in line with the CTA's vertical centre */
+            transform: translateX(-50%);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 0;
+            font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+            letter-spacing: 0.22em; text-transform: uppercase; color: var(--w40);
+            animation: hintPulse 2.4s ease-in-out infinite;
+        }
+        .scroll-hint__icon {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            border: 1px solid var(--w20);
+            border-radius: 999px;
+            flex: 0 0 auto;
+        }
+        .scroll-hint__icon::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 4px;
+            width: 1px;
+            height: 8px;
+            background: currentColor;
+            transform: translateX(-50%);
+        }
+        .scroll-hint__icon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 5px;
+            height: 5px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: translateX(-50%) rotate(45deg);
+            opacity: 0.9;
+        }
+        @keyframes hintPulse { 0%,100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 0.8; transform: translateY(4px); } }
+
+        /* 2 · SILENCE */
+        .sec-silence { justify-content: center;
+            border-top: 1px solid var(--w20); border-bottom: 1px solid var(--w20); }
+        .silence-line {
+            max-width: 24em; text-align: center;
+            font-weight: 500; font-size: clamp(18px, 2vw, 30px); line-height: 1.7;
+            color: var(--w60);
+        }
+
+        /* 3 · MANIFESTO */
+        .split {
+            width: 100%; max-width: 1180px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 100px); align-items: start;
+        }
+        .split-label {
+            font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+            letter-spacing: 0.18em; text-transform: uppercase; color: var(--w40);
+            margin-bottom: clamp(16px, 2.5vh, 28px);
+        }
+        .split-title {
+            font-weight: 900; color: var(--ink); text-transform: uppercase;
+            font-size: clamp(30px, 4vw, 64px); line-height: 0.95; letter-spacing: -0.03em; max-width: 11em;
+        }
+        .split-copy p {
+            font-size: clamp(15px, 1.25vw, 20px); line-height: 1.8; color: var(--w85);
+            max-width: 32em; margin-bottom: clamp(24px, 4vh, 40px);
+        }
+
+        /* 4 · CLOSE */
+        .sec-close { justify-content: center; border-top: 1px solid var(--w20); }
+        .close-inner { max-width: 36em; text-align: center; display: flex; flex-direction: column; align-items: center; }
+        .close-quote {
+            font-weight: 900; text-transform: uppercase; color: var(--ink);
+            font-size: clamp(28px, 4vw, 62px); line-height: 0.98; letter-spacing: -0.03em;
+            margin-bottom: clamp(28px, 5vh, 52px);
+        }
+
+        /* scroll-triggered reveals for the below-hero sections */
+        .snap-reveal {
+            opacity: 0; transform: translateY(26px);
+            transition: opacity 1s var(--ease-out), transform 1s var(--ease-out);
+        }
+        .snap-reveal.is-in { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1000px) {
+            .sec-hero .hero-layout, .split { grid-template-columns: 1fr; gap: clamp(28px, 6vh, 56px); }
+            .hero-image { width: 100%; height: 38vh; right: 0; top: auto; bottom: clamp(96px, 12vh, 140px); transform: none; opacity: 0.1; }
+            .hero-right { gap: clamp(18px, 3vh, 32px); }
+        }
 
         /* ════════════════════════════════════════════
            SERVICES
@@ -416,16 +571,8 @@
             align-items: baseline; cursor: pointer;
             padding: clamp(18px, 3vh, 38px) clamp(10px, 1.5vw, 22px);
             border-top: 1px solid var(--w20);
-            position: relative; isolation: isolate;
         }
         .work-list .work-row:last-of-type { border-bottom: 1px solid var(--w20); }
-        .work-row::before {
-            content: ''; position: absolute; inset: 0; z-index: -1;
-            background: rgba(255,228,210,0.09);
-            clip-path: inset(0 100% 0 0);
-            transition: clip-path 0.5s var(--ease);
-        }
-        .work-row:hover::before { clip-path: inset(0 0 0 0); }
         .work-n { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--w40); letter-spacing: 0.2em; }
         .work-name {
             font-weight: 900; color: var(--ink); text-transform: uppercase;
@@ -485,7 +632,37 @@
             color: var(--white); padding: 2px 0 14px; resize: none;
         }
         .field input::placeholder, .field textarea::placeholder { color: var(--w40); }
-        .field textarea { min-height: 4.5em; }
+        .field textarea {
+            min-height: 4.5em;
+            max-height: 42vh;
+            overflow-y: auto;
+            resize: vertical;
+        }
+        .field-pills label { padding-bottom: 10px; }
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 0 14px;
+        }
+        .pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--w60);
+            border: 1px solid var(--w20);
+            padding: 8px 10px;
+            background: transparent;
+            cursor: pointer;
+            transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+        .pill:hover,
+        .pill.on {
+            color: var(--ink);
+            border-color: var(--ink40);
+            background: rgba(239,231,223,0.055);
+        }
         .send {
             margin-top: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;
             font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
@@ -501,6 +678,38 @@
         .notice.show { display: block; }
         .notice.ok { color: #6fd07e; }
         .notice.err { color: var(--w60); }
+        .faq-block {
+            margin-top: clamp(42px, 8vh, 88px);
+            border-top: 1px solid var(--w20);
+            padding-top: clamp(22px, 4vh, 38px);
+        }
+        .faq-head {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--w40);
+            margin-bottom: clamp(14px, 2.4vh, 24px);
+        }
+        .faq-row {
+            display: grid;
+            grid-template-columns: minmax(180px, 0.42fr) 1fr;
+            gap: clamp(18px, 4vw, 56px);
+            border-bottom: 1px solid var(--w20);
+            padding: clamp(14px, 2.5vh, 24px) 0;
+        }
+        .faq-q {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            color: var(--ink);
+        }
+        .faq-a {
+            font-weight: 500;
+            font-size: clamp(14px, 1.08vw, 17px);
+            color: var(--w60);
+            line-height: 1.7;
+        }
 
         /* ════════════════════════════════════════════
            ABOUT
@@ -526,34 +735,109 @@
            SCROLL PROGRESS — left edge of active view
            ════════════════════════════════════════════ */
         #progress {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 2px; z-index: 55;
-            background: rgba(255,255,255,0.5);
-            transform-origin: top center; transform: scaleY(0);
-            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+            position: fixed;
+            top: clamp(82px, 13vh, 128px);
+            bottom: clamp(82px, 13vh, 128px);
+            left: calc(clamp(14px, 2.4vh, 42px) + 7px);
+            width: 24px;
+            z-index: 55;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
         body.scrollable #progress { opacity: 1; }
+        .progress-tick {
+            position: absolute;
+            left: 0;
+            height: 3px;
+            border-radius: 999px;
+            background: rgba(239,231,223,0.46);
+            transform-origin: left center;
+            transition:
+                top 0.22s var(--ease-out),
+                width 0.18s var(--ease-out),
+                transform 0.18s var(--ease-out),
+                background-color 0.18s ease,
+                opacity 0.18s ease;
+        }
+        .progress-tick.is-current {
+            background: var(--ink);
+            opacity: 1;
+        }
+        .progress-tick.is-section {
+            height: 3px;
+        }
 
         /* ════════════════════════════════════════════
            CUSTOM CURSOR
            ════════════════════════════════════════════ */
         @media (hover: hover) and (pointer: fine) {
             * { cursor: none !important; }
-            .cursor { position: fixed; z-index: 9999; pointer-events: none; top: 0; left: 0; }
-            .cursor::before, .cursor::after {
-                content: ''; position: absolute; background: var(--w85);
+            /* viewfinder reticle — two corner brackets ⌜ ⌟ framing the pointer.
+               JS positions/sizes #cursor (top-left + width/height); the corners stay
+               pinned, so the same element is both the idle reticle and the hover frame. */
+            .cursor {
+                position: fixed; z-index: 9999; pointer-events: none; left: 0; top: 0;
+                width: 12px; height: 12px;   /* idle: compact square reticle (JS drives) */
+                --arm: 8px;
+                will-change: transform, width, height;
             }
-            .cursor::before { left: -9px; top: -1px; width: 18px; height: 2px; }
-            .cursor::after  { left: -1px; top: -9px; width: 2px; height: 18px; }
-            .cursor-box {
-                position: fixed; z-index: 9998; pointer-events: none; top: 0; left: 0;
-                border: 1px solid var(--w60); opacity: 0; transform: scale(0.6);
-                transition: top .12s ease, left .12s ease, width .12s ease, height .12s ease,
-                            opacity .18s ease, transform .25s cubic-bezier(0.34,1.56,0.64,1);
+            .cursor b {
+                position: absolute; width: var(--arm); height: var(--arm); box-sizing: border-box;
+                border: 1.5px solid var(--w85);
             }
-            .cursor-box.on { opacity: 1; transform: scale(1); }
+            .cursor .c-tl { left: 0;  top: 0;     border-right: 0; border-bottom: 0; }
+            .cursor .c-br { right: 0; bottom: 0;   border-left: 0;  border-top: 0; }
+            .cursor .c-dot {
+                position: absolute; left: 50%; top: 50%; width: 2.5px; height: 2.5px;
+                margin: -1.25px 0 0 -1.25px; background: var(--w85);
+                transition: opacity .2s ease;
+            }
+            .cursor .c-caret {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 2px;
+                height: 22px;
+                margin: -11px 0 0 -1px;
+                background: var(--ink);
+                opacity: 0;
+                transform: scaleY(0.82);
+                transform-origin: center;
+                transition: opacity .14s ease, transform .14s ease;
+            }
+            @keyframes caretBlink {
+                0%, 46% { opacity: 1; }
+                47%, 100% { opacity: 0; }
+            }
+            /* soft tinted box inside the frame — the colour filter that shows hover.
+               Fills the framed element (mix-blend acts as a warm filter over it). */
+            .cursor .c-fill {
+                position: absolute; inset: 0; border-radius: 3px;
+                background: rgba(125,57,37,0.5);
+                mix-blend-mode: screen;
+                opacity: 0; transition: opacity .18s ease;
+            }
+            .cursor.is-hover .c-fill { opacity: 1; }
+            .cursor.is-hover .c-dot { opacity: 0; }
+            .cursor.is-hover b { border-color: var(--white); border-width: 2px; }
+            .cursor.is-text .c-fill,
+            .cursor.is-text .c-dot,
+            .cursor.is-text .c-tl,
+            .cursor.is-text .c-br {
+                opacity: 0 !important;
+            }
+            .cursor.is-text .c-caret {
+                opacity: 1;
+                transform: scaleY(1);
+                animation: caretBlink 1.05s steps(1, end) infinite;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .cursor.is-text .c-caret { animation: none; opacity: 1; }
+            }
             .cursor-label {
                 position: fixed; z-index: 10000; pointer-events: none;
-                background: var(--ink); color: var(--white);
+                background: var(--rust); color: var(--white);
                 font-family: 'IBM Plex Mono', monospace; font-size: 11px;
                 letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 9px;
                 white-space: nowrap; transform: translateX(-50%); opacity: 0;
@@ -561,6 +845,32 @@
             }
             .cursor-label.on { opacity: 1; }
         }
+
+        /* ════════════════════════════════════════════
+           PAGE TRANSITION — transformation system
+           Visible page pieces are cloned into fixed layers, then remapped
+           into the geometry of the destination view. The old page becomes
+           the new page instead of hiding behind a wipe.
+           ════════════════════════════════════════════ */
+        .view.tx-enter, .view.tx-leave { opacity: 1; visibility: visible; pointer-events: none; }
+        .view.tx-enter { z-index: 4; opacity: 0; }
+        .view.tx-leave { z-index: 2; }
+
+        /* ════════════════════════════════════════════
+           PAGE TRANSFORM (zajno-style two-bar build)
+           Scaffold bar (ink) builds at ~75% height → surface bar (brick) overtakes
+           it → surface scales to full screen and becomes the new page → content
+           animates in. Old page stays frozen underneath; frame (logo/nav) stays above.
+           ════════════════════════════════════════════ */
+        /* Swipe transition — a single panel sweeps L→R across the viewport.
+           Cover phase eases-in (out-cubic), brief hold for the view swap, then
+           ease-out (in-cubic) exits to the right. Frame chrome stays above (z 60+). */
+        .kf-tx {
+            position: fixed; inset: 0; z-index: 40;
+            pointer-events: none; overflow: hidden;
+            visibility: hidden;
+        }
+        .kf-tx.on { visibility: visible; }
 
         /* ── HOTKEY HUD ── */
         #hud {
@@ -578,9 +888,9 @@
             .svc { grid-template-columns: 2em 1fr; }
             .svc-desc { grid-column: 2; }
             .contact-grid { grid-template-columns: 1fr; }
+            .faq-row { grid-template-columns: 1fr; gap: 8px; }
             .proc-row { grid-template-columns: 1fr; gap: 6px; }
             .v-head .v-meta { display: none; }
-            .status { display: none; }
             .work-row { grid-template-columns: 2em 1fr; }
             .work-tag { display: none; }
         }
@@ -588,37 +898,263 @@
             .index { gap: 12px; font-size: 11px; }
             .count { display: none; }
             .home-foot { flex-direction: column; align-items: flex-start; gap: 22px; }
+            .scroll-hint { left: 50%; bottom: 64px; transform: translateX(-50%); }
         }
+
+
+        /* Archive homepage + recent angled swipe */
+        .view-home { scroll-snap-type: y mandatory; scroll-padding: 0; }
+        .view-home .wrap {
+            position: relative;
+            min-height: 100svh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding-top: clamp(70px, 10vh, 120px);
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+        .view-home .headline {
+            font-weight: 900; color: var(--ink);
+            line-height: 0.82; letter-spacing: -0.025em;
+            text-transform: uppercase;
+        }
+        .view-home .headline .word { display: block; overflow: hidden; }
+        .view-home .headline .word i {
+            display: block; font-style: normal;
+            font-size: clamp(46px, min(15vw, 17.5vh), 210px);
+            transform: translateY(110%);
+            transition: transform 1s var(--ease-out);
+            will-change: transform;
+        }
+        body.loaded .view-home .headline .word i { transform: translateY(0); }
+        .view-home .headline .w1 i { transition-delay: 0.10s; }
+        .view-home .headline .w2 i { transition-delay: 0.22s; }
+        .view-home .headline .w3 i { transition-delay: 0.34s; }
+        .home-foot {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            gap: 3vw; margin-top: clamp(32px, 6vh, 72px); flex-wrap: wrap;
+        }
+        .home-message {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 34em;
+        }
+        .home-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 14px;
+            margin-left: auto;
+        }
+        .tagline {
+            font-weight: 500; font-size: clamp(18px, 2vw, 30px);
+            line-height: 1.25; color: var(--w85); max-width: 16em;
+        }
+        .tagline .tl { display: block; }
+        .hero-support {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            line-height: 1.8;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--w40);
+            max-width: 34em;
+        }
+        .hero-support strong { color: var(--white); font-weight: 500; }
+        .home-cta {
+            font-family: 'IBM Plex Mono', monospace; font-size: 13px;
+            letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+            cursor: pointer; white-space: nowrap;
+            border-bottom: 1px solid var(--ink40); padding-bottom: 4px;
+            transition: border-color 0.25s ease;
+        }
+        .home-cta:hover { border-color: var(--ink); }
+        .home-scroll-section {
+            min-height: 100svh;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            display: flex;
+            align-items: center;
+            padding: clamp(72px, 11vh, 118px) var(--gutter) clamp(88px, 13vh, 132px);
+            border-top: 1px solid var(--w20);
+        }
+        .home-scroll-section--close { border-bottom: 1px solid var(--w20); }
+        .home-scroll-inner {
+            width: min(100%, 980px);
+            display: grid;
+            grid-template-columns: 0.75fr 1fr;
+            gap: clamp(22px, 4.5vw, 72px);
+            align-items: start;
+        }
+        .home-scroll-inner .split-label { grid-column: 1; margin-bottom: clamp(8px, 1.4vh, 14px); }
+        .home-scroll-inner .split-title {
+            grid-column: 1;
+            margin-top: clamp(10px, 1.8vh, 18px);
+            font-size: clamp(27px, min(4vw, 6.5vh), 58px);
+        }
+        .home-scroll-inner p {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            max-width: 32em;
+            font-size: clamp(15px, 1.25vw, 20px);
+            line-height: 1.62;
+            color: var(--w85);
+        }
+        .home-scroll-inner .split-cta { grid-column: 2; align-self: start; margin-top: clamp(8px, 2vh, 18px); }
+        .proof-list {
+            grid-column: 2;
+            display: grid;
+            gap: 0;
+            border-top: 1px solid var(--w20);
+            max-width: 32em;
+        }
+        .proof-row {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: clamp(14px, 3vw, 32px);
+            align-items: baseline;
+            padding: clamp(16px, 2.5vh, 24px) 0;
+            border-bottom: 1px solid var(--w20);
+        }
+        .proof-k {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--w40);
+        }
+        .proof-v {
+            font-weight: 500;
+            font-size: clamp(15px, 1.25vw, 19px);
+            line-height: 1.55;
+            color: var(--w85);
+        }
+        .kf-tx { z-index: 72; }
+        .kf-tx-panel {
+            position: absolute;
+            top: -3px; bottom: -3px; left: 0; right: 0;
+            will-change: transform;
+            /* NO translate here — GSAP owns position via xPercent. A CSS translate
+               poisons GSAP's x base (it reads the matrix as a stray px offset), so
+               "xPercent:0" ends up off-screen. Park it via visibility until .on. */
+            visibility: hidden;
+            background:
+                linear-gradient(90deg, rgba(3,3,3,0.99) 0%, rgba(8,6,5,0.98) 48%, rgba(42,18,12,0.96) 74%, rgba(8,6,5,0.98) 100%),
+                radial-gradient(ellipse at 20% 12%, rgba(125,57,37,0.34), transparent 48%);
+            box-shadow: inset 0 0 120px rgba(0,0,0,0.6);
+        }
+        .kf-tx.on .kf-tx-panel { visibility: visible; }
+        /* The REVEAL panel only: feather its LEFT edge so the second swipe dissolves
+           the cover away instead of revealing behind a hard line. The COVER panel
+           stays solid so it never leaks the page through during the counter. */
+        /* diagonal bias: angle the soft tail so the reveal edge is slanted, not vertical */
+        .kf-tx-panel--intro {
+            -webkit-mask-image: linear-gradient(108deg, transparent 0%, #000 20%);
+                    mask-image: linear-gradient(108deg, transparent 0%, #000 20%);
+        }
+        .kf-tx-counter {
+            position: absolute;
+            left: clamp(24px, 5vw, 90px);
+            bottom: clamp(56px, 9vh, 110px);
+            z-index: 1;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 500;
+            font-size: clamp(64px, 12vw, 168px);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            color: #efe7df;
+            text-shadow: 0 0 28px rgba(125,57,37,0.45), 0 0 4px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(6px);
+            will-change: opacity, transform;
+        }
+        /* progress bar beneath the big number — scales with --load (0→1) */
+        .kf-tx-counter::after {
+            content: '';
+            display: block;
+            margin-top: clamp(14px, 2vh, 26px);
+            width: clamp(220px, 30vw, 460px);
+            height: 2px;
+            background: rgba(239,231,223,0.85);
+            transform-origin: left center;
+            transform: scaleX(var(--load, 0.01));
+        }
+        .kf-tx-panel--site {
+            background:
+                linear-gradient(90deg, rgba(2,2,2,1) 0%, rgba(8,6,5,0.99) 44%, rgba(27,11,7,0.98) 74%, rgba(4,3,3,1) 100%),
+                radial-gradient(ellipse at 18% 16%, rgba(125,57,37,0.22), transparent 52%);
+        }
+        /* diagonal LEADING edge for the cover veil. A solid clipped slab flush to the
+           panel's left edge, extending off-screen left — so the cover edge reads as a
+           diagonal during entry, but at full coverage it's off-screen (no leak). */
+        .kf-tx-panel--site::before {
+            content: '';
+            position: absolute;
+            top: -3px; bottom: -3px;
+            right: calc(100% - 1px);
+            width: 26vw;
+            background: #040303;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%);
+        }
+        /* reveal veil — SOLID colour (so it fully conceals the counter + cover veil
+           as it sweeps over them); the alpha mask above feathers only its tail. */
+        .kf-tx-panel--intro {
+            background: #1a0f0a;
+            box-shadow: none;
+        }
+        @media (max-width: 560px) {
+            .home-foot { flex-direction: column; align-items: flex-start; gap: 22px; }
+            .home-message { max-width: none; }
+            .home-actions { margin-left: 0; }
+            .hero-support { max-width: none; }
+            .home-cta { white-space: normal; }
+            .home-scroll-inner { grid-template-columns: 1fr; }
+            .home-scroll-inner .split-label,
+            .home-scroll-inner .split-title,
+            .home-scroll-inner p,
+            .home-scroll-inner .split-cta,
+            .proof-list {
+                grid-column: auto;
+                grid-row: auto;
+            }
+            .proof-row { grid-template-columns: 1fr; gap: 8px; }
+        }
+
     </style>
 </head>
 <body data-view="home">
 
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <div class="preloader__inner">
+            <div class="preloader__pct" id="preloaderPct">000</div>
+        </div>
+    </div>
+
     <a href="#stage" class="skip-link">Skip to content</a>
+
+    <div id="blob-bg" aria-hidden="true"></div>
+    <div class="grid" aria-hidden="true"></div>
+
+    <!-- visible site padding — thin inset border box -->
+    <div class="frame-border" aria-hidden="true"></div>
 
     <!-- ════ AMBIENT FRAME ════ -->
     <div class="frame" aria-hidden="false">
         <div class="mark" id="mark" role="button" tabindex="0" aria-label="Killing Floor — home">
-            Killing&nbsp;Floor <span class="reg">©2026</span>
+            <span class="mark-label" id="markLabel">Killing&nbsp;Floor</span> <span class="reg">©2026</span>
         </div>
-        <div class="status" id="status"></div>
         <nav class="index" id="index" aria-label="Primary">
-            <a data-view="services" data-key="1"><span class="n">01</span>Services</a>
-            <a data-view="work"     data-key="2"><span class="n">02</span>Work</a>
-            <a data-view="contact"  data-key="3"><span class="n">03</span>Contact</a>
+            <a data-view="services" data-key="1"><span class="n">01</span>Method</a>
+            <a data-view="process"  data-key="2"><span class="n">02</span>Process</a>
+            <a data-view="work"     data-key="3"><span class="n">03</span>Work</a>
             <a data-view="about"    data-key="4"><span class="n">04</span>About</a>
-            <a data-view="process"  data-key="5"><span class="n">05</span>Process</a>
+            <a data-view="contact"  data-key="5"><span class="n">05</span>Contact</a>
         </nav>
         <div class="count" id="count"><span class="here">Vancouver</span><br><span id="count-n">00 / 05</span></div>
     </div>
 
     <div id="progress"></div>
-
-    <!-- ════ CURTAIN — page transition slabs ════ -->
-    <div class="curtain" id="curtain" aria-hidden="true">
-        <div class="panel p-brick"></div>
-        <div class="panel p-ink"></div>
-        <div class="label" id="curtainLabel"><span class="num">— 00 —</span><span class="name">Section</span></div>
-    </div>
 
     <!-- ════ STAGE ════ -->
     <main class="stage" id="stage" role="main">
@@ -632,51 +1168,123 @@
                     <span class="word w3"><i>Floor</i></span>
                 </h1>
                 <div class="home-foot">
-                    <p class="tagline">
-                        <span class="tl" data-reveal data-beat="350">In business,</span>
-                        <span class="tl" data-reveal data-beat="1150">you're either structured,</span>
-                        <span class="tl" data-reveal data-beat="1700">or slaughtered.</span>
-                    </p>
-                    <span class="home-cta" data-reveal data-beat="1200" data-go="contact" role="button" tabindex="0" data-label="apply">Apply for an engagement →</span>
+                    <div class="home-message" data-reveal-group>
+                        <p class="tagline" data-reveal-group data-reveal-lead>
+                            <span class="tl" data-reveal data-beat="350">In business,</span>
+                            <span class="tl" data-reveal data-beat="1150">you're either structured,</span>
+                            <span class="tl" data-reveal data-beat="1700">or slaughtered.</span>
+                        </p>
+                        <div class="hero-support" data-reveal data-beat="620">We work with founder-led companies that have outgrown the systems that built them.</div>
+                        <div class="hero-support" data-reveal data-beat="360">12-week sprint: discovery, build, rollout. One principal throughout.</div>
+                    </div>
+                    <div class="home-actions" data-reveal-group>
+                        <div class="capacity-note" data-reveal data-beat="340">02 of 06 open / Q3 2026</div>
+                        <span class="home-cta" data-reveal data-beat="360" data-go="contact" role="button" tabindex="0" data-label="apply">Apply for an engagement →</span>
+                    </div>
+                </div>
+                <div class="scroll-hint" data-reveal data-beat="520">
+                    <span class="scroll-hint__icon" aria-hidden="true"></span>
+                    <span>Scroll</span>
+                </div>
+            </div>
+            <div class="home-scroll-section">
+                <div class="home-scroll-inner snap-reveal" data-reveal-group>
+                    <div class="split-label" data-reveal data-beat="280">The diagnosis</div>
+                    <h2 class="split-title" data-reveal data-beat="680">Success creates complexity. Complexity creates friction.</h2>
+                    <p data-reveal data-beat="980">At first, momentum hides the cracks. Then positioning blurs, decisions slow down, communication fragments, and execution gets inconsistent. The cost is not effort. It is accumulated confusion.</p>
+                    <span class="split-cta" data-reveal data-beat="760" data-go="services" role="button" tabindex="0" data-label="method">See the method →</span>
+                </div>
+            </div>
+            <div class="home-scroll-section">
+                <div class="home-scroll-inner snap-reveal" data-reveal-group>
+                    <div class="split-label" data-reveal data-beat="280">The intervention</div>
+                    <h2 class="split-title" data-reveal data-beat="760">We rebuild the system behind the business.</h2>
+                    <p data-reveal data-beat="980">Positioning, messaging, identity, and operating structure are not separate problems. We identify the bottleneck, reshape the system, and leave the company easier to explain and easier to run.</p>
+                    <span class="split-cta" data-reveal data-beat="780" data-go="services" role="button" tabindex="0" data-label="method">See the method →</span>
+                </div>
+            </div>
+            <div class="home-scroll-section home-scroll-section--close">
+                <div class="home-scroll-inner snap-reveal" data-reveal-group>
+                    <div class="split-label" data-reveal data-beat="280">Proof</div>
+                    <h2 class="split-title" data-reveal data-beat="760">When the system holds, output becomes easier to trust.</h2>
+                    <div class="proof-list">
+                        <div class="proof-row" data-reveal data-beat="520">
+                            <span class="proof-k">North &amp; Vector</span>
+                            <span class="proof-v">Conversion lifted 28% after the voice was rebuilt around how people actually buy.</span>
+                        </div>
+                        <div class="proof-row" data-reveal data-beat="600">
+                            <span class="proof-k">Atlas Foundry</span>
+                            <span class="proof-v">Sales stopped explaining what they did within a quarter.</span>
+                        </div>
+                        <div class="proof-row" data-reveal data-beat="640">
+                            <span class="proof-k">Series B SaaS</span>
+                            <span class="proof-v">Leadership was reduced from eleven to six and the cadence became legible again.</span>
+                        </div>
+                    </div>
+                    <span class="split-cta" data-reveal data-beat="760" data-go="work" role="button" tabindex="0" data-label="work">View selected work →</span>
                 </div>
             </div>
         </section>
 
         <!-- SERVICES -->
-        <section class="view" id="view-services" aria-label="Services">
+        <section class="view" id="view-services" aria-label="Method">
             <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">01</span><h2 class="v-title">Services</h2></div>
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">01</span><h2 class="v-title">Method</h2></div>
                 <div class="svc" data-reveal data-beat="860">
                     <span class="svc-n">01</span>
-                    <span class="svc-name">Branding</span>
-                    <span class="svc-desc">Identity systems built to carry weight. Marks that survive contact with the market.<span class="deliv">Positioning · Identity system · Launch kit</span></span>
+                    <span class="svc-name">Positioning</span>
+                    <span class="svc-desc">Clarify what the company is, who it is for, and why it should be believed now. The story has to hold before the design can matter.</span>
                 </div>
                 <div class="svc" data-reveal data-beat="1080">
                     <span class="svc-n">02</span>
-                    <span class="svc-name">Copywriting</span>
-                    <span class="svc-desc">Language engineered to move people closer to a decision. No filler.<span class="deliv">Voice guide · Core pages · Email &amp; onboarding</span></span>
+                    <span class="svc-name">Messaging</span>
+                    <span class="svc-desc">Language that makes customers, employees, and investors understand the same company. Fewer claims, cleaner decisions, better sales conversations.</span>
                 </div>
                 <div class="svc" data-reveal data-beat="940">
                     <span class="svc-n">03</span>
-                    <span class="svc-name">Scaling</span>
-                    <span class="svc-desc">Infrastructure that doesn't break when growth arrives.<span class="deliv">Operating cadence · Metrics review · Org design</span></span>
+                    <span class="svc-name">Operating Structure</span>
+                    <span class="svc-desc">Decision-making cadence, internal rhythm, and delivery systems built for growth. The work that keeps clarity from collapsing after the first good quarter.</span>
                 </div>
+            </div>
+        </section>
+
+        <!-- WORK -->
+        <!-- ABOUT -->
+        <section class="view" id="view-about" aria-label="About">
+            <div class="wrap">
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">04</span><h2 class="v-title">About</h2></div>
+                <p class="about-lead" data-reveal data-beat="1050">One consultant. Every engagement. No hand-offs.</p>
+                <div class="about-body">
+                    <p data-reveal data-beat="1100">The work that actually moves a company — positioning, voice, operating structure — gets diluted the moment it passes through layers. So it doesn't. Every client works directly with the principal, from the first call to the final handoff.</p>
+                    <p data-reveal data-beat="880">Agency-side, then operator-side, then here. That's the only order that makes sense. Six engagements per year keeps it that way.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESS -->
+        <section class="view" id="view-process" aria-label="Process">
+            <div class="wrap">
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">02</span><h2 class="v-title">Process</h2><span class="v-meta">12-week sprint</span></div>
+                <div class="proc-row" data-reveal data-beat="900"><span class="proc-phase">Week 0</span><span class="proc-body">Fit call, scope lock, kill list. One thing to make true. Everything we won't touch.</span></div>
+                <div class="proc-row" data-reveal data-beat="820"><span class="proc-phase">Weeks 1–4</span><span class="proc-body">Discovery. Interviews, audit, competitive landscape. The contradiction at the centre — found before any output exists.</span></div>
+                <div class="proc-row" data-reveal data-beat="860"><span class="proc-phase">Weeks 5–8</span><span class="proc-body">Build. First real output ships at week six. Not a draft — a decision.</span></div>
+                <div class="proc-row" data-reveal data-beat="780"><span class="proc-phase">Weeks 9–12</span><span class="proc-body">Rollout and handoff. We leave with something running. Not a deck explaining what someone else should do.</span></div>
             </div>
         </section>
 
         <!-- WORK -->
         <section class="view" id="view-work" aria-label="Work">
             <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">02</span><h2 class="v-title">Work</h2></div>
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">03</span><h2 class="v-title">Work</h2></div>
                 <div class="work-list">
                     <div class="work-row" data-reveal data-beat="920" data-detail="work-01" role="link" tabindex="0" aria-label="Atlas Foundry case study">
-                        <span class="work-n">01</span><span class="work-name">Atlas Foundry</span><span class="work-tag">Branding · 2025</span>
+                        <span class="work-n">01</span><span class="work-name">Atlas Foundry</span><span class="work-tag">Positioning · 2025</span>
                     </div>
                     <div class="work-row" data-reveal data-beat="700" data-detail="work-02" role="link" tabindex="0" aria-label="North &amp; Vector case study">
-                        <span class="work-n">02</span><span class="work-name">North &amp; Vector</span><span class="work-tag">Copywriting · 2025</span>
+                        <span class="work-n">02</span><span class="work-name">North &amp; Vector</span><span class="work-tag">Messaging · 2025</span>
                     </div>
                     <div class="work-row" data-reveal data-beat="580" data-detail="work-03" role="link" tabindex="0" aria-label="Confidential Series B case study">
-                        <span class="work-n">03</span><span class="work-name">Confidential</span><span class="work-tag">Scaling · 2024</span>
+                        <span class="work-n">03</span><span class="work-name">Confidential</span><span class="work-tag">Operating structure · 2024</span>
                     </div>
                 </div>
             </div>
@@ -687,13 +1295,13 @@
             <div class="wrap">
                 <span class="back" data-back role="link" tabindex="0">Work</span>
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">01</span><h2 class="v-title">Atlas<br>Foundry</h2></div>
-                <div class="detail-meta" data-reveal data-beat="520"><span>2025</span><span>Branding</span><span>B2B Industrial</span></div>
+                <div class="detail-meta" data-reveal data-beat="520"><span>2025</span><span>Positioning</span><span>B2B Industrial</span></div>
                 <div class="detail-body">
-                    <p data-reveal data-beat="980">They came in asking for a logo. What they needed was a reckoning with what they stood for — and who they were willing to lose to mean something to anyone.</p>
-                    <p data-reveal data-beat="1200">We spent two weeks doing nothing visible: founders, sales, churned customers, loyal ones. Every strong brand has a contradiction at its centre. Theirs sold certainty into an uncertain industry while operating like an experiment. We built the identity on that gap instead of papering over it.</p>
+                    <p data-reveal data-beat="980">They came in asking for a logo. The actual problem was that sales had one story, the site had another, and the market was hearing a third.</p>
+                    <p data-reveal data-beat="1200">We spent two weeks mapping the contradiction at the centre of the business. Atlas sold certainty into an uncertain industry while operating like an experiment, so we rebuilt the positioning around that gap instead of decorating over it.</p>
                 </div>
                 <div class="detail-result" data-reveal data-beat="1400">
-                    <blockquote>They didn't redesign our logo. They told us who we were and dared us to mean it. Sales stopped explaining what we did within a quarter.</blockquote>
+                    <blockquote>The team stopped explaining itself. That was the real change. Sales conversations got shorter, and the new story finally matched how the company actually worked.</blockquote>
                     <cite>— CEO, Atlas Foundry</cite>
                 </div>
             </div>
@@ -704,13 +1312,13 @@
             <div class="wrap">
                 <span class="back" data-back role="link" tabindex="0">Work</span>
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">02</span><h2 class="v-title">North &amp;<br>Vector</h2></div>
-                <div class="detail-meta" data-reveal data-beat="520"><span>2025</span><span>Copywriting</span><span>DTC Outdoor</span></div>
+                <div class="detail-meta" data-reveal data-beat="520"><span>2025</span><span>Messaging</span><span>DTC Outdoor</span></div>
                 <div class="detail-body">
-                    <p data-reveal data-beat="980">The old site read like every premium outdoor brand: crafted, intentional, built for the long haul. Words anyone could write. Words no one remembers.</p>
-                    <p data-reveal data-beat="1100">A week in the warehouse made it clear: people weren't buying gear, they were buying permission to take themselves seriously outside. That became the voice — direct, impatient, allergic to filler. The about page is 47 words. The returns page is six.</p>
+                    <p data-reveal data-beat="980">The old site read like every premium outdoor brand: polished, thoughtful, and impossible to distinguish from the rest of the category.</p>
+                    <p data-reveal data-beat="1100">A week in the warehouse made it clear that people were not buying gear, they were buying permission to take themselves seriously outside. We rewrote the voice around that tension. The about page became 47 words. The returns page became six.</p>
                 </div>
                 <div class="detail-result" data-reveal data-beat="1350">
-                    <blockquote>Every page sounds like us now — sharper than us, honestly. Conversion lifted 28% and people actually reply to the emails.</blockquote>
+                    <blockquote>Conversion lifted 28% after the rewrite. More importantly, the site finally sounded like the same company from page to page.</blockquote>
                     <cite>— Founder, North &amp; Vector</cite>
                 </div>
             </div>
@@ -721,13 +1329,13 @@
             <div class="wrap">
                 <span class="back" data-back role="link" tabindex="0">Work</span>
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">03</span><h2 class="v-title">Confidential</h2></div>
-                <div class="detail-meta" data-reveal data-beat="520"><span>2024</span><span>Scaling</span><span>Under NDA</span></div>
+                <div class="detail-meta" data-reveal data-beat="520"><span>2024</span><span>Operating structure</span><span>Under NDA</span></div>
                 <div class="detail-body">
-                    <p data-reveal data-beat="1050">A Series B SaaS company — 60 people, two product lines, four exec misfires in 18 months. Not a strategy problem. A cadence problem. Decisions weren't made; they were deferred until the calendar made them.</p>
-                    <p data-reveal data-beat="1150">We installed a rhythm: weekly metric review, biweekly hiring loop, monthly bet sizing. Cut leadership from eleven to six. Net revenue retention moved 102% → 121% in four quarters. Then we left the building.</p>
+                    <p data-reveal data-beat="1050">A Series B SaaS company with 60 people, two product lines, and four executive misfires in 18 months. The strategy was not broken. The cadence was.</p>
+                    <p data-reveal data-beat="1150">We installed a weekly metric review, a biweekly hiring loop, and monthly bet sizing. Leadership was cut from eleven to six. Net revenue retention moved from 102% to 121% in four quarters, then the team could run without us in the room.</p>
                 </div>
                 <div class="detail-result" data-reveal data-beat="1500">
-                    <blockquote>We brought them in to fix strategy. They fixed how we made decisions, which turned out to be the actual problem.</blockquote>
+                    <blockquote>What changed was not just the number. Decisions started happening on time, and the company stopped carrying so much hidden friction.</blockquote>
                     <cite>— CEO, Series B SaaS (Under NDA)</cite>
                 </div>
             </div>
@@ -736,13 +1344,16 @@
         <!-- CONTACT -->
         <section class="view" id="view-contact" aria-label="Contact">
             <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">03</span><h2 class="v-title">Let's Talk</h2></div>
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">05</span><h2 class="v-title">Contact</h2></div>
                 <div class="contact-grid">
                     <div>
-                        <p class="contact-lead" data-reveal data-beat="820">Six engagements per year. We pick on fit, not fee. Tell us where you are and what you're trying to make true.</p>
-                        <a class="contact-email" data-reveal data-beat="950" href="/cdn-cgi/l/email-protection#fd9598919192bd9694919194939a9b9192928fd38e8988999492" data-label="email"><span class="__cf_email__" data-cfemail="cfa7aaa3a3a08fa4a6a3a3a6a1a8a9a3a0a0bde1bcbbbaaba6a0">[email&#160;protected]</span></a>
+                        <p class="contact-lead" data-reveal data-beat="820">Six engagements per year. We select on fit, not fee. Tell us what you're trying to make true.</p>
+                        <p class="contact-lead" data-reveal data-beat="980">We work best with founders and leadership teams who know something is no longer working, but have not yet named the bottleneck.</p>
+                        <a class="contact-email" data-reveal data-beat="950" href="mailto:hello@killingfloor.studio" data-label="email">hello@killingfloor.studio</a>
                     </div>
                     <form id="form" data-endpoint="https://formspree.io/f/xojbdojj" novalidate>
+                        <input type="hidden" name="engagement" id="engagement-hidden">
+                        <input type="hidden" name="stage" id="stage-hidden">
                         <div class="field" data-reveal data-beat="1100">
                             <label>Name / Company</label>
                             <input type="text" name="name" placeholder="Who's writing">
@@ -751,133 +1362,257 @@
                             <label>Email</label>
                             <input type="email" name="email" placeholder="you@company.com">
                         </div>
-                        <div class="field" data-reveal data-beat="400">
+                        <div class="field field-pills" data-reveal data-beat="620" data-multi data-hidden="engagement-hidden">
+                            <label>What kind of engagement?</label>
+                            <div class="pill-row">
+                                <button type="button" class="pill">Positioning</button>
+                                <button type="button" class="pill">Identity</button>
+                                <button type="button" class="pill">Copy</button>
+                                <button type="button" class="pill">Website</button>
+                                <button type="button" class="pill">Operating system</button>
+                            </div>
+                        </div>
+                        <div class="field field-pills" data-reveal data-beat="520" data-hidden="stage-hidden">
+                            <label>Where are you now?</label>
+                            <div class="pill-row">
+                                <button type="button" class="pill">Pre-launch</button>
+                                <button type="button" class="pill">Live but unclear</button>
+                                <button type="button" class="pill">Operating structure</button>
+                                <button type="button" class="pill">Stuck</button>
+                            </div>
+                        </div>
+                        <div class="field" data-reveal data-beat="560">
                             <label>What are you building?</label>
                             <textarea name="building" placeholder="The contradiction at the centre. The thing you can't crack on your own."></textarea>
                         </div>
-                        <div class="field" data-reveal data-beat="360">
+                        <div class="field" data-reveal data-beat="520">
+                            <label>What have you already tried?</label>
+                            <textarea name="tried" placeholder="Agencies, hires, pivots, decks, campaigns — what moved the needle and what didn't."></textarea>
+                        </div>
+                        <div class="field" data-reveal data-beat="480">
                             <label>What does success look like in 12 weeks?</label>
                             <textarea name="success" placeholder="Be specific. Vague answers get vague results."></textarea>
                         </div>
-                        <button type="submit" class="send" id="send" data-reveal data-beat="340" data-label="send">Send → Killing Floor</button>
+                        <div class="field" data-reveal data-beat="420">
+                            <label>Timeline</label>
+                            <input type="text" name="timeline" placeholder="When do you need to start moving?">
+                        </div>
+                        <button type="submit" class="send" id="send" data-reveal data-beat="420" data-label="send">Send → Killing Floor</button>
                         <div class="notice" id="notice"></div>
                     </form>
                 </div>
-            </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section class="view" id="view-about" aria-label="About">
-            <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">04</span><h2 class="v-title">About</h2></div>
-                <p class="about-lead" data-reveal data-beat="1050">One consultant. Every engagement. No hand-offs.</p>
-                <div class="about-body">
-                    <p data-reveal data-beat="1100">Killing Floor runs on a simple premise: the work that actually moves companies — positioning, voice, operating structure — gets diluted the moment it passes through layers. So it doesn't. Every client works directly with the principal from kickoff to handoff.</p>
-                    <p data-reveal data-beat="880">Background spans brand strategy, B2B and DTC copywriting, and operating design across industrial, SaaS, and consumer. Agency-side, then operator-side, then here — the only order that makes sense.</p>
-                    <p data-reveal data-beat="700">Based in Vancouver. Working with founders everywhere.</p>
+                <div class="faq-block">
+                    <div class="faq-head" data-reveal data-beat="760">Common questions</div>
+                    <div class="faq-row" data-reveal data-beat="620">
+                        <div class="faq-q">Why only six clients per year?</div>
+                        <div class="faq-a">Because more than six means someone gets a junior. We do not have juniors. The math is the constraint.</div>
+                    </div>
+                    <div class="faq-row" data-reveal data-beat="620">
+                        <div class="faq-q">Sprints vs. retainers?</div>
+                        <div class="faq-a">Sprints only. Retainers reward presence over output. A fixed sprint rewards the opposite.</div>
+                    </div>
+                    <div class="faq-row" data-reveal data-beat="620">
+                        <div class="faq-q">Vancouver-only or remote?</div>
+                        <div class="faq-a">Remote by default. Location has never been the variable that mattered.</div>
+                    </div>
+                    <div class="faq-row" data-reveal data-beat="620">
+                        <div class="faq-q">What you will not do.</div>
+                        <div class="faq-a">Ads, SEO, full rebrands in two weeks, or broad mandates that need a team of twelve. We do focused, high-leverage work.</div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- PROCESS -->
-        <section class="view" id="view-process" aria-label="Process">
-            <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">05</span><h2 class="v-title">Process</h2><span class="v-meta">12-week sprint</span></div>
-                <div class="proc-row" data-reveal data-beat="900"><span class="proc-phase">Week 0</span><span class="proc-body">Fit call, scope lock, kill list. We agree on exactly one thing to make true and everything we won't touch.</span></div>
-                <div class="proc-row" data-reveal data-beat="820"><span class="proc-phase">Weeks 1–4</span><span class="proc-body">Discovery. Competitor mapping, customer interviews, internal audit. We find the contradiction at the centre before any output.</span></div>
-                <div class="proc-row" data-reveal data-beat="860"><span class="proc-phase">Weeks 5–8</span><span class="proc-body">Build. Positioning locked, identity or copy or systems drafted and tested. First real output ships at week six.</span></div>
-                <div class="proc-row" data-reveal data-beat="780"><span class="proc-phase">Weeks 9–12</span><span class="proc-body">Rollout, refinement, handoff. Operating rhythm installed. We leave with something running, not a deck explaining what to do next.</span></div>
-                <div class="proc-row" data-reveal data-beat="1200"><span class="proc-phase">After</span><span class="proc-body">No retainer. No scope creep. If something breaks in month four, we talk. That's different from being on call forever.</span></div>
+                <footer class="site-footer">
+                    <span><strong>Killing Floor</strong> / Vancouver</span>
+                    <span><a href="mailto:hello@killingfloor.studio">hello@killingfloor.studio</a></span>
+                    <span>02 of 06 open / Q3 2026</span>
+                </footer>
             </div>
         </section>
 
     </main>
 
-    <div class="cursor" id="cursor" aria-hidden="true"></div>
-    <div class="cursor-box" id="cursorBox" aria-hidden="true"></div>
+    <!-- Page transition: a scaffold bar builds, the surface bar overtakes it,
+         then scales to full screen and becomes the new page. (zajno-style) -->
+    <div class="kf-tx" id="kfTx" aria-hidden="true">
+        <div class="kf-tx-panel kf-tx-panel--site" id="kfTxPanelSite">
+            <div class="kf-tx-counter" id="kfTxCounter">001%</div>
+        </div>
+        <div class="kf-tx-panel kf-tx-panel--intro" id="kfTxPanelIntro"></div>
+    </div>
+
+    <div class="cursor" id="cursor" aria-hidden="true">
+        <i class="c-fill"></i><b class="c-tl"></b><b class="c-br"></b><span class="c-dot"></span><span class="c-caret"></span>
+    </div>
     <div class="cursor-label" id="cursorLabel" aria-hidden="true"></div>
     <div id="hud" aria-hidden="true"></div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
     (function () {
         'use strict';
-        const FINE = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const FINE   = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // ── RETURNING VISITOR ──
-        // First visit: inner views play at 60% of authored beats — deliberate but not slow.
-        // Home always plays at full score (it's three lines; the pace is the brand).
-        // Subsequent visits: inner views snap in at 30% — you've read it, just get there.
         const RETURNING = !!localStorage.getItem('kf_v');
         if (!RETURNING) localStorage.setItem('kf_v', '1');
 
-        // ── CAPACITY (single source of truth) ──
-        const CAP = { total: 6, taken: 4, period: 'Q3 2026' };
-        const open = Math.max(0, CAP.total - CAP.taken);
-        const pad = n => String(n).padStart(2, '0');
-        const statusEl = document.getElementById('status');
-        statusEl.innerHTML = '<span class="dot"></span>' +
-            (open === 0 ? 'At capacity — ' + CAP.period
-                        : pad(open) + ' of ' + pad(CAP.total) + ' open — ' + CAP.period);
-
         // ── ELEMENTS ──
-        const body    = document.body;
-        const views   = [...document.querySelectorAll('.view')];
-        const navLinks= [...document.querySelectorAll('.index a')];
-        const countN  = document.getElementById('count-n');
-        const progress= document.getElementById('progress');
-
-        const ORDER = { services: 1, work: 2, contact: 3, about: 4, process: 5 };
-
-        // ── BUILD MASKS ──
-        // Wrap every [data-reveal] in an overflow-hidden mask, moving its rule
-        // lines + block margins onto the mask so they stay fixed while the
-        // content rises up from behind them. Reading computed styles here means
-        // :last-of-type borders etc. are already resolved before we wrap.
-        function buildMasks() {
-            document.querySelectorAll('[data-rise]').forEach(el => {
-                if (el.parentElement && el.parentElement.classList.contains('rise-mask')) return;
-                const cs = getComputedStyle(el);
-                const inline = cs.display.indexOf('inline') === 0;
-                const mask = document.createElement(inline ? 'span' : 'div');
-                mask.className = 'rise-mask';
-                mask.style.marginTop = cs.marginTop;
-                mask.style.marginBottom = cs.marginBottom;
-                if (cs.borderTopWidth !== '0px') mask.style.borderTop = cs.borderTopWidth + ' ' + cs.borderTopStyle + ' ' + cs.borderTopColor;
-                if (cs.borderBottomWidth !== '0px') mask.style.borderBottom = cs.borderBottomWidth + ' ' + cs.borderBottomStyle + ' ' + cs.borderBottomColor;
-                el.style.marginTop = '0'; el.style.marginBottom = '0';
-                el.style.borderTopWidth = '0'; el.style.borderBottomWidth = '0';
-                el.parentNode.insertBefore(mask, el);
-                mask.appendChild(el);
-            });
+        const body     = document.body;
+        const preloader = document.getElementById('preloader');
+        const preloaderPct = document.getElementById('preloaderPct');
+        const views    = [...document.querySelectorAll('.view')];
+        const navLinks = [...document.querySelectorAll('.index a')];
+        const countN   = document.getElementById('count-n');
+        const progress = document.getElementById('progress');
+        const ORDER    = { services: 1, process: 2, work: 3, about: 4, contact: 5 };
+        const pad      = n => String(n).padStart(2, '0');
+        const REVEAL_CACHE_KEY = 'kf_reveal_cache_v1';
+        const REVEAL_CACHE_TTL = 5 * 60 * 1000;
+        let revealCache = {};
+        try {
+            revealCache = JSON.parse(localStorage.getItem(REVEAL_CACHE_KEY) || '{}') || {};
+        } catch (_) {
+            revealCache = {};
         }
-        buildMasks();
+        function saveRevealCache() {
+            try { localStorage.setItem(REVEAL_CACHE_KEY, JSON.stringify(revealCache)); } catch (_) {}
+        }
+        function markRevealSeen(viewId) {
+            if (!viewId) return;
+            revealCache[viewId] = Date.now();
+            saveRevealCache();
+        }
+        function revealSpeed(viewId) {
+            const seenAt = revealCache[viewId] || 0;
+            if (!seenAt) return 1;
+            const age = Date.now() - seenAt;
+            return age <= REVEAL_CACHE_TTL ? 0.58 : 1;
+        }
+        function transitionSpeed(viewId) {
+            const seenAt = revealCache[viewId] || 0;
+            if (!seenAt) return 1;
+            const age = Date.now() - seenAt;
+            return age <= REVEAL_CACHE_TTL ? 0.72 : 1;
+        }
+
 
         // ── REVEAL ──
-        let timers = [];
-        const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
-        // Reveal items in DOM order. Each item waits a "beat" (the pause before it)
-        // then appears — beats accumulate, so the pacing reads like a delivered line,
-        // not a uniform cascade. Per-element data-beat overrides the default gap.
-        function reveal(view, gap) {
-            clearTimers();
-            const items = [...view.querySelectorAll('[data-reveal], [data-rise]')];
-            if (REDUCE) { items.forEach(el => el.classList.add('revealed')); return; }
-            gap = gap || 300;
-            // Home always plays its full scored delivery.
-            // Inner views: 60% on first visit (deliberate but not slow),
-            // 30% on return (you've read it — get there faster).
-            const isHome = view.id === 'view-home';
-            const scale = isHome ? 1 : (RETURNING ? 0.30 : 0.60);
-            let t = 0;
-            items.forEach(el => {
-                const beat = el.dataset.beat ? parseInt(el.dataset.beat, 10) : gap;
-                t += Math.round(beat * scale);
-                timers.push(setTimeout(() => el.classList.add('revealed'), t));
-            });
+        // All content uses CSS blur→clear transitions triggered by the .revealed class.
+        // data-beat values accumulate (not uniform stagger) — each item's beat is the
+        // pause before it, so pacing reads like a scored, delivered line.
+        let revealTimers = [];
+        let revealObserver = null;
+        function clearRevealTimers() {
+            revealTimers.forEach(clearTimeout);
+            revealTimers = [];
+            if (revealObserver) {
+                revealObserver.disconnect();
+                revealObserver = null;
+            }
         }
-        function hideReveals(view) {
-            view.querySelectorAll('[data-reveal], [data-rise]').forEach(el => el.classList.remove('revealed'));
+
+        function revealView(view) {
+            clearRevealTimers();
+            markRevealSeen(view.id);                 // returning-visitor speedup, per view
+            const isHome = view.id === 'view-home';
+            if (REDUCE) {
+                view.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
+                return;
+            }
+            const speed = revealSpeed(view.id);      // 0.58 if seen recently, else 1
+
+            // pacing (ms) — slow, emotional stagger. Each item's pause is its own
+            // data-beat (hand-scored, escalating) so lines land like delivered speech;
+            // grouping only guarantees reading order, it doesn't rush the cadence.
+            const DEFAULT_BEAT = isHome ? 300 : 320;          // per-item pause when unscored
+            const GAP       = 220 * speed;                    // breath between groups
+            const SNAP_LEAD = 200 * speed;                    // container rises before its content
+            const beatOf = el => (el.dataset.beat ? parseInt(el.dataset.beat, 10) : DEFAULT_BEAT) * speed;
+
+            // ── build groups in reading (DOM) order ──
+            const revealables = [...view.querySelectorAll('[data-reveal]')];
+            const groupMap = new Map();
+            const groups = [];
+            revealables.forEach(el => {
+                const key = el.closest('[data-reveal-group]') || el;
+                let g = groupMap.get(key);
+                if (!g) {
+                    g = {
+                        key, items: [],
+                        lead: key.hasAttribute('data-reveal-lead'),
+                        snap: !!key.closest('.snap-reveal')
+                    };
+                    groupMap.set(key, g);
+                    groups.push(g);                  // querySelectorAll is doc order → reading order
+                }
+                g.items.push(el);
+            });
+
+            const scheduled = new WeakSet();
+            // promote to a GPU layer only for the duration of the blur, then release —
+            // so we never keep will-change pinned on idle elements.
+            function fireReveal(el) {
+                el.style.willChange = 'filter, opacity';
+                el.classList.add('revealed');
+                const done = e => {
+                    if (e && e.propertyName !== 'filter') return;
+                    el.style.willChange = '';
+                    el.removeEventListener('transitionend', done);
+                };
+                el.addEventListener('transitionend', done);
+                revealTimers.push(setTimeout(() => { el.style.willChange = ''; }, 1400)); // bg-tab safety
+            }
+            function revealGroup(g, baseDelay) {
+                let t = baseDelay + (g.snap ? SNAP_LEAD : 0);   // let the container lead
+                g.items.forEach(el => {
+                    if (scheduled.has(el)) return;
+                    scheduled.add(el);
+                    t += beatOf(el);                            // the pause BEFORE this line
+                    const at = t;
+                    revealTimers.push(setTimeout(() => fireReveal(el), at));
+                });
+                return t;
+            }
+
+            // ── split: groups in view now compose immediately (sequenced, reading
+            //    order); groups below the fold reveal on approach (composed as one) ──
+            const vTop = view.getBoundingClientRect().top;
+            const vh = view.clientHeight || window.innerHeight;
+            const inView = [], below = [];
+            groups.forEach(g => {
+                const rel = g.key.getBoundingClientRect().top - vTop;
+                // anything starting within this viewport composes now (incl. the scroll
+                // cue); blocks at/after the fold (snap sections at ~100svh) defer.
+                (rel < vh * 0.96 ? inView : below).push(g);
+            });
+
+            // sequence the visible scene; small steps keep it quick even with many groups
+            let clock = 0;
+            inView.forEach(g => { clock = revealGroup(g, clock) + GAP; });
+
+            // observe the rest — whichever item of a group is seen, the group lands together
+            if (below.length) {
+                revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        const key = entry.target.closest('[data-reveal-group]') || entry.target;
+                        const g = groupMap.get(key);
+                        if (!g || g._done) return;
+                        g._done = true;
+                        revealGroup(g, 0);
+                        g.items.forEach(el => revealObserver.unobserve(el));
+                    });
+                }, { root: view, threshold: 0.3, rootMargin: '0px 0px -10% 0px' });
+                below.forEach(g => g.items.forEach(el => revealObserver.observe(el)));
+            }
+        }
+
+        function hideView(view) {
+            // do NOT clear revealTimers here — they belong to the incoming view's
+            // already-scheduled reveal beats. The next revealView call clears stale ones.
+            view.querySelectorAll('[data-reveal]').forEach(el => {
+                el.classList.remove('revealed');
+                el.style.willChange = '';   // release any GPU layer left from its reveal
+            });
         }
 
         // ── FRAME STATE ──
@@ -885,151 +1620,462 @@
             const base = id.startsWith('work-') ? 'work' : id;
             body.dataset.view = base;
             navLinks.forEach(l => l.classList.toggle('active', l.dataset.view === base));
-            const n = ORDER[base] || 0;
-            countN.textContent = pad(n) + ' / 05';
+            countN.textContent = pad(ORDER[base] || 0) + ' / 05';
         }
 
-        // ── NAVIGATE ──
-        // Slab curtain sweeps across. At the midpoint (slabs covering the viewport)
-        // we swap the active view underneath — the user never sees the bare swap,
-        // only the wave passing across. Total ≈1.05s, view swap ≈480ms in.
-        const curtainEl   = document.getElementById('curtain');
-        const curtainName = curtainEl.querySelector('.name');
-        const curtainNum  = curtainEl.querySelector('.num');
-        const VIEW_LABELS = {
-            home:     'The Killing Floor',
-            services: 'Services',
-            work:     'Work',
-            contact:  'Contact',
-            about:    'About',
-            process:  'Process',
-            'work-01':'Atlas Foundry',
-            'work-02':'North & Vector',
-            'work-03':'Confidential'
-        };
+        // ── PAGE SWIPE ──
+        // A single dark panel sweeps L→R: cover (ease-out), brief hold during the
+        // view swap, exit (ease-in). Quiet, deliberate, no spectacle.
+        const kfTx      = document.getElementById('kfTx');
+        const kfTxPanelSite  = document.getElementById('kfTxPanelSite');
+        const kfTxPanelIntro = document.getElementById('kfTxPanelIntro');
+        const kfTxCounter = document.getElementById('kfTxCounter');
 
+        function kfSwipe(id, cur, next) {
+            environmentShift(id, cur, next);
+        }
+
+        // One self-contained GSAP timeline — NOT a chain of awaited promises. A
+        // promise chain hangs forever (and locks navigation) if any tween's
+        // onComplete never fires; a timeline always advances and we release the
+        // lock in onComplete, with a hard safety timeout as a final backstop.
+        let txSafety = null;
+        function environmentShift(id, cur, next) {
+            const txSpeed = transitionSpeed(id);
+            kfTx.classList.add('on');
+            gsap.killTweensOf([kfTxPanelSite, kfTxPanelIntro, kfTxCounter, cur, next].filter(Boolean));
+
+            // Two swipe masks. A = cover (SOLID, holds the counter), enters from the
+            // RIGHT. B = reveal (solid, soft tail), enters from the LEFT and sweeps
+            // right — its solid body conceals the counter + cover, its soft tail
+            // uncovers the new page behind it.
+            gsap.set(kfTxPanelSite,  { x: 0, xPercent: 130,  opacity: 1, visibility: 'visible' });   // A — off RIGHT
+            gsap.set(kfTxPanelIntro, { x: 0, xPercent: -130, opacity: 1, visibility: 'visible' });   // B — off LEFT
+            gsap.set(kfTxCounter, { display: 'none', opacity: 0, y: 6, '--load': txSpeed < 1 ? 0.18 : 0.08 });
+            kfTxCounter.textContent = txSpeed < 1 ? '018%' : '008%';
+
+            // ── the swap: happens ONCE, while A fully covers the screen ──
+            let swapped = false;
+            const doSwap = () => {
+                if (swapped) return; swapped = true;
+                next.scrollTop = 0;
+                if (cur) { hideView(cur); cur.classList.remove('active'); cur.style.cssText = ''; }
+                next.classList.add('active');
+                gsap.set(next, { opacity: 1, filter: 'none' });  // staged visible, content beats still hidden
+                setFrame(id);
+                markRevealSeen(id);
+                scrambleMark();
+                updateProgress();
+            };
+
+            // ── teardown: ALWAYS releases navLock (onComplete or safety timeout) ──
+            let done = false;
+            const finish = () => {
+                if (done) return; done = true;
+                clearTimeout(txSafety);
+                doSwap();              // guarantee the swap even if we bailed early
+                revealView(next);      // content beats animate in only now
+                kfTx.classList.remove('on');
+                gsap.set(kfTxPanelSite,  { xPercent: 130 });
+                gsap.set(kfTxPanelIntro, { xPercent: -130 });
+                gsap.set(kfTxCounter, { display: 'none', opacity: 0 });
+                gsap.set(next, { clearProps: 'opacity,filter' });
+                navLock = false;
+            };
+
+            const load = { value: 8 };
+            const tl = gsap.timeline({ onComplete: finish });
+
+            // 1 · SWIPE ONE (cover) — A wipes in solid while the old page fades out.
+            tl.to(kfTxPanelSite, { xPercent: 0, duration: 0.6 * txSpeed, ease: 'power3.inOut' }, 0);
+            if (cur) tl.to(cur, { opacity: 0, filter: 'blur(10px)', duration: 0.5 * txSpeed, ease: 'power2.out' }, 0);
+
+            // swap the site underneath the now fully-covering solid panel
+            tl.add(doSwap, 0.62 * txSpeed);
+
+            // 2 · COUNTER — on the solid cover, counts 1→100 and HOLDS at 100. It is
+            //    NOT faded out here — veil 2 is what removes it.
+            tl.set(kfTxCounter, { display: 'block', opacity: 0, y: 6, '--load': txSpeed < 1 ? 0.18 : 0.08 }, 0.72 * txSpeed);
+            tl.to(kfTxCounter, { opacity: 1, y: 0, duration: 0.22 * txSpeed, ease: 'power2.out' }, 0.74 * txSpeed);
+            tl.to(load, {
+                value: 100, duration: 0.72 * txSpeed, ease: 'power2.out',
+                onUpdate: () => {
+                    const pct = Math.max(1, Math.min(100, Math.round(load.value)));
+                    kfTxCounter.textContent = String(pct).padStart(3, '0') + '%';
+                    kfTxCounter.style.setProperty('--load', String(pct / 100));
+                }
+            }, 0.98 * txSpeed);
+
+            // 3 · SWIPE TWO (reveal) — ONE continuous, constant-speed sweep across
+            //    (no ease, no stop): B travels left → right in a single motion. Its
+            //    solid body conceals the counter + cover; its soft tail uncovers the
+            //    new page. At the midpoint (B fully covers) we silently remove the
+            //    cover + counter behind it — without touching B's motion.
+            tl.to(kfTxPanelIntro, { xPercent: 130, duration: 1.2 * txSpeed, ease: 'none' }, 2.1 * txSpeed);
+            tl.add(() => {
+                gsap.set(kfTxPanelSite, { xPercent: 130 });          // remove cover behind B
+                gsap.set(kfTxCounter, { display: 'none', opacity: 0 });
+            }, 2.7 * txSpeed);   // midpoint: B at xPercent 0, fully covering
+
+            // hard backstop: if the ticker stalls mid-timeline, never leave nav locked.
+            clearTimeout(txSafety);
+            txSafety = setTimeout(() => { tl.kill(); finish(); }, 5000);
+        }
+
+        const markEl    = document.getElementById('mark');
+        const markLbl   = document.getElementById('markLabel');
         let navLock = false;
-        function navigate(id) {
+        let scrambleT = null;
+
+        // corner wordmark scramble — messes, then resolves to the real text
+        function scrambleMark() {
+            const target = 'Killing Floor';
+            const glyphs = '#%@&/\\0135789';
+            let frame = 0;
+            clearInterval(scrambleT);
+            scrambleT = setInterval(() => {
+                frame++;
+                let out = '';
+                for (let i = 0; i < target.length; i++) {
+                    if (target[i] === ' ') { out += ' '; continue; }
+                    out += (i < frame - 4)
+                        ? target[i]
+                        : glyphs[Math.floor(Math.random() * glyphs.length)];
+                }
+                markLbl.textContent = out;
+                if (frame - 4 >= target.length) { clearInterval(scrambleT); markLbl.innerHTML = 'Killing&nbsp;Floor'; }
+            }, 42);
+        }
+
+        function navigate(id, evt) {
             if (navLock) return;
             const next = document.getElementById('view-' + id);
             const cur  = document.querySelector('.view.active');
             if (!next || next === cur) return;
             navLock = true;
+            flash(PAGE_LABELS[id] || id);
 
-            // set the riding label
-            const baseId = id.startsWith('work-') ? id : id;
-            const orderN = ORDER[baseId.startsWith('work-') ? 'work' : baseId] || 0;
-            curtainName.textContent = VIEW_LABELS[baseId] || baseId;
-            curtainNum.textContent  = '— ' + pad(orderN) + ' / 05 —';
-
-            // fire curtain — restart animation reliably
-            curtainEl.classList.remove('firing');
-            void curtainEl.offsetWidth;
-            curtainEl.classList.add('firing');
-
-            // outgoing view sinks while curtain covers it
-            if (cur) {
-                cur.classList.add('outgoing');
-                hideReveals(cur);
+            if (REDUCE) {
+                if (cur) { hideView(cur); cur.classList.remove('active'); }
+                next.scrollTop = 0; next.classList.add('active');
+                setFrame(id); updateProgress(); revealView(next); navLock = false;
+                return;
             }
 
-            // mid-sweep: swap views beneath the cover
-            setTimeout(() => {
-                if (cur) {
-                    cur.classList.remove('active', 'outgoing');
-                    cur.style.transform = '';
-                    cur.style.opacity = '';
-                }
-                next.scrollTop = 0;
-                next.classList.remove('outgoing');
-                next.classList.add('active', 'incoming');
-                setFrame(id);
-                updateProgress();
-                // start the per-element reveals as the curtain begins to uncover
-                setTimeout(() => reveal(next), 160);
-            }, 460);
-
-            // tail: clear incoming + curtain state
-            setTimeout(() => {
-                next.classList.remove('incoming');
-                curtainEl.classList.remove('firing');
-                navLock = false;
-            }, 1080);
+            // Page swipe → counter → reveal (see environmentShift).
+            kfSwipe(id, cur, next);
         }
         window._navigate = navigate;
 
-        // ── SCROLL PROGRESS (active view) ──
+        // ── SCROLL PROGRESS ──
+        let progressMode = '';
+        let progressTicks = [];
+
+        function snapSections(view) {
+            if (!view) return [];
+            if (view.id !== 'view-home') return [];
+            return [...view.children].filter(el => {
+                const style = getComputedStyle(el);
+                return style.scrollSnapAlign !== 'none';
+            });
+        }
+
+        function ensureProgressTicks(view, count, mode) {
+            const key = mode + ':' + count;
+            if (progressMode === key) return;
+            progressMode = key;
+            progress.innerHTML = '';
+            progressTicks = [];
+            for (let i = 0; i < count; i++) {
+                const tick = document.createElement('span');
+                tick.className = 'progress-tick' + (mode === 'sections' ? ' is-section' : '');
+                tick.setAttribute('aria-hidden', 'true');
+                progress.appendChild(tick);
+                progressTicks.push(tick);
+            }
+        }
+
+        function setTickShape(tick, position, activePosition, count, mode) {
+            const distance = Math.abs(position - activePosition);
+            const influence = Math.max(0, 1 - distance / (mode === 'sections' ? 0.16 : 0.14));
+            const eased = influence * influence * (3 - 2 * influence);
+            const width = mode === 'sections'
+                ? 6 + eased * 7
+                : 4 + eased * 7;
+            const opacity = mode === 'sections'
+                ? 0.32 + eased * 0.58
+                : 0.22 + eased * 0.68;
+            const endpointInset = (0.5 - position) * 18;
+            tick.style.top = 'calc(' + (position * 100).toFixed(3) + '% + ' + endpointInset.toFixed(2) + 'px)';
+            tick.style.width = width.toFixed(2) + 'px';
+            tick.style.opacity = opacity.toFixed(3);
+            tick.style.transform = 'translate(0, -50%)';
+            tick.classList.toggle('is-current', distance < (mode === 'sections' ? 0.01 : 0.018));
+        }
+
+        let ambientBlobEls = [];
+        let parallaxRaf = 0;
+        let pendingParallaxRatio = 0;
+        function updateBlobParallax(ratio) {
+            if (!ambientBlobEls.length || REDUCE) return;
+            pendingParallaxRatio = ratio;
+            if (parallaxRaf) return;
+            parallaxRaf = requestAnimationFrame(() => {
+                parallaxRaf = 0;
+                const r = pendingParallaxRatio;
+                const travel = (r - 0.5) * -320;
+                ambientBlobEls.forEach((blob, i) => {
+                    const depth = Number(blob.dataset.depth || 0.5);
+                    const offset = travel * depth + Math.sin((r + i * 0.071) * Math.PI * 2) * 10 * depth;
+                    blob.style.setProperty('--sy', offset.toFixed(2) + 'px');
+                });
+            });
+        }
+
+        function updateAmbientField(view) {
+            if (!view || REDUCE) return;
+            const max = Math.max(1, view.scrollHeight - view.clientHeight);
+            const ratio = view.scrollHeight > view.clientHeight ? view.scrollTop / max : 0;
+            const pageDrift = ((ORDER[body.dataset.view] || 0) - 2.5) * 10;
+            body.style.setProperty('--field-scroll', ((ratio - 0.5) * -145 + pageDrift).toFixed(2) + 'px');
+            updateBlobParallax(ratio);
+        }
+
         function updateProgress() {
             const v = document.querySelector('.view.active');
             if (!v) return;
-            const scrollable = v.scrollHeight > v.clientHeight + 2;
+            updateAmbientField(v);
+            const overflow = v.scrollHeight - v.clientHeight;
+            const scrollable = overflow > Math.max(120, v.clientHeight * 0.22);
+            const sections = snapSections(v);
+            const hasSections = sections.length > 1;
+            body.classList.toggle('scrollable', scrollable || hasSections);
+
+            if (hasSections) {
+                const count = sections.length;
+                const active = Math.max(0, Math.min(count - 1, Math.round(v.scrollTop / Math.max(1, v.clientHeight))));
+                ensureProgressTicks(v, count, 'sections');
+                const sectionStep = 0.065;
+                const activePosition = 0.5 + (active - (count - 1) / 2) * sectionStep;
+                progressTicks.forEach((tick, i) => {
+                    const position = 0.5 + (i - (count - 1) / 2) * sectionStep;
+                    setTickShape(tick, position, activePosition, count, 'sections');
+                });
+                return;
+            }
+
+            if (!scrollable) return;
             const ratio = scrollable ? v.scrollTop / (v.scrollHeight - v.clientHeight) : 0;
-            progress.style.transform = 'scaleY(' + ratio + ')';
-            body.classList.toggle('scrollable', scrollable);
+            const count = 40;
+            ensureProgressTicks(v, count, 'continuous');
+            progressTicks.forEach((tick, i) => {
+                const position = count === 1 ? 0 : i / (count - 1);
+                setTickShape(tick, position, ratio, count, 'continuous');
+            });
         }
         views.forEach(v => v.addEventListener('scroll', () => { if (v.classList.contains('active')) updateProgress(); }, { passive: true }));
         window.addEventListener('resize', updateProgress);
+        if (FINE && !REDUCE) {
+            window.addEventListener('mousemove', e => {
+                const x = (e.clientX / window.innerWidth - 0.5) * -18;
+                const y = (e.clientY / window.innerHeight - 0.5) * -14;
+                body.style.setProperty('--field-x', x.toFixed(2) + 'px');
+                body.style.setProperty('--field-y', y.toFixed(2) + 'px');
+            }, { passive: true });
+        }
 
-        // ── NAV WIRING ──
-        navLinks.forEach(l => l.addEventListener('click', () => navigate(l.dataset.view)));
-        document.getElementById('mark').addEventListener('click', () => navigate('home'));
-        document.getElementById('mark').addEventListener('keydown', e => {
+        // ── LIVING GRADIENT FIELD ──
+        // Composited DOM blobs are much cheaper than repainting canvas gradients.
+        (function blobField() {
+            const field = document.getElementById('blob-bg');
+            if (!field) return;
+            const seed = 1337;
+            const palette = ['138,62,38', '106,43,27', '190,112,72', '239,218,190', '58,23,15'];
+            const count = REDUCE ? 8 : 12;
+
+            function hash(n) {
+                let h = Math.imul(n ^ seed, 0x45d9f3b);
+                h ^= h >>> 16; h = Math.imul(h, 0x45d9f3b); h ^= h >>> 16;
+                return (h >>> 0) / 0xffffffff;
+            }
+
+            field.textContent = '';
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('i');
+                el.className = 'ambient-blob';
+                el.style.setProperty('--x', (hash(i * 13 + 1) * 112 - 6).toFixed(2) + '%');
+                el.style.setProperty('--y', (hash(i * 13 + 2) * 122 - 11).toFixed(2) + '%');
+                el.style.setProperty('--s', (150 + hash(i * 13 + 3) * 310).toFixed(0) + 'px');
+                el.style.setProperty('--sx', (0.7 + hash(i * 13 + 4) * 1.1).toFixed(2));
+                el.style.setProperty('--sx3', (0.74 + hash(i * 13 + 13) * 1.35).toFixed(2));
+                el.style.setProperty('--syp', (0.58 + hash(i * 13 + 14) * 0.62).toFixed(2));
+                el.style.setProperty('--syp3', (0.64 + hash(i * 13 + 16) * 0.72).toFixed(2));
+                el.style.setProperty('--a', (0.28 + hash(i * 13 + 5) * 0.30).toFixed(3));
+                el.style.setProperty('--c', palette[Math.floor(hash(i * 13 + 6) * palette.length)]);
+                el.style.setProperty('--dx', (10 + hash(i * 13 + 7) * 38).toFixed(1) + 'px');
+                el.style.setProperty('--dy', (8 + hash(i * 13 + 8) * 30).toFixed(1) + 'px');
+                el.style.setProperty('--d', (12 + hash(i * 13 + 9) * 16).toFixed(1) + 's');
+                el.style.setProperty('--sy', '0px');
+                el.style.setProperty('--rot', (-28 + hash(i * 13 + 19) * 56).toFixed(1) + 'deg');
+                el.style.setProperty('--rot3', (-38 + hash(i * 13 + 21) * 76).toFixed(1) + 'deg');
+                el.style.setProperty('--gx', (32 + hash(i * 13 + 22) * 36).toFixed(1) + '%');
+                el.style.setProperty('--gy', (30 + hash(i * 13 + 23) * 40).toFixed(1) + '%');
+                el.style.setProperty('--ang', (hash(i * 13 + 12) * 360).toFixed(1) + 'deg');
+                el.style.setProperty('--br', `${35 + hash(i * 13 + 24) * 28}% ${42 + hash(i * 13 + 25) * 28}% ${34 + hash(i * 13 + 26) * 30}% ${45 + hash(i * 13 + 27) * 25}% / ${48 + hash(i * 13 + 28) * 24}% ${35 + hash(i * 13 + 29) * 28}% ${44 + hash(i * 13 + 30) * 24}% ${36 + hash(i * 13 + 31) * 30}%`);
+                el.dataset.depth = (0.18 + hash(i * 13 + 11) * 1.72).toFixed(3);
+                el.style.animationDelay = (-hash(i * 13 + 10) * 18).toFixed(2) + 's';
+                field.appendChild(el);
+            }
+            ambientBlobEls = [...field.querySelectorAll('.ambient-blob')];
+            updateProgress();
+        })();
+
+        // ── NAV WIRING ── (pass the click event so the badge spawns at the cursor)
+        navLinks.forEach(l => l.addEventListener('click', e => navigate(l.dataset.view, e)));
+        markEl.addEventListener('click', e => navigate('home', e));
+        markEl.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('home'); }
         });
-
-        // work rows → detail
         document.querySelectorAll('[data-detail]').forEach(row => {
-            const go = () => navigate(row.dataset.detail);
-            row.addEventListener('click', go);
-            row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+            row.addEventListener('click', e => navigate(row.dataset.detail, e));
+            row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(row.dataset.detail); } });
         });
-        // back → work
         document.querySelectorAll('[data-back]').forEach(b => {
-            const go = () => navigate('work');
-            b.addEventListener('click', go);
-            b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+            b.addEventListener('click', e => navigate('work', e));
+            b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate('work'); } });
         });
-        // CTAs
         document.querySelectorAll('[data-go]').forEach(el => {
-            const go = () => navigate(el.dataset.go);
-            el.addEventListener('click', go);
-            el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+            el.addEventListener('click', e => navigate(el.dataset.go, e));
+            el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(el.dataset.go); } });
         });
 
         // ── HOTKEYS ──
         const hud = document.getElementById('hud');
         let hudT = null;
         function flash(msg) { hud.textContent = msg; hud.classList.add('show'); clearTimeout(hudT); hudT = setTimeout(() => hud.classList.remove('show'), 1100); }
-        const KEYMAP = { '1': 'services', '2': 'work', '3': 'contact', '4': 'about', '5': 'process' };
+        const KEYMAP = { '1': 'services', '2': 'process', '3': 'work', '4': 'about', '5': 'contact' };
+        const PAGE_LABELS = {
+            home: 'Home',
+            services: 'Method',
+            work: 'Work',
+            about: 'About',
+            process: 'Process',
+            contact: 'Contact'
+        };
         document.addEventListener('keydown', e => {
             if (e.metaKey || e.ctrlKey || e.altKey) return;
             const tag = (e.target.tagName || '').toLowerCase();
             if (tag === 'input' || tag === 'textarea') return;
-            if (e.key === 'Escape') { navigate('home'); flash('home'); return; }
-            if (KEYMAP[e.key]) { navigate(KEYMAP[e.key]); flash(KEYMAP[e.key]); }
+            if (e.key === 'Escape') { navigate('home'); return; }
+            if (KEYMAP[e.key]) {
+                const id = KEYMAP[e.key];
+                navigate(id);
+            }
         });
 
         // ── INTRO ──
-        function start() {
-            const home = document.getElementById('view-home');
-            const delay = REDUCE ? 0 : 900;
-            setFrame('home');
-            updateProgress();
-            // force a reflow to register the start value, then trigger the intro.
-            // No rAF here — it's throttled in background tabs, which would strand
-            // the headline + frame at their hidden start state.
-            void document.body.offsetHeight;
+        // A single preloader counts 0→100, then releases the site in one clean pass.
+        let preloadDone = false;
+        let preloadRaf = null;
+        function finishIntro() {
+            if (preloadDone) return;
+            preloadDone = true;
             body.classList.add('loaded');
-            setTimeout(() => reveal(home), delay);
+            if (preloader) preloader.classList.add('is-done');
+            updateProgress();
+            const homeView = document.getElementById('view-home');
+            if (REDUCE) {
+                document.querySelectorAll('#view-home [data-reveal]').forEach(el => el.classList.add('revealed'));
+                return;
+            }
+            // setTimeout (not rAF) so the reveal still fires if the tab loaded in the
+            // background; the scheduler's own delays handle the rest.
+            setTimeout(() => revealView(homeView), 60);
+            setTimeout(() => { if (preloader && preloader.parentNode) preloader.remove(); }, 650);
+        }
+        function start() {
+            const seenRecently = revealSpeed('home') < 1;   // capture BEFORE marking
+            setFrame('home');
+            markRevealSeen('home');
+            updateProgress();
+
+            if (REDUCE) {
+                if (preloaderPct) preloaderPct.textContent = '100';
+                finishIntro();
+                return;
+            }
+
+            // quiet boot moment — shorter on a recent return
+            const duration = seenRecently ? 620 : 1100;
+            const startAt = performance.now();
+            const tick = now => {
+                const p = Math.min(1, (now - startAt) / duration);
+                const eased = 1 - Math.pow(1 - p, 2.1);
+                const pct = Math.round(eased * 100);
+                if (preloaderPct) preloaderPct.textContent = String(pct).padStart(3, '0');
+                if (p < 1) {
+                    preloadRaf = requestAnimationFrame(tick);
+                    return;
+                }
+                finishIntro();
+            };
+            preloadRaf = requestAnimationFrame(tick);
+            // backstop: rAF is frozen in background tabs — never strand the site
+            // behind the preloader. setTimeout still fires (throttled) when hidden.
+            setTimeout(() => { if (preloaderPct) preloaderPct.textContent = '100'; finishIntro(); }, duration + 500);
         }
         if (document.readyState === 'complete') start();
         else window.addEventListener('load', start);
 
+        // ── HOME SCROLL-SNAP REVEALS ──
+        // Below-hero sections fade up as they snap into view (the hero itself uses
+        // the data-beat score on load).
+        const snapEls = document.querySelectorAll('.view-home .snap-reveal');
+        if (snapEls.length) {
+            if (REDUCE) {
+                snapEls.forEach(el => el.classList.add('is-in'));
+            } else {
+                const io = new IntersectionObserver((entries) => {
+                    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); } });
+                }, { root: document.getElementById('view-home'), threshold: 0.35 });
+                snapEls.forEach(el => io.observe(el));
+            }
+        }
+
         // ── CONTACT FORM ──
         const form = document.getElementById('form');
         if (form) {
-            const send = document.getElementById('send');
+            const send   = document.getElementById('send');
             const notice = document.getElementById('notice');
+            form.querySelectorAll('.pill-row').forEach(row => {
+                const field = row.closest('[data-hidden]');
+                const hidden = field ? document.getElementById(field.dataset.hidden) : null;
+                const multi = !!row.closest('[data-multi]');
+                function syncHidden() {
+                    if (!hidden) return;
+                    hidden.value = [...row.querySelectorAll('.pill.on')].map(p => p.textContent.trim()).join(', ');
+                }
+                row.addEventListener('click', e => {
+                    const pill = e.target.closest('.pill');
+                    if (!pill) return;
+                    if (multi) {
+                        pill.classList.toggle('on');
+                    } else {
+                        row.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+                        pill.classList.add('on');
+                    }
+                    syncHidden();
+                });
+            });
+            const autosize = textarea => {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(textarea.scrollHeight, window.innerHeight * 0.42) + 'px';
+                updateProgress();
+            };
+            form.querySelectorAll('textarea').forEach(textarea => {
+                autosize(textarea);
+                textarea.addEventListener('input', () => autosize(textarea));
+            });
             form.addEventListener('submit', async e => {
                 e.preventDefault();
                 send.disabled = true; send.textContent = 'Sending…';
@@ -1040,7 +2086,7 @@
                     });
                     if (res.ok) {
                         notice.textContent = '✓ Received. We\'ll be in touch.';
-                        notice.classList.add('show', 'ok'); form.reset(); send.textContent = 'Sent';
+                        notice.classList.add('show', 'ok'); form.reset(); form.querySelectorAll('.pill.on').forEach(p => p.classList.remove('on')); form.querySelectorAll('textarea').forEach(autosize); send.textContent = 'Sent';
                     } else {
                         notice.textContent = 'Something went wrong — try emailing directly.';
                         notice.classList.add('show', 'err'); send.disabled = false; send.textContent = 'Send → Killing Floor';
@@ -1052,43 +2098,167 @@
             });
         }
 
-        // ── CUSTOM CURSOR ──
+        // ── CUSTOM CURSOR (corner-bracket reticle + magnetic hover) ──
         if (FINE) {
             const cursor = document.getElementById('cursor');
-            const box = document.getElementById('cursorBox');
-            const label = document.getElementById('cursorLabel');
-            const HIT = 'a, button, [role="link"], [role="button"], .work-row, input, textarea, [data-go], [data-back], [data-detail]';
-            let cx = -100, cy = -100, tx = -100, ty = -100, mx = -1, my = -1, pending = false;
+            const label  = document.getElementById('cursorLabel');
+            const PRESSABLE = 'a, button, [role="link"], [role="button"], .work-row';
+            const HIT    = 'a, button, [role="link"], [role="button"], .work-row, [data-go], [data-back], [data-detail]';
+            const EDITABLE = 'input:not([type="hidden"]), textarea, [contenteditable="true"], [contenteditable=""]';
+            // idle: long arms in a small frame → the two ⌜ ⌟ brackets nearly meet and
+            // read as a closed box (with a centre dot). Arms scale down on hover.
+            const IDLE = 12, IDLE_ARM = 8, PAD = 8;
+            let mx = -100, my = -100;                       // raw pointer
+            // animated box state (top-left + size + arm length), lerped each frame
+            let bx = -100, by = -100, bw = IDLE, bh = IDLE, ba = IDLE_ARM;
+            let target = null;                              // current hover target (or null)
+            let textMode = false;                           // over editable text
+            let visible = false;
 
-            function hover(x, y) {
-                const t = document.elementFromPoint(x, y);
-                const it = t && t.closest(HIT);
-                if (it) {
-                    const r = it.getBoundingClientRect(), p = 6;
-                    box.style.left = (r.left - p) + 'px';
-                    box.style.top = (r.top - p) + 'px';
-                    box.style.width = (r.width + p * 2) + 'px';
-                    box.style.height = (r.height + p * 2) + 'px';
-                    box.classList.add('on');
-                    const lbl = it.dataset.label || '';
-                    if (lbl) {
-                        label.textContent = lbl;
-                        label.style.left = Math.min(Math.max(r.left + r.width / 2, 40), window.innerWidth - 40) + 'px';
-                        label.style.top = Math.max(r.top - p - 22, 6) + 'px';
-                        label.classList.add('on');
-                    } else label.classList.remove('on');
-                } else { box.classList.remove('on'); label.classList.remove('on'); }
+            // a hit target only counts if it's actually VISIBLE: not behind the
+            // transition veils, not inside a [data-reveal] that hasn't revealed yet,
+            // and not computed-hidden.
+            function isHoverable(el) {
+                if (kfTx.classList.contains('on')) return false;
+                const dr = el.closest('[data-reveal]');
+                if (dr && !dr.classList.contains('revealed')) return false;
+                const cs = getComputedStyle(el);
+                if (cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.05) return false;
+                return true;
             }
+            function pickTarget(x, y) {
+                const t = document.elementFromPoint(x, y);
+                const editable = t && t.closest(EDITABLE);
+                if (editable) {
+                    if (target) target.classList.remove('kf-hovered');
+                    target = null;
+                    cursor.classList.remove('is-hover');
+                    cursor.classList.add('is-text');
+                    textMode = true;
+                    label.classList.remove('on');
+                    return;
+                }
+                textMode = false;
+                cursor.classList.remove('is-text');
+                const it = t && t.closest(HIT);
+                const next = (it && isHoverable(it)) ? it : null;
+                if (next !== target) {
+                    if (target) target.classList.remove('kf-hovered');   // un-highlight old
+                    if (next) next.classList.add('kf-hovered');          // highlight new
+                    target = next;
+                }
+                if (target && target.dataset.label) {
+                    label.textContent = target.dataset.label;
+                    label.classList.add('on');
+                } else label.classList.remove('on');
+                cursor.classList.toggle('is-hover', !!target);
+            }
+
             document.addEventListener('mousemove', e => {
-                tx = e.clientX; ty = e.clientY; mx = e.clientX; my = e.clientY;
-                if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; hover(mx, my); }); }
+                mx = e.clientX; my = e.clientY;
+                if (!visible) { visible = true; bx = mx; by = my; }
+                cursor.style.opacity = '1';
+                pickTarget(mx, my);
             }, { passive: true });
-            document.addEventListener('mouseleave', () => { box.classList.remove('on'); label.classList.remove('on'); });
+            document.addEventListener('mouseleave', () => {
+                visible = false;
+                if (target) target.classList.remove('kf-hovered');
+                target = null;
+                textMode = false;
+                cursor.classList.remove('is-text');
+                cursor.classList.remove('is-press');
+                cursor.style.opacity = '0'; label.classList.remove('on');
+            });
+
+            let pressTimer = null;
+            document.addEventListener('pointerdown', e => {
+                const el = e.target.closest(PRESSABLE);
+                if (!el) return;
+                el.classList.add('kf-pressed');
+                cursor.classList.add('is-press');
+                clearTimeout(pressTimer);
+                pressTimer = setTimeout(() => {
+                    el.classList.remove('kf-pressed');
+                    cursor.classList.remove('is-press');
+                }, 180);
+            }, { passive: true });
+            document.addEventListener('pointerup', () => {
+                clearTimeout(pressTimer);
+                cursor.classList.remove('is-press');
+            }, { passive: true });
+            document.addEventListener('pointercancel', () => {
+                clearTimeout(pressTimer);
+                cursor.classList.remove('is-press');
+            }, { passive: true });
+
             (function loop() {
-                cx += (tx - cx) * 0.55; cy += (ty - cy) * 0.55;
-                cursor.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
+                let tgX, tgY, tgW, tgH, tgA, ease;
+                if (textMode) {
+                    tgW = 2; tgH = 22; tgA = 0;
+                    tgX = mx - 1; tgY = my - 11;
+                    ease = 0.38;
+                } else if (target) {
+                    // LOCK fixed onto the element (no pointer nudge) — frame wraps the
+                    // element's bounds + padding, centred on the element.
+                    const r = target.getBoundingClientRect();
+                    tgW = r.width + PAD * 2; tgH = r.height + PAD * 2;
+                    tgX = r.left - PAD; tgY = r.top - PAD;
+                    // arm length scales with the element so brackets stay proportionate
+                    // on large targets (Work rows, big buttons), clamped to sane bounds.
+                    tgA = Math.max(10, Math.min(Math.min(tgW, tgH) * 0.28, 48));
+                    ease = 0.26;            // snap onto the target
+                    label.style.left = Math.min(Math.max(r.left + r.width / 2, 44), window.innerWidth - 44) + 'px';
+                    label.style.top  = Math.max(r.top - PAD - 24, 6) + 'px';
+                } else {
+                    tgW = IDLE; tgH = IDLE; tgA = IDLE_ARM;
+                    tgX = mx - IDLE / 2; tgY = my - IDLE / 2;
+                    ease = 0.32;            // light trailing lag when idle
+                }
+                bx += (tgX - bx) * ease; by += (tgY - by) * ease;
+                bw += (tgW - bw) * ease;  bh += (tgH - bh) * ease;  ba += (tgA - ba) * ease;
+                cursor.style.transform = 'translate3d(' + bx.toFixed(1) + 'px,' + by.toFixed(1) + 'px,0)';
+                cursor.style.width  = bw.toFixed(1) + 'px';
+                cursor.style.height = bh.toFixed(1) + 'px';
+                cursor.style.setProperty('--arm', (textMode ? 0 : ba.toFixed(1)) + 'px');
                 requestAnimationFrame(loop);
             })();
+        }
+
+        // ── SMOOTH SCROLL ──
+        // Home = eased SNAP between rooms (one section per wheel gesture). Inner
+        // views = inertial momentum smoothing. Touch keeps native scroll + CSS snap.
+        if (!REDUCE && window.gsap) {
+            let homeLock = false;
+            const activeView = () => document.querySelector('.view.active');
+
+            window.addEventListener('wheel', (e) => {
+                const v = activeView();
+                if (!v) return;
+                if (kfTx.classList.contains('on')) { e.preventDefault(); return; }  // frozen during transition
+
+                if (v.id === 'view-home') {
+                    const secs = [...v.querySelectorAll('.home-sec')];
+                    if (secs.length < 2) return;
+                    e.preventDefault();
+                    if (homeLock) return;
+                    const dir = e.deltaY > 0 ? 1 : -1;
+                    const cur = Math.round(v.scrollTop / v.clientHeight);
+                    const idx = Math.max(0, Math.min(secs.length - 1, cur + dir));
+                    if (idx === cur) return;
+                    homeLock = true;
+                    gsap.to(v, { scrollTop: secs[idx].offsetTop, duration: 0.9, ease: 'power3.inOut',
+                        onComplete: () => { homeLock = false; } });
+                } else {
+                    const max = v.scrollHeight - v.clientHeight;
+                    if (max <= 4) return;                          // nothing to scroll
+                    e.preventDefault();
+                    const base = (v._st == null ? v.scrollTop : v._st);
+                    const tgt  = Math.max(0, Math.min(max, base + e.deltaY));
+                    v._st = tgt;
+                    gsap.to(v, { scrollTop: tgt, duration: 0.65, ease: 'power3.out', overwrite: true,
+                        onComplete: () => { v._st = null; } });
+                }
+            }, { passive: false });
         }
     })();
     </script>
