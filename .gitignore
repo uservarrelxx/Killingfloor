@@ -1,0 +1,8 @@
+# macOS metadata
+.DS_Store
+
+# local scratch / backup copies of index.html
+*.backup
+index*backup*
+index-manifesto.html
+index before redesign.html
