@@ -285,6 +285,12 @@
         .index a:hover .n, .index a.active .n { color: var(--white); }
         .index a:hover::after, .index a.active::after { transform: scaleX(1); }
 
+        .mobile-dock,
+        .mobile-menu-trigger,
+        .mobile-menu {
+            display: none;
+        }
+
         /* bottom-right location + count */
         .count { bottom: clamp(18px, 3.2vh, 34px); right: var(--gutter); color: var(--w40); text-align: right; }
         .count .here { color: var(--white); }
@@ -816,14 +822,16 @@
         body.scrollable #progress { opacity: 1; }
         .progress-tick {
             position: absolute;
-            left: 0;
-            height: 3px;
+            left: 50%;
+            width: 6px;
+            height: 6px;
             border-radius: 999px;
-            background: rgba(239,231,223,0.46);
-            transform-origin: left center;
+            background: rgba(239,231,223,0.38);
+            transform-origin: center;
             transition:
                 top 0.22s var(--ease-out),
                 width 0.18s var(--ease-out),
+                height 0.18s var(--ease-out),
                 transform 0.18s var(--ease-out),
                 background-color 0.18s ease,
                 opacity 0.18s ease;
@@ -833,7 +841,7 @@
             opacity: 1;
         }
         .progress-tick.is-section {
-            height: 3px;
+            width: 6px;
         }
 
         /* ════════════════════════════════════════════
@@ -962,11 +970,238 @@
             .work-row { grid-template-columns: 2em 1fr; }
             .work-tag { display: none; }
         }
+        @media (max-width: 760px) {
+            :root {
+                --gutter: clamp(24px, 7vw, 34px);
+            }
+            #hud { display: none; }
+            .mark,
+            .index,
+            .count {
+                display: none;
+            }
+            #progress {
+                top: clamp(86px, 13vh, 118px);
+                right: calc(var(--gutter) + env(safe-area-inset-right));
+                bottom: calc(92px + env(safe-area-inset-bottom));
+                left: auto;
+                width: 14px;
+            }
+            .progress-tick {
+                left: 50%;
+                right: auto;
+                transform-origin: center;
+            }
+            .mobile-dock {
+                position: fixed;
+                left: calc(var(--gutter) + env(safe-area-inset-left));
+                right: calc(var(--gutter) + env(safe-area-inset-right));
+                bottom: calc(14px + env(safe-area-inset-bottom));
+                z-index: 84;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+                align-items: center;
+                min-height: 50px;
+                border: 1px solid rgba(239,231,223,0.16);
+                border-radius: 4px;
+                background:
+                    linear-gradient(180deg, rgba(13,8,7,0.94), rgba(7,4,3,0.98)),
+                    linear-gradient(90deg, rgba(125,57,37,0.08), transparent 36%, transparent 64%, rgba(239,231,223,0.035));
+                box-shadow: 0 18px 42px rgba(0,0,0,0.30);
+                pointer-events: auto;
+            }
+            .mobile-dock::before,
+            .mobile-dock::after {
+                content: '';
+                position: absolute;
+                top: 9px;
+                bottom: 9px;
+                width: 1px;
+                background: var(--w20);
+                pointer-events: none;
+            }
+            .mobile-dock::before { left: calc(50% - 31px); }
+            .mobile-dock::after { right: calc(50% - 31px); }
+            .mobile-dock-brand,
+            .mobile-dock-count {
+                min-width: 0;
+                border: 0;
+                background: transparent;
+                color: var(--w60);
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 9px;
+                letter-spacing: 0.14em;
+                line-height: 1.45;
+                text-transform: uppercase;
+            }
+            .mobile-dock-brand {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+                padding: 0 0 0 14px;
+                text-align: left;
+            }
+            .mobile-dock-brand span:first-child,
+            .mobile-dock-count span:first-child {
+                color: var(--white);
+            }
+            .mobile-dock-count {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 2px;
+                padding: 0 14px 0 0;
+                text-align: right;
+            }
+            .mobile-menu-trigger {
+                position: relative;
+                z-index: 2;
+                justify-self: center;
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 34px;
+                height: 34px;
+                margin: 0;
+                pointer-events: auto;
+                border: 1px solid rgba(239,231,223,0.22);
+                border-radius: 3px;
+                background:
+                    linear-gradient(180deg, rgba(239,231,223,0.055), rgba(239,231,223,0.015)),
+                    rgba(8,5,3,0.72);
+                color: var(--ink);
+                box-shadow: inset 0 0 0 1px rgba(0,0,0,0.28);
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 8px;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+            }
+            .mobile-menu-trigger::before,
+            .mobile-menu-trigger::after { content: none; }
+            .mobile-trigger-mark {
+                display: none;
+            }
+            .mobile-trigger-label {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                white-space: nowrap;
+            }
+            .mobile-menu {
+                position: fixed;
+                inset: 0;
+                z-index: 82;
+                display: block;
+                visibility: hidden;
+                pointer-events: none;
+            }
+            .mobile-menu.open {
+                visibility: visible;
+                pointer-events: auto;
+            }
+            .mobile-menu-veil {
+                position: absolute;
+                inset: 0;
+                border: 0;
+                background:
+                    linear-gradient(180deg, rgba(4,3,3,0.18), rgba(4,3,3,0.78)),
+                    rgba(4,3,3,0.34);
+                opacity: 0;
+                transition: opacity 0.38s var(--ease-out);
+            }
+            .mobile-menu.open .mobile-menu-veil {
+                opacity: 1;
+            }
+            .mobile-menu-panel {
+                position: absolute;
+                left: calc(var(--gutter) + env(safe-area-inset-left));
+                right: calc(var(--gutter) + env(safe-area-inset-right));
+                bottom: calc(76px + env(safe-area-inset-bottom));
+                width: auto;
+                padding: 18px clamp(18px, 6vw, 26px) 20px;
+                display: flex;
+                flex-direction: column;
+                background:
+                    linear-gradient(180deg, rgba(20,10,7,0.98), rgba(7,4,3,0.99)),
+                    radial-gradient(ellipse at 12% 14%, rgba(125,57,37,0.20), transparent 55%);
+                border: 1px solid var(--w20);
+                border-radius: 18px;
+                box-shadow: 0 24px 80px rgba(0,0,0,0.44);
+                opacity: 0;
+                transform: translateY(18px) scale(0.98);
+                transform-origin: 50% 100%;
+                transition: opacity 0.32s ease, transform 0.46s var(--ease);
+            }
+            .mobile-menu.open .mobile-menu-panel {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            .mobile-menu-kicker,
+            .mobile-menu-meta {
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 10px;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: var(--w40);
+            }
+            .mobile-menu-kicker {
+                margin-bottom: 12px;
+            }
+            .mobile-menu-link {
+                width: 100%;
+                min-height: 46px;
+                display: grid;
+                grid-template-columns: 3.2em 1fr;
+                align-items: baseline;
+                gap: 1.1em;
+                border: 0;
+                border-top: 1px solid var(--w20);
+                background: transparent;
+                color: var(--w60);
+                text-align: left;
+                font: inherit;
+                padding: 12px 0;
+            }
+            .mobile-menu-link:last-of-type {
+                border-bottom: 1px solid var(--w20);
+            }
+            .mobile-menu-link span {
+                font-family: 'IBM Plex Mono', monospace;
+                font-size: 11px;
+                letter-spacing: 0.18em;
+                color: var(--ink40);
+            }
+            .mobile-menu-link strong {
+                font-family: 'Barlow', sans-serif;
+                font-size: 18px;
+                font-weight: 500;
+                letter-spacing: 0;
+                text-transform: none;
+                color: currentColor;
+            }
+            .mobile-menu-link.active,
+            .mobile-menu-link:focus-visible {
+                color: var(--white);
+            }
+            .mobile-menu-link.active span {
+                color: var(--rust);
+            }
+            .mobile-menu-meta {
+                margin-top: auto;
+                line-height: 1.7;
+            }
+            .mobile-menu-meta span {
+                color: var(--white);
+            }
+        }
         @media (max-width: 560px) {
-            .index { gap: 12px; font-size: 11px; }
-            .count { display: none; }
             .home-foot { flex-direction: column; align-items: flex-start; gap: 22px; }
-            .scroll-hint { left: 50%; bottom: 64px; transform: translateX(-50%); }
+            .scroll-hint { left: 50%; bottom: calc(112px + env(safe-area-inset-bottom)); transform: translateX(-50%); }
+            .view-home > .wrap { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
         }
 
 
@@ -1220,6 +1455,31 @@
             <a data-view="contact"  data-key="5"><span class="n">05</span>Contact</a>
         </nav>
         <div class="count" id="count"><span class="here">Vancouver</span><br><span id="count-n">00 / 05</span></div>
+    </div>
+
+    <div class="mobile-dock" id="mobileDock" aria-label="Mobile site controls">
+        <button class="mobile-dock-brand" id="mobileDockBrand" type="button" aria-label="Killing Floor — home">
+            <span>Killing Floor</span><span>©2026</span>
+        </button>
+        <button class="mobile-menu-trigger" id="mobileMenuTrigger" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileMenu">
+            <span class="mobile-trigger-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="mobile-trigger-label">Index</span>
+        </button>
+        <div class="mobile-dock-count" aria-live="polite">
+            <span>Vancouver</span><span id="mobileCountN">00 / 05</span>
+        </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <button class="mobile-menu-veil" id="mobileMenuVeil" type="button" aria-label="Close navigation"></button>
+        <nav class="mobile-menu-panel" aria-label="Mobile navigation">
+            <div class="mobile-menu-kicker">Navigation</div>
+            <button class="mobile-menu-link" type="button" data-mobile-view="services"><span>01</span><strong>Method</strong></button>
+            <button class="mobile-menu-link" type="button" data-mobile-view="process"><span>02</span><strong>Process</strong></button>
+            <button class="mobile-menu-link" type="button" data-mobile-view="work"><span>03</span><strong>Work</strong></button>
+            <button class="mobile-menu-link" type="button" data-mobile-view="about"><span>04</span><strong>About</strong></button>
+            <button class="mobile-menu-link" type="button" data-mobile-view="contact"><span>05</span><strong>Contact</strong></button>
+            <div class="mobile-menu-meta">Vancouver<br><span id="mobileMenuCountN">00 / 05</span></div>
+        </nav>
     </div>
 
     <div id="progress"></div>
@@ -1531,6 +1791,13 @@
         const preloaderPct = document.getElementById('preloaderPct');
         const views    = [...document.querySelectorAll('.view')];
         const navLinks = [...document.querySelectorAll('.index a')];
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuTrigger = document.getElementById('mobileMenuTrigger');
+        const mobileMenuVeil = document.getElementById('mobileMenuVeil');
+        const mobileDockBrand = document.getElementById('mobileDockBrand');
+        const mobileCountN = document.getElementById('mobileCountN');
+        const mobileMenuCountN = document.getElementById('mobileMenuCountN');
+        const mobileMenuLinks = [...document.querySelectorAll('[data-mobile-view]')];
         const countN   = document.getElementById('count-n');
         const progress = document.getElementById('progress');
         const ORDER    = { services: 1, process: 2, work: 3, about: 4, contact: 5 };
@@ -1722,7 +1989,10 @@
             const base = id.startsWith('work-') ? 'work' : id;
             body.dataset.view = base;
             navLinks.forEach(l => l.classList.toggle('active', l.dataset.view === base));
+            mobileMenuLinks.forEach(l => l.classList.toggle('active', l.dataset.mobileView === base));
             countN.textContent = pad(ORDER[base] || 0) + ' / 05';
+            if (mobileCountN) mobileCountN.textContent = pad(ORDER[base] || 0) + ' / 05';
+            if (mobileMenuCountN) mobileMenuCountN.textContent = pad(ORDER[base] || 0) + ' / 05';
         }
 
         // ── PAGE SWIPE ──
@@ -1855,7 +2125,7 @@
             const cur  = document.querySelector('.view.active');
             if (!next || next === cur) return;
             navLock = true;
-            flash(PAGE_LABELS[id] || id);
+            if (window.matchMedia('(min-width: 761px)').matches) flash(PAGE_LABELS[id] || id);
 
             if (REDUCE) {
                 if (cur) { hideView(cur); cur.classList.remove('active'); }
@@ -1899,19 +2169,23 @@
 
         function setTickShape(tick, position, activePosition, count, mode) {
             const distance = Math.abs(position - activePosition);
-            const influence = Math.max(0, 1 - distance / (mode === 'sections' ? 0.16 : 0.14));
+            const influence = Math.max(0, 1 - distance / (mode === 'sections' ? 0.075 : 0.09));
             const eased = influence * influence * (3 - 2 * influence);
             const width = mode === 'sections'
-                ? 6 + eased * 7
-                : 4 + eased * 7;
+                ? 6 + eased * 2
+                : 5 + eased * 3;
+            const height = mode === 'sections'
+                ? 6 + eased * 20
+                : 5 + eased * 22;
             const opacity = mode === 'sections'
-                ? 0.32 + eased * 0.58
-                : 0.22 + eased * 0.68;
+                ? 0.26 + eased * 0.70
+                : 0.20 + eased * 0.72;
             const endpointInset = (0.5 - position) * 18;
             tick.style.top = 'calc(' + (position * 100).toFixed(3) + '% + ' + endpointInset.toFixed(2) + 'px)';
             tick.style.width = width.toFixed(2) + 'px';
+            tick.style.height = height.toFixed(2) + 'px';
             tick.style.opacity = opacity.toFixed(3);
-            tick.style.transform = 'translate(0, -50%)';
+            tick.style.transform = 'translate(-50%, -50%)';
             tick.classList.toggle('is-current', distance < (mode === 'sections' ? 0.01 : 0.018));
         }
 
@@ -1970,11 +2244,8 @@
             const ratio = scrollable ? v.scrollTop / (v.scrollHeight - v.clientHeight) : 0;
             const count = 10;
             ensureProgressTicks(v, count, 'continuous');
-            const tickStep = 0.052;
-            const span = tickStep * (count - 1);
-            const center = Math.max(span / 2, Math.min(1 - span / 2, ratio));
             progressTicks.forEach((tick, i) => {
-                const position = center + (i - (count - 1) / 2) * tickStep;
+                const position = count === 1 ? 0 : i / (count - 1);
                 setTickShape(tick, position, ratio, count, 'continuous');
             });
         }
@@ -2036,6 +2307,32 @@
         })();
 
         // ── NAV WIRING ── (pass the click event so the badge spawns at the cursor)
+        function setMobileMenu(open) {
+            if (!mobileMenu || !mobileMenuTrigger) return;
+            mobileMenu.classList.toggle('open', open);
+            body.classList.toggle('mobile-menu-open', open);
+            mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+            mobileMenuTrigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            mobileMenuTrigger.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+        }
+        mobileMenuTrigger?.addEventListener('click', () => {
+            setMobileMenu(!mobileMenu?.classList.contains('open'));
+        });
+        mobileDockBrand?.addEventListener('click', e => {
+            setMobileMenu(false);
+            navigate('home', e);
+        });
+        mobileMenuVeil?.addEventListener('click', () => setMobileMenu(false));
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                setMobileMenu(false);
+                navigate(link.dataset.mobileView, e);
+            });
+        });
+        const desktopNavMQ = window.matchMedia('(min-width: 761px)');
+        desktopNavMQ.addEventListener?.('change', e => { if (e.matches) setMobileMenu(false); });
+
         navLinks.forEach(l => l.addEventListener('click', e => navigate(l.dataset.view, e)));
         markEl.addEventListener('click', e => navigate('home', e));
         markEl.addEventListener('keydown', e => {
@@ -2071,7 +2368,11 @@
             if (e.metaKey || e.ctrlKey || e.altKey) return;
             const tag = (e.target.tagName || '').toLowerCase();
             if (tag === 'input' || tag === 'textarea') return;
-            if (e.key === 'Escape') { navigate('home'); return; }
+            if (e.key === 'Escape') {
+                if (mobileMenu?.classList.contains('open')) { setMobileMenu(false); return; }
+                navigate('home');
+                return;
+            }
             if (KEYMAP[e.key]) {
                 const id = KEYMAP[e.key];
                 navigate(id);
