@@ -1199,9 +1199,9 @@
             }
         }
         @media (max-width: 560px) {
-            .home-foot { flex-direction: column; align-items: flex-start; gap: 22px; }
+            .home-foot { flex-direction: column; align-items: flex-start; gap: 16px; }
             .scroll-hint { left: 50%; bottom: calc(112px + env(safe-area-inset-bottom)); transform: translateX(-50%); }
-            .view-home > .wrap { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+            .view-home > .wrap { padding-bottom: calc(126px + env(safe-area-inset-bottom)); }
         }
 
 
@@ -1233,7 +1233,7 @@
         .view-home .headline .w2 i { transition-delay: 0.22s; }
         .view-home .headline .w3 i { transition-delay: 0.34s; }
         .home-foot {
-            display: flex; align-items: flex-end; justify-content: space-between;
+            display: flex; align-items: flex-start; justify-content: space-between;
             gap: 3vw; margin-top: clamp(32px, 6vh, 72px); flex-wrap: wrap;
         }
         .home-message {
@@ -1249,6 +1249,7 @@
             align-items: flex-start;
             gap: 14px;
             margin-left: auto;
+            max-width: 36em;
         }
         .tagline {
             font-weight: 500; font-size: clamp(18px, 2vw, 30px);
@@ -1407,10 +1408,24 @@
             box-shadow: none;
         }
         @media (max-width: 560px) {
-            .home-foot { flex-direction: column; align-items: flex-start; gap: 22px; }
+            .home-foot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                margin-top: clamp(22px, 4vh, 34px);
+            }
             .home-message { max-width: none; }
-            .home-actions { margin-left: 0; }
-            .hero-support { max-width: none; }
+            .home-actions {
+                margin-left: 0;
+                gap: 10px;
+                max-width: none;
+            }
+            .hero-support {
+                max-width: none;
+                font-size: 10px;
+                line-height: 1.55;
+                letter-spacing: 0.14em;
+            }
             .home-cta { white-space: normal; }
             .home-scroll-inner { grid-template-columns: 1fr; }
             .home-scroll-inner .split-label,
@@ -1502,10 +1517,10 @@
                             <span class="tl" data-reveal data-beat="1150">you're either structured,</span>
                             <span class="tl" data-reveal data-beat="1700">or slaughtered.</span>
                         </p>
-                        <div class="hero-support" data-reveal data-beat="620">A full-cycle creative consultancy for founder-led companies that need clearer strategy, sharper messaging, and better systems.</div>
-                        <div class="hero-support" data-reveal data-beat="360">Positioning, copy, websites, print, video, and operating tools. Built in a focused 4-6 week sprint.</div>
                     </div>
                     <div class="home-actions" data-reveal-group>
+                        <div class="hero-support" data-reveal data-beat="620">A full-cycle creative consultancy for founder-led companies that need clearer strategy, sharper messaging, and better systems.</div>
+                        <div class="hero-support" data-reveal data-beat="360">Positioning, copy, websites, print, video, and operating tools. Built in a focused 4-6 week sprint.</div>
                         <div class="capacity-note" data-reveal data-beat="340">02 of 06 open / Q3 2026</div>
                         <span class="home-cta" data-reveal data-beat="360" data-go="contact" role="button" tabindex="0" data-label="apply">Apply for an engagement →</span>
                     </div>
@@ -1881,14 +1896,22 @@
 
         function revealView(view) {
             clearRevealTimers();
-            markRevealSeen(view.id);                 // returning-visitor speedup, per view
             const isHome = view.id === 'view-home';
+            const speed = revealSpeed(view.id);      // 0.58 if seen recently, else 1
+            markRevealSeen(view.id);                 // returning-visitor speedup, per view
+            const revealables = [...view.querySelectorAll('[data-reveal]')];
+            revealables.forEach(el => {
+                el.classList.remove('revealed');
+                el.style.willChange = '';
+            });
+            // Commit the hidden state before timed reveals add .revealed back. Without
+            // this, revisited views can skip the fade because the browser coalesces
+            // remove/add into one visual state.
+            void view.offsetHeight;
             if (REDUCE) {
-                view.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('revealed'));
+                revealables.forEach(el => el.classList.add('revealed'));
                 return;
             }
-            const speed = revealSpeed(view.id);      // 0.58 if seen recently, else 1
-
             // pacing (ms) — slow, emotional stagger. Each item's pause is its own
             // data-beat (hand-scored, escalating) so lines land like delivered speech;
             // grouping only guarantees reading order, it doesn't rush the cadence.
@@ -1898,7 +1921,6 @@
             const beatOf = el => (el.dataset.beat ? parseInt(el.dataset.beat, 10) : DEFAULT_BEAT) * speed;
 
             // ── build groups in reading (DOM) order ──
-            const revealables = [...view.querySelectorAll('[data-reveal]')];
             const groupMap = new Map();
             const groups = [];
             revealables.forEach(el => {
@@ -2012,8 +2034,22 @@
         // onComplete never fires; a timeline always advances and we release the
         // lock in onComplete, with a hard safety timeout as a final backstop.
         let txSafety = null;
+        let txCounterHasRun = false;
+        function transitionNeedsCounter(next) {
+            if (!txCounterHasRun) return true;
+            if (!next) return false;
+            const media = [...next.querySelectorAll('img, video')];
+            return media.some(el => {
+                if (el.tagName === 'IMG') return !el.complete;
+                if (el.tagName === 'VIDEO') return el.readyState < 2;
+                return false;
+            });
+        }
+
         function environmentShift(id, cur, next) {
             const txSpeed = transitionSpeed(id);
+            const showCounter = transitionNeedsCounter(next);
+            if (showCounter) txCounterHasRun = true;
             kfTx.classList.add('on');
             gsap.killTweensOf([kfTxPanelSite, kfTxPanelIntro, kfTxCounter, cur, next].filter(Boolean));
 
@@ -2035,7 +2071,6 @@
                 next.classList.add('active');
                 gsap.set(next, { opacity: 1, filter: 'none' });  // staged visible, content beats still hidden
                 setFrame(id);
-                markRevealSeen(id);
                 scrambleMark();
                 updateProgress();
             };
@@ -2055,7 +2090,7 @@
                 navLock = false;
             };
 
-            const load = { value: 8 };
+            const load = { value: txSpeed < 1 ? 18 : 8 };
             const tl = gsap.timeline({ onComplete: finish });
 
             // 1 · SWIPE ONE (cover) — A wipes in solid while the old page fades out.
@@ -2065,33 +2100,39 @@
             // swap the site underneath the now fully-covering solid panel
             tl.add(doSwap, 0.62 * txSpeed);
 
-            // 2 · COUNTER — on the solid cover, counts 1→100 and HOLDS at 100. It is
-            //    NOT faded out here — veil 2 is what removes it.
-            tl.set(kfTxCounter, { display: 'block', opacity: 0, y: 6, '--load': txSpeed < 1 ? 0.18 : 0.08 }, 0.72 * txSpeed);
-            tl.to(kfTxCounter, { opacity: 1, y: 0, duration: 0.22 * txSpeed, ease: 'power2.out' }, 0.74 * txSpeed);
-            tl.to(load, {
-                value: 100, duration: 0.72 * txSpeed, ease: 'power2.out',
-                onUpdate: () => {
-                    const pct = Math.max(1, Math.min(100, Math.round(load.value)));
-                    kfTxCounter.textContent = String(pct).padStart(3, '0') + '%';
-                    kfTxCounter.style.setProperty('--load', String(pct / 100));
-                }
-            }, 0.98 * txSpeed);
+            // 2 · COUNTER — only for the first transition, or when destination media
+            //    genuinely is not ready yet. Warm transitions skip straight to swipe 2.
+            let revealStart = 0.82 * txSpeed;
+            let revealMid = 1.36 * txSpeed;
+            if (showCounter) {
+                tl.set(kfTxCounter, { display: 'block', opacity: 0, y: 6, '--load': txSpeed < 1 ? 0.18 : 0.08 }, 0.72 * txSpeed);
+                tl.to(kfTxCounter, { opacity: 1, y: 0, duration: 0.22 * txSpeed, ease: 'power2.out' }, 0.74 * txSpeed);
+                tl.to(load, {
+                    value: 100, duration: 0.72 * txSpeed, ease: 'power2.out',
+                    onUpdate: () => {
+                        const pct = Math.max(1, Math.min(100, Math.round(load.value)));
+                        kfTxCounter.textContent = String(pct).padStart(3, '0') + '%';
+                        kfTxCounter.style.setProperty('--load', String(pct / 100));
+                    }
+                }, 0.98 * txSpeed);
+                revealStart = 2.1 * txSpeed;
+                revealMid = 2.7 * txSpeed;
+            }
 
             // 3 · SWIPE TWO (reveal) — ONE continuous, constant-speed sweep across
             //    (no ease, no stop): B travels left → right in a single motion. Its
             //    solid body conceals the counter + cover; its soft tail uncovers the
             //    new page. At the midpoint (B fully covers) we silently remove the
             //    cover + counter behind it — without touching B's motion.
-            tl.to(kfTxPanelIntro, { xPercent: 130, duration: 1.2 * txSpeed, ease: 'none' }, 2.1 * txSpeed);
+            tl.to(kfTxPanelIntro, { xPercent: 130, duration: 1.0 * txSpeed, ease: 'none' }, revealStart);
             tl.add(() => {
                 gsap.set(kfTxPanelSite, { xPercent: 130 });          // remove cover behind B
                 gsap.set(kfTxCounter, { display: 'none', opacity: 0 });
-            }, 2.7 * txSpeed);   // midpoint: B at xPercent 0, fully covering
+            }, revealMid);   // midpoint: B at xPercent 0, fully covering
 
             // hard backstop: if the ticker stalls mid-timeline, never leave nav locked.
             clearTimeout(txSafety);
-            txSafety = setTimeout(() => { tl.kill(); finish(); }, 5000);
+            txSafety = setTimeout(() => { tl.kill(); finish(); }, showCounter ? 5000 : 3000);
         }
 
         const markEl    = document.getElementById('mark');
