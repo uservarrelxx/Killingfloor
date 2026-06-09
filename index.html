@@ -142,7 +142,6 @@
                 linear-gradient(var(--ang), rgba(var(--c), 0.18), rgba(0,0,0,0) 62%);
             transform: translate3d(-50%, calc(-50% + var(--sy, 0px)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp));
             animation: blob-drift var(--d) ease-in-out infinite alternate;
-            will-change: transform;
         }
         @keyframes blob-drift {
             0%   { transform: translate3d(calc(-50% - var(--dx)), calc(-50% + var(--sy, 0px) - var(--dy)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp)) scale(0.96); }
@@ -307,7 +306,6 @@
             45%  { transform: translateY(1px) scale(0.985); box-shadow: inset 0 0 0 1px var(--white); }
             100% { transform: translateY(0) scale(1); box-shadow: none; }
         }
-        .pill.kf-pressed,
         .send.kf-pressed,
         .home-cta.kf-pressed,
         .split-cta.kf-pressed,
@@ -315,6 +313,16 @@
             background: rgba(239,231,223,0.14);
             border-color: var(--white);
             color: var(--white);
+        }
+        .pill.kf-pressed {
+            background: rgba(239,231,223,0.035);
+            border-color: rgba(239,231,223,0.28);
+            color: var(--w85);
+        }
+        .pill.on.kf-pressed {
+            background: rgba(239,231,223,0.06);
+            border-color: var(--ink40);
+            color: var(--ink);
         }
         .cursor.is-press .c-fill { opacity: 0.12; }
 
@@ -340,17 +348,34 @@
             min-height: 100%;
         }
 
-        /* CSS transition reveals — blur clears as the element lands; it arrives, it
-           doesn't travel. NOTE: no persistent will-change here — the scheduler adds it
-           just before each reveal and strips it on transitionend, so we never pin a
-           GPU layer on dozens of idle elements. The slow stagger also means only one
-           or two blurs animate at once, which is what keeps it cheap. */
+        /* CSS transition reveals. Most elements use cheap opacity/position;
+           blur is reserved for major title moments below. */
         [data-reveal] {
             opacity: 0;
-            filter: blur(7px);
-            transition: opacity 0.95s var(--ease-out), filter 0.95s var(--ease-out);
+            transform: translate3d(0, 10px, 0);
+            transition:
+                opacity 0.75s var(--ease-out),
+                transform 0.75s var(--ease-out),
+                filter 0.75s var(--ease-out);
         }
-        [data-reveal].revealed { opacity: 1; filter: blur(0); }
+        [data-reveal].revealed {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+        .tl[data-reveal],
+        .v-head[data-reveal],
+        .split-title[data-reveal],
+        .home-scroll-inner .split-title[data-reveal],
+        .contact-lead[data-reveal] {
+            filter: blur(4px);
+        }
+        .tl[data-reveal].revealed,
+        .v-head[data-reveal].revealed,
+        .split-title[data-reveal].revealed,
+        .home-scroll-inner .split-title[data-reveal].revealed,
+        .contact-lead[data-reveal].revealed {
+            filter: blur(0);
+        }
 
         /* ── view heading shared rhythm ── */
         .v-head {
@@ -626,6 +651,14 @@
             display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
             letter-spacing: 0.24em; text-transform: uppercase; color: var(--w40); padding: 14px 0 4px;
         }
+        .field-help {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--w40);
+            margin: -2px 0 10px;
+        }
         .field input, .field textarea {
             width: 100%; background: transparent; border: none; outline: none;
             font-family: 'Barlow', sans-serif; font-weight: 500; font-size: clamp(15px,1.2vw,19px);
@@ -657,11 +690,23 @@
             cursor: pointer;
             transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
-        .pill:hover,
-        .pill.on {
+        .pill:hover {
+            color: var(--w85);
+            border-color: rgba(239,231,223,0.24);
+            background: rgba(239,231,223,0.025);
+        }
+        .pill.on,
+        .pill.on:hover {
             color: var(--ink);
             border-color: var(--ink40);
             background: rgba(239,231,223,0.055);
+        }
+        .field.is-invalid {
+            border-top-color: rgba(255,110,64,0.62);
+        }
+        .field.is-invalid label,
+        .field.is-invalid .field-help {
+            color: #ff7a45;
         }
         .send {
             margin-top: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 13px;
@@ -1174,8 +1219,8 @@
                             <span class="tl" data-reveal data-beat="1150">you're either structured,</span>
                             <span class="tl" data-reveal data-beat="1700">or slaughtered.</span>
                         </p>
-                        <div class="hero-support" data-reveal data-beat="620">We work with founder-led companies that have outgrown the systems that built them.</div>
-                        <div class="hero-support" data-reveal data-beat="360">12-week sprint: discovery, build, rollout. One principal throughout.</div>
+                        <div class="hero-support" data-reveal data-beat="620">A full-cycle creative consultancy for founder-led companies that need clearer strategy, sharper messaging, and better systems.</div>
+                        <div class="hero-support" data-reveal data-beat="360">Positioning, copy, websites, print, video, and operating tools. Built in a focused 4-6 week sprint.</div>
                     </div>
                     <div class="home-actions" data-reveal-group>
                         <div class="capacity-note" data-reveal data-beat="340">02 of 06 open / Q3 2026</div>
@@ -1190,23 +1235,23 @@
             <div class="home-scroll-section">
                 <div class="home-scroll-inner snap-reveal" data-reveal-group>
                     <div class="split-label" data-reveal data-beat="280">The diagnosis</div>
-                    <h2 class="split-title" data-reveal data-beat="680">Success creates complexity. Complexity creates friction.</h2>
-                    <p data-reveal data-beat="980">At first, momentum hides the cracks. Then positioning blurs, decisions slow down, communication fragments, and execution gets inconsistent. The cost is not effort. It is accumulated confusion.</p>
+                    <h2 class="split-title" data-reveal data-beat="680">Growth exposes unclear systems.</h2>
+                    <p data-reveal data-beat="980">When the company gets louder, weak positioning, scattered messaging, slow decisions, and inconsistent execution become expensive. We find the source of the friction and rebuild around it.</p>
                     <span class="split-cta" data-reveal data-beat="760" data-go="services" role="button" tabindex="0" data-label="method">See the method →</span>
                 </div>
             </div>
             <div class="home-scroll-section">
                 <div class="home-scroll-inner snap-reveal" data-reveal-group>
                     <div class="split-label" data-reveal data-beat="280">The intervention</div>
-                    <h2 class="split-title" data-reveal data-beat="760">We rebuild the system behind the business.</h2>
-                    <p data-reveal data-beat="980">Positioning, messaging, identity, and operating structure are not separate problems. We identify the bottleneck, reshape the system, and leave the company easier to explain and easier to run.</p>
+                    <h2 class="split-title" data-reveal data-beat="760">We turn strategy into usable assets.</h2>
+                    <p data-reveal data-beat="980">You leave with the language, collateral, website direction, campaign materials, and internal tools needed to explain the company clearly and operate with less drag.</p>
                     <span class="split-cta" data-reveal data-beat="780" data-go="services" role="button" tabindex="0" data-label="method">See the method →</span>
                 </div>
             </div>
             <div class="home-scroll-section home-scroll-section--close">
                 <div class="home-scroll-inner snap-reveal" data-reveal-group>
                     <div class="split-label" data-reveal data-beat="280">Proof</div>
-                    <h2 class="split-title" data-reveal data-beat="760">When the system holds, output becomes easier to trust.</h2>
+                    <h2 class="split-title" data-reveal data-beat="760">Clearer systems produce clearer outcomes.</h2>
                     <div class="proof-list">
                         <div class="proof-row" data-reveal data-beat="520">
                             <span class="proof-k">North &amp; Vector</span>
@@ -1232,18 +1277,18 @@
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">01</span><h2 class="v-title">Method</h2></div>
                 <div class="svc" data-reveal data-beat="860">
                     <span class="svc-n">01</span>
-                    <span class="svc-name">Positioning</span>
-                    <span class="svc-desc">Clarify what the company is, who it is for, and why it should be believed now. The story has to hold before the design can matter.</span>
+                    <span class="svc-name">Strategy and positioning</span>
+                    <span class="svc-desc">Define what you do, who it is for, why it matters, and what the market should remember. This becomes the source for every asset that follows.</span>
                 </div>
                 <div class="svc" data-reveal data-beat="1080">
                     <span class="svc-n">02</span>
-                    <span class="svc-name">Messaging</span>
-                    <span class="svc-desc">Language that makes customers, employees, and investors understand the same company. Fewer claims, cleaner decisions, better sales conversations.</span>
+                    <span class="svc-name">Creative system</span>
+                    <span class="svc-desc">Build the words and materials customers actually see: copy, website structure, brand language, print collateral, video direction, and campaign concepts.</span>
                 </div>
                 <div class="svc" data-reveal data-beat="940">
                     <span class="svc-n">03</span>
-                    <span class="svc-name">Operating Structure</span>
-                    <span class="svc-desc">Decision-making cadence, internal rhythm, and delivery systems built for growth. The work that keeps clarity from collapsing after the first good quarter.</span>
+                    <span class="svc-name">Operating structure</span>
+                    <span class="svc-desc">Install the internal tools that keep the work consistent: decision rules, content systems, launch checklists, meeting rhythm, and ownership maps.</span>
                 </div>
             </div>
         </section>
@@ -1253,10 +1298,10 @@
         <section class="view" id="view-about" aria-label="About">
             <div class="wrap">
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">04</span><h2 class="v-title">About</h2></div>
-                <p class="about-lead" data-reveal data-beat="1050">One consultant. Every engagement. No hand-offs.</p>
+                <p class="about-lead" data-reveal data-beat="1050">One principal leads the work from first call to final handoff.</p>
                 <div class="about-body">
-                    <p data-reveal data-beat="1100">The work that actually moves a company — positioning, voice, operating structure — gets diluted the moment it passes through layers. So it doesn't. Every client works directly with the principal, from the first call to the final handoff.</p>
-                    <p data-reveal data-beat="880">Agency-side, then operator-side, then here. That's the only order that makes sense. Six engagements per year keeps it that way.</p>
+                    <p data-reveal data-beat="1100">Killing Floor is built for companies that need senior thinking without agency layers. Strategy, copy, creative direction, and operating structure stay connected because the same person is accountable for the whole engagement.</p>
+                    <p data-reveal data-beat="880">Six engagements per year keeps the work focused, direct, and senior from start to finish.</p>
                 </div>
             </div>
         </section>
@@ -1264,11 +1309,11 @@
         <!-- PROCESS -->
         <section class="view" id="view-process" aria-label="Process">
             <div class="wrap">
-                <div class="v-head" data-reveal data-beat="280"><span class="v-num">02</span><h2 class="v-title">Process</h2><span class="v-meta">12-week sprint</span></div>
-                <div class="proc-row" data-reveal data-beat="900"><span class="proc-phase">Week 0</span><span class="proc-body">Fit call, scope lock, kill list. One thing to make true. Everything we won't touch.</span></div>
-                <div class="proc-row" data-reveal data-beat="820"><span class="proc-phase">Weeks 1–4</span><span class="proc-body">Discovery. Interviews, audit, competitive landscape. The contradiction at the centre — found before any output exists.</span></div>
-                <div class="proc-row" data-reveal data-beat="860"><span class="proc-phase">Weeks 5–8</span><span class="proc-body">Build. First real output ships at week six. Not a draft — a decision.</span></div>
-                <div class="proc-row" data-reveal data-beat="780"><span class="proc-phase">Weeks 9–12</span><span class="proc-body">Rollout and handoff. We leave with something running. Not a deck explaining what someone else should do.</span></div>
+                <div class="v-head" data-reveal data-beat="280"><span class="v-num">02</span><h2 class="v-title">Process</h2><span class="v-meta">4-6 week sprint</span></div>
+                <div class="proc-row" data-reveal data-beat="900"><span class="proc-phase">Before kickoff</span><span class="proc-body">Fit and scope. We confirm the business problem, decision-makers, timeline, deliverables, and what will not be included.</span></div>
+                <div class="proc-row" data-reveal data-beat="820"><span class="proc-phase">Week 1</span><span class="proc-body">Diagnosis. We interview the team, audit your website, copy, collateral, sales materials, and workflow, then name the bottleneck.</span></div>
+                <div class="proc-row" data-reveal data-beat="860"><span class="proc-phase">Weeks 2-3</span><span class="proc-body">Build. We create the strategy, messaging, page structure, copy direction, campaign materials, and operating tools.</span></div>
+                <div class="proc-row" data-reveal data-beat="780"><span class="proc-phase">Week 4+</span><span class="proc-body">Refine and hand off. We finalize the assets, document the system, align the team, and support launch. Larger production scopes may extend to week six.</span></div>
             </div>
         </section>
 
@@ -1347,8 +1392,8 @@
                 <div class="v-head" data-reveal data-beat="280"><span class="v-num">05</span><h2 class="v-title">Contact</h2></div>
                 <div class="contact-grid">
                     <div>
-                        <p class="contact-lead" data-reveal data-beat="820">Six engagements per year. We select on fit, not fee. Tell us what you're trying to make true.</p>
-                        <p class="contact-lead" data-reveal data-beat="980">We work best with founders and leadership teams who know something is no longer working, but have not yet named the bottleneck.</p>
+                        <p class="contact-lead" data-reveal data-beat="820">Apply if your company needs clearer positioning, stronger creative output, or a better system for getting work into market.</p>
+                        <p class="contact-lead" data-reveal data-beat="980">We review fit, reply with next steps, and start only when the problem, timeline, and decision-maker are clear.</p>
                         <a class="contact-email" data-reveal data-beat="950" href="mailto:hello@killingfloor.studio" data-label="email">hello@killingfloor.studio</a>
                     </div>
                     <form id="form" data-endpoint="https://formspree.io/f/maqkzpdv" novalidate>
@@ -1356,46 +1401,48 @@
                         <input type="hidden" name="stage" id="stage-hidden">
                         <div class="field" data-reveal data-beat="1100">
                             <label>Name / Company</label>
-                            <input type="text" name="name" placeholder="Who's writing">
+                            <input type="text" name="name" placeholder="Who's writing" required>
                         </div>
                         <div class="field" data-reveal data-beat="480">
                             <label>Email</label>
-                            <input type="email" name="email" placeholder="you@company.com">
+                            <input type="email" name="email" placeholder="you@company.com" required>
                         </div>
                         <div class="field field-pills" data-reveal data-beat="620" data-multi data-hidden="engagement-hidden">
                             <label>What kind of engagement?</label>
+                            <div class="field-help">Choose one or multiple.</div>
                             <div class="pill-row">
-                                <button type="button" class="pill">Positioning</button>
-                                <button type="button" class="pill">Identity</button>
-                                <button type="button" class="pill">Copy</button>
-                                <button type="button" class="pill">Website</button>
-                                <button type="button" class="pill">Operating system</button>
+                                <button type="button" class="pill" aria-pressed="false">Positioning</button>
+                                <button type="button" class="pill" aria-pressed="false">Identity</button>
+                                <button type="button" class="pill" aria-pressed="false">Copy</button>
+                                <button type="button" class="pill" aria-pressed="false">Website</button>
+                                <button type="button" class="pill" aria-pressed="false">Operating system</button>
                             </div>
                         </div>
                         <div class="field field-pills" data-reveal data-beat="520" data-hidden="stage-hidden">
                             <label>Where are you now?</label>
+                            <div class="field-help">Choose one.</div>
                             <div class="pill-row">
-                                <button type="button" class="pill">Pre-launch</button>
-                                <button type="button" class="pill">Live but unclear</button>
-                                <button type="button" class="pill">Operating structure</button>
-                                <button type="button" class="pill">Stuck</button>
+                                <button type="button" class="pill" aria-pressed="false">Pre-launch</button>
+                                <button type="button" class="pill" aria-pressed="false">Live but unclear</button>
+                                <button type="button" class="pill" aria-pressed="false">Operating structure</button>
+                                <button type="button" class="pill" aria-pressed="false">Stuck</button>
                             </div>
                         </div>
                         <div class="field" data-reveal data-beat="560">
                             <label>What are you building?</label>
-                            <textarea name="building" placeholder="The contradiction at the centre. The thing you can't crack on your own."></textarea>
+                            <textarea name="building" placeholder="What are you launching, fixing, repositioning, or trying to make easier to sell?" required></textarea>
                         </div>
                         <div class="field" data-reveal data-beat="520">
                             <label>What have you already tried?</label>
-                            <textarea name="tried" placeholder="Agencies, hires, pivots, decks, campaigns — what moved the needle and what didn't."></textarea>
+                            <textarea name="tried" placeholder="Agencies, hires, pivots, decks, campaigns. What worked? What did not?" required></textarea>
                         </div>
                         <div class="field" data-reveal data-beat="480">
-                            <label>What does success look like in 12 weeks?</label>
-                            <textarea name="success" placeholder="Be specific. Vague answers get vague results."></textarea>
+                            <label>What does success look like in 30-45 days?</label>
+                            <textarea name="success" placeholder="What should be clearer, shipped, decided, or improved by the end of the sprint?" required></textarea>
                         </div>
                         <div class="field" data-reveal data-beat="420">
                             <label>Timeline</label>
-                            <input type="text" name="timeline" placeholder="When do you need to start moving?">
+                            <input type="text" name="timeline" placeholder="When do you want to start, and is there a launch date?" required>
                         </div>
                         <button type="submit" class="send" id="send" data-reveal data-beat="420" data-label="send">Send → Killing Floor</button>
                         <div class="notice" id="notice"></div>
@@ -1405,19 +1452,19 @@
                     <div class="faq-head" data-reveal data-beat="760">Common questions</div>
                     <div class="faq-row" data-reveal data-beat="620">
                         <div class="faq-q">Why only six clients per year?</div>
-                        <div class="faq-a">Because more than six means someone gets a junior. We do not have juniors. The math is the constraint.</div>
+                        <div class="faq-a">Every engagement is led directly by the principal. The cap keeps the work senior, focused, and fast.</div>
                     </div>
                     <div class="faq-row" data-reveal data-beat="620">
                         <div class="faq-q">Sprints vs. retainers?</div>
-                        <div class="faq-a">Sprints only. Retainers reward presence over output. A fixed sprint rewards the opposite.</div>
+                        <div class="faq-a">Sprints. The work has a defined scope, timeline, and handoff. We do not sell open-ended retainers.</div>
                     </div>
                     <div class="faq-row" data-reveal data-beat="620">
                         <div class="faq-q">Vancouver-only or remote?</div>
-                        <div class="faq-a">Remote by default. Location has never been the variable that mattered.</div>
+                        <div class="faq-a">Remote by default. Vancouver is home base, but clients can be anywhere.</div>
                     </div>
                     <div class="faq-row" data-reveal data-beat="620">
-                        <div class="faq-q">What you will not do.</div>
-                        <div class="faq-a">Ads, SEO, full rebrands in two weeks, or broad mandates that need a team of twelve. We do focused, high-leverage work.</div>
+                        <div class="faq-q">What is not included?</div>
+                        <div class="faq-a">Media buying, SEO retainers, large production crews, and full-service agency staffing. We build the strategic and creative system, then hand it off cleanly.</div>
                     </div>
                 </div>
                 <footer class="site-footer">
@@ -1548,13 +1595,13 @@
             });
 
             const scheduled = new WeakSet();
-            // promote to a GPU layer only for the duration of the blur, then release —
-            // so we never keep will-change pinned on idle elements.
+            // Promote only for the reveal, then release so idle content does not keep
+            // compositor layers pinned.
             function fireReveal(el) {
-                el.style.willChange = 'filter, opacity';
+                el.style.willChange = 'opacity, transform, filter';
                 el.classList.add('revealed');
                 const done = e => {
-                    if (e && e.propertyName !== 'filter') return;
+                    if (e && !['opacity', 'transform', 'filter'].includes(e.propertyName)) return;
                     el.style.willChange = '';
                     el.removeEventListener('transitionend', done);
                 };
@@ -1688,7 +1735,7 @@
 
             // 1 · SWIPE ONE (cover) — A wipes in solid while the old page fades out.
             tl.to(kfTxPanelSite, { xPercent: 0, duration: 0.6 * txSpeed, ease: 'power3.inOut' }, 0);
-            if (cur) tl.to(cur, { opacity: 0, filter: 'blur(10px)', duration: 0.5 * txSpeed, ease: 'power2.out' }, 0);
+            if (cur) tl.to(cur, { opacity: 0, filter: 'blur(3px)', duration: 0.5 * txSpeed, ease: 'power2.out' }, 0);
 
             // swap the site underneath the now fully-covering solid panel
             tl.add(doSwap, 0.62 * txSpeed);
@@ -1823,10 +1870,10 @@
             parallaxRaf = requestAnimationFrame(() => {
                 parallaxRaf = 0;
                 const r = pendingParallaxRatio;
-                const travel = (r - 0.5) * -320;
+                const travel = (r - 0.5) * -150;
                 ambientBlobEls.forEach((blob, i) => {
                     const depth = Number(blob.dataset.depth || 0.5);
-                    const offset = travel * depth + Math.sin((r + i * 0.071) * Math.PI * 2) * 10 * depth;
+                    const offset = travel * depth + Math.sin((r + i * 0.071) * Math.PI * 2) * 4 * depth;
                     blob.style.setProperty('--sy', offset.toFixed(2) + 'px');
                 });
             });
@@ -1837,7 +1884,7 @@
             const max = Math.max(1, view.scrollHeight - view.clientHeight);
             const ratio = view.scrollHeight > view.clientHeight ? view.scrollTop / max : 0;
             const pageDrift = ((ORDER[body.dataset.view] || 0) - 2.5) * 10;
-            body.style.setProperty('--field-scroll', ((ratio - 0.5) * -145 + pageDrift).toFixed(2) + 'px');
+            body.style.setProperty('--field-scroll', ((ratio - 0.5) * -62 + pageDrift).toFixed(2) + 'px');
             updateBlobParallax(ratio);
         }
 
@@ -1866,10 +1913,13 @@
 
             if (!scrollable) return;
             const ratio = scrollable ? v.scrollTop / (v.scrollHeight - v.clientHeight) : 0;
-            const count = 40;
+            const count = 10;
             ensureProgressTicks(v, count, 'continuous');
+            const tickStep = 0.052;
+            const span = tickStep * (count - 1);
+            const center = Math.max(span / 2, Math.min(1 - span / 2, ratio));
             progressTicks.forEach((tick, i) => {
-                const position = count === 1 ? 0 : i / (count - 1);
+                const position = center + (i - (count - 1) / 2) * tickStep;
                 setTickShape(tick, position, ratio, count, 'continuous');
             });
         }
@@ -1877,8 +1927,8 @@
         window.addEventListener('resize', updateProgress);
         if (FINE && !REDUCE) {
             window.addEventListener('mousemove', e => {
-                const x = (e.clientX / window.innerWidth - 0.5) * -18;
-                const y = (e.clientY / window.innerHeight - 0.5) * -14;
+                const x = (e.clientX / window.innerWidth - 0.5) * -7;
+                const y = (e.clientY / window.innerHeight - 0.5) * -5;
                 body.style.setProperty('--field-x', x.toFixed(2) + 'px');
                 body.style.setProperty('--field-y', y.toFixed(2) + 'px');
             }, { passive: true });
@@ -1891,7 +1941,7 @@
             if (!field) return;
             const seed = 1337;
             const palette = ['138,62,38', '106,43,27', '190,112,72', '239,218,190', '58,23,15'];
-            const count = REDUCE ? 8 : 12;
+            const count = REDUCE ? 4 : 8;
 
             function hash(n) {
                 let h = Math.imul(n ^ seed, 0x45d9f3b);
@@ -2052,20 +2102,29 @@
                 const hidden = field ? document.getElementById(field.dataset.hidden) : null;
                 const multi = !!row.closest('[data-multi]');
                 function syncHidden() {
+                    row.querySelectorAll('.pill').forEach(p => p.setAttribute('aria-pressed', p.classList.contains('on') ? 'true' : 'false'));
                     if (!hidden) return;
                     hidden.value = [...row.querySelectorAll('.pill.on')].map(p => p.textContent.trim()).join(', ');
+                    field.classList.remove('is-invalid');
                 }
-                row.addEventListener('click', e => {
-                    const pill = e.target.closest('.pill');
+                function togglePill(pill) {
                     if (!pill) return;
                     if (multi) {
                         pill.classList.toggle('on');
                     } else {
+                        const wasOn = pill.classList.contains('on');
                         row.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
-                        pill.classList.add('on');
+                        if (!wasOn) pill.classList.add('on');
                     }
                     syncHidden();
+                }
+                row.addEventListener('click', e => {
+                    const pill = e.target.closest('.pill');
+                    if (!pill || !row.contains(pill)) return;
+                    e.preventDefault();
+                    togglePill(pill);
                 });
+                syncHidden();
             });
             const autosize = textarea => {
                 textarea.style.height = 'auto';
@@ -2076,8 +2135,35 @@
                 autosize(textarea);
                 textarea.addEventListener('input', () => autosize(textarea));
             });
+            form.querySelectorAll('input[required], textarea[required]').forEach(input => {
+                input.addEventListener('input', () => input.closest('.field')?.classList.remove('is-invalid'));
+            });
+            function validateForm() {
+                const invalid = [];
+                form.querySelectorAll('input[required], textarea[required]').forEach(input => {
+                    const field = input.closest('.field');
+                    const bad = !input.checkValidity() || !input.value.trim();
+                    field?.classList.toggle('is-invalid', bad);
+                    if (bad) invalid.push(input);
+                });
+                form.querySelectorAll('.field-pills[data-hidden]').forEach(field => {
+                    const hidden = document.getElementById(field.dataset.hidden);
+                    const bad = !hidden || !hidden.value.trim();
+                    field.classList.toggle('is-invalid', bad);
+                    if (bad) invalid.push(field.querySelector('.pill'));
+                });
+                if (invalid.length) {
+                    notice.textContent = 'Complete every field before sending. Engagement accepts multiple; stage accepts one.';
+                    notice.className = 'notice show err';
+                    invalid[0]?.focus?.({ preventScroll: true });
+                    invalid[0]?.closest?.('.field')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    return false;
+                }
+                return true;
+            }
             form.addEventListener('submit', async e => {
                 e.preventDefault();
+                if (!validateForm()) return;
                 send.disabled = true; send.textContent = 'Sending…';
                 notice.className = 'notice';
                 try {
@@ -2086,7 +2172,15 @@
                     });
                     if (res.ok) {
                         notice.textContent = '✓ Received. We\'ll be in touch.';
-                        notice.classList.add('show', 'ok'); form.reset(); form.querySelectorAll('.pill.on').forEach(p => p.classList.remove('on')); form.querySelectorAll('textarea').forEach(autosize); send.textContent = 'Sent';
+                        notice.classList.add('show', 'ok');
+                        form.reset();
+                        form.querySelectorAll('.pill.on').forEach(p => p.classList.remove('on'));
+                        form.querySelectorAll('.pill').forEach(p => p.setAttribute('aria-pressed', 'false'));
+                        form.querySelectorAll('.field.is-invalid').forEach(field => field.classList.remove('is-invalid'));
+                        document.getElementById('engagement-hidden').value = '';
+                        document.getElementById('stage-hidden').value = '';
+                        form.querySelectorAll('textarea').forEach(autosize);
+                        send.textContent = 'Sent';
                     } else {
                         notice.textContent = 'Something went wrong — try emailing directly.';
                         notice.classList.add('show', 'err'); send.disabled = false; send.textContent = 'Send → Killing Floor';
@@ -2109,11 +2203,34 @@
             // read as a closed box (with a centre dot). Arms scale down on hover.
             const IDLE = 12, IDLE_ARM = 8, PAD = 8;
             let mx = -100, my = -100;                       // raw pointer
-            // animated box state (top-left + size + arm length), lerped each frame
-            let bx = -100, by = -100, bw = IDLE, bh = IDLE, ba = IDLE_ARM;
             let target = null;                              // current hover target (or null)
             let textMode = false;                           // over editable text
             let visible = false;
+
+            function placeCursor(x, y) {
+                let cx, cy, cw, ch, arm;
+                if (textMode) {
+                    cw = 2; ch = 22; arm = 0;
+                    cx = x - 1; cy = y - 11;
+                } else if (target) {
+                    const r = target.getBoundingClientRect();
+                    cw = r.width + PAD * 2;
+                    ch = r.height + PAD * 2;
+                    cx = r.left - PAD;
+                    cy = r.top - PAD;
+                    arm = Math.max(10, Math.min(Math.min(cw, ch) * 0.28, 48));
+                    label.style.left = Math.min(Math.max(r.left + r.width / 2, 44), window.innerWidth - 44) + 'px';
+                    label.style.top  = Math.max(r.top - PAD - 24, 6) + 'px';
+                } else {
+                    cw = IDLE; ch = IDLE; arm = IDLE_ARM;
+                    cx = x - IDLE / 2;
+                    cy = y - IDLE / 2;
+                }
+                cursor.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+                cursor.style.width = cw.toFixed(1) + 'px';
+                cursor.style.height = ch.toFixed(1) + 'px';
+                cursor.style.setProperty('--arm', arm + 'px');
+            }
 
             // a hit target only counts if it's actually VISIBLE: not behind the
             // transition veils, not inside a [data-reveal] that hasn't revealed yet,
@@ -2156,9 +2273,10 @@
 
             document.addEventListener('mousemove', e => {
                 mx = e.clientX; my = e.clientY;
-                if (!visible) { visible = true; bx = mx; by = my; }
+                if (!visible) visible = true;
                 cursor.style.opacity = '1';
                 pickTarget(mx, my);
+                placeCursor(mx, my);
             }, { passive: true });
             document.addEventListener('mouseleave', () => {
                 visible = false;
@@ -2171,95 +2289,32 @@
             });
 
             let pressTimer = null;
+            let pressedEl = null;
+            function clearPress() {
+                clearTimeout(pressTimer);
+                pressTimer = null;
+                if (pressedEl) pressedEl.classList.remove('kf-pressed');
+                pressedEl = null;
+                cursor.classList.remove('is-press');
+            }
             document.addEventListener('pointerdown', e => {
                 const el = e.target.closest(PRESSABLE);
                 if (!el) return;
+                clearPress();
+                pressedEl = el;
                 el.classList.add('kf-pressed');
                 cursor.classList.add('is-press');
-                clearTimeout(pressTimer);
-                pressTimer = setTimeout(() => {
-                    el.classList.remove('kf-pressed');
-                    cursor.classList.remove('is-press');
-                }, 180);
+                pressTimer = setTimeout(clearPress, 180);
             }, { passive: true });
-            document.addEventListener('pointerup', () => {
-                clearTimeout(pressTimer);
-                cursor.classList.remove('is-press');
-            }, { passive: true });
-            document.addEventListener('pointercancel', () => {
-                clearTimeout(pressTimer);
-                cursor.classList.remove('is-press');
-            }, { passive: true });
+            document.addEventListener('pointerup', clearPress, { passive: true });
+            document.addEventListener('pointercancel', clearPress, { passive: true });
 
-            (function loop() {
-                let tgX, tgY, tgW, tgH, tgA, ease;
-                if (textMode) {
-                    tgW = 2; tgH = 22; tgA = 0;
-                    tgX = mx - 1; tgY = my - 11;
-                    ease = 0.38;
-                } else if (target) {
-                    // LOCK fixed onto the element (no pointer nudge) — frame wraps the
-                    // element's bounds + padding, centred on the element.
-                    const r = target.getBoundingClientRect();
-                    tgW = r.width + PAD * 2; tgH = r.height + PAD * 2;
-                    tgX = r.left - PAD; tgY = r.top - PAD;
-                    // arm length scales with the element so brackets stay proportionate
-                    // on large targets (Work rows, big buttons), clamped to sane bounds.
-                    tgA = Math.max(10, Math.min(Math.min(tgW, tgH) * 0.28, 48));
-                    ease = 0.26;            // snap onto the target
-                    label.style.left = Math.min(Math.max(r.left + r.width / 2, 44), window.innerWidth - 44) + 'px';
-                    label.style.top  = Math.max(r.top - PAD - 24, 6) + 'px';
-                } else {
-                    tgW = IDLE; tgH = IDLE; tgA = IDLE_ARM;
-                    tgX = mx - IDLE / 2; tgY = my - IDLE / 2;
-                    ease = 0.32;            // light trailing lag when idle
-                }
-                bx += (tgX - bx) * ease; by += (tgY - by) * ease;
-                bw += (tgW - bw) * ease;  bh += (tgH - bh) * ease;  ba += (tgA - ba) * ease;
-                cursor.style.transform = 'translate3d(' + bx.toFixed(1) + 'px,' + by.toFixed(1) + 'px,0)';
-                cursor.style.width  = bw.toFixed(1) + 'px';
-                cursor.style.height = bh.toFixed(1) + 'px';
-                cursor.style.setProperty('--arm', (textMode ? 0 : ba.toFixed(1)) + 'px');
-                requestAnimationFrame(loop);
-            })();
+            window.addEventListener('scroll', () => { if (visible) placeCursor(mx, my); }, { passive: true });
+            window.addEventListener('resize', () => { if (visible) placeCursor(mx, my); }, { passive: true });
         }
 
-        // ── SMOOTH SCROLL ──
-        // Home = eased SNAP between rooms (one section per wheel gesture). Inner
-        // views = inertial momentum smoothing. Touch keeps native scroll + CSS snap.
-        if (!REDUCE && window.gsap) {
-            let homeLock = false;
-            const activeView = () => document.querySelector('.view.active');
-
-            window.addEventListener('wheel', (e) => {
-                const v = activeView();
-                if (!v) return;
-                if (kfTx.classList.contains('on')) { e.preventDefault(); return; }  // frozen during transition
-
-                if (v.id === 'view-home') {
-                    const secs = [...v.querySelectorAll('.home-sec')];
-                    if (secs.length < 2) return;
-                    e.preventDefault();
-                    if (homeLock) return;
-                    const dir = e.deltaY > 0 ? 1 : -1;
-                    const cur = Math.round(v.scrollTop / v.clientHeight);
-                    const idx = Math.max(0, Math.min(secs.length - 1, cur + dir));
-                    if (idx === cur) return;
-                    homeLock = true;
-                    gsap.to(v, { scrollTop: secs[idx].offsetTop, duration: 0.9, ease: 'power3.inOut',
-                        onComplete: () => { homeLock = false; } });
-                } else {
-                    const max = v.scrollHeight - v.clientHeight;
-                    if (max <= 4) return;                          // nothing to scroll
-                    e.preventDefault();
-                    const base = (v._st == null ? v.scrollTop : v._st);
-                    const tgt  = Math.max(0, Math.min(max, base + e.deltaY));
-                    v._st = tgt;
-                    gsap.to(v, { scrollTop: tgt, duration: 0.65, ease: 'power3.out', overwrite: true,
-                        onComplete: () => { v._st = null; } });
-                }
-            }, { passive: false });
-        }
+        // Native scroll is intentionally left alone. Home still uses CSS snap;
+        // inner pages use the browser's own momentum for lower input latency.
     })();
     </script>
 </body>
