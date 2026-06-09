@@ -76,6 +76,9 @@
             --field-x: 0px;
             --field-y: 0px;
             --field-scroll: 0px;
+            --reveal-blur: 4px;
+            --tx-blur: 3px;
+            --counter-glow: 0 0 28px rgba(125,57,37,0.45), 0 0 4px rgba(0,0,0,0.5);
             /* base vertical gradient — top warmer/lighter, bottom heavier — so the
                field reads as atmosphere, not a flat slab. */
             background:
@@ -83,6 +86,16 @@
             color: var(--white);
             font-family: 'Barlow', sans-serif;
             -webkit-font-smoothing: antialiased;
+        }
+        body[data-perf="low"] {
+            --reveal-blur: 0px;
+            --tx-blur: 0px;
+            --counter-glow: 0 0 8px rgba(125,57,37,0.22);
+        }
+        body[data-perf="high"] {
+            --reveal-blur: 5px;
+            --tx-blur: 4px;
+            --counter-glow: 0 0 34px rgba(125,57,37,0.56), 0 0 7px rgba(239,231,223,0.16), 0 0 4px rgba(0,0,0,0.5);
         }
         .preloader {
             position: fixed;
@@ -143,6 +156,9 @@
             transform: translate3d(-50%, calc(-50% + var(--sy, 0px)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp));
             animation: blob-drift var(--d) ease-in-out infinite alternate;
         }
+        body[data-perf="low"] #blob-bg { opacity: 0.72; }
+        body[data-perf="low"] .ambient-blob { animation: none; }
+        body[data-perf="high"] #blob-bg { opacity: 1; }
         @keyframes blob-drift {
             0%   { transform: translate3d(calc(-50% - var(--dx)), calc(-50% + var(--sy, 0px) - var(--dy)), 0) rotate(var(--rot)) scaleX(var(--sx)) scaleY(var(--syp)) scale(0.96); }
             100% { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--sy, 0px) + var(--dy)), 0) rotate(var(--rot3)) scaleX(var(--sx3)) scaleY(var(--syp3)) scale(1.04); }
@@ -162,6 +178,11 @@
             filter: saturate(1.05);
             opacity: 0.38;
         }
+        body[data-perf="low"]::before {
+            opacity: 0.28;
+            transition-duration: 0.35s;
+        }
+        body[data-perf="high"]::before { opacity: 0.44; }
         /* faint engineering grid */
         .grid {
             position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -170,6 +191,8 @@
                 linear-gradient(to bottom, rgba(239,231,223,0.02) 1px, transparent 1px);
             background-size: 80px 80px;
         }
+        body[data-perf="low"] .grid { opacity: 0.35; }
+        body[data-perf="high"] .grid { opacity: 1; }
 
         /* visible site padding — inset border box */
         .frame-border {
@@ -367,7 +390,7 @@
         .split-title[data-reveal],
         .home-scroll-inner .split-title[data-reveal],
         .contact-lead[data-reveal] {
-            filter: blur(4px);
+            filter: blur(var(--reveal-blur));
         }
         .tl[data-reveal].revealed,
         .v-head[data-reveal].revealed,
@@ -1109,7 +1132,7 @@
             line-height: 0.9;
             letter-spacing: -0.02em;
             color: #efe7df;
-            text-shadow: 0 0 28px rgba(125,57,37,0.45), 0 0 4px rgba(0,0,0,0.5);
+            text-shadow: var(--counter-glow);
             opacity: 0;
             transform: translateY(6px);
             will-change: opacity, transform;
@@ -1512,6 +1535,38 @@
         const progress = document.getElementById('progress');
         const ORDER    = { services: 1, process: 2, work: 3, about: 4, contact: 5 };
         const pad      = n => String(n).padStart(2, '0');
+        function detectPerformanceTier() {
+            if (REDUCE) return 'low';
+            let score = 0;
+            const cores = navigator.hardwareConcurrency || 4;
+            const memory = navigator.deviceMemory || 4;
+            const dpr = Math.min(window.devicePixelRatio || 1, 3);
+            if (cores >= 8) score += 2;
+            else if (cores >= 4) score += 1;
+            else score -= 1;
+            if (memory >= 8) score += 2;
+            else if (memory >= 4) score += 1;
+            else score -= 1;
+            if (FINE) score += 1;
+            if (window.innerWidth * window.innerHeight * dpr > 3200000) score -= 1;
+            if (window.innerWidth < 760) score -= 1;
+            return score >= 4 ? 'high' : score <= 1 ? 'low' : 'standard';
+        }
+        const PERF_TIER = detectPerformanceTier();
+        const PERF = {
+            low:      { blobs: 4, parallax: 0.35, blobTravel: 55,  blobSway: 1.5, transitionBlur: 0 },
+            standard: { blobs: 8, parallax: 1,    blobTravel: 150, blobSway: 4,   transitionBlur: 3 },
+            high:     { blobs: 12, parallax: 1.2,  blobTravel: 190, blobSway: 5,   transitionBlur: 4 }
+        }[PERF_TIER];
+        body.dataset.perf = PERF_TIER;
+        window._kfPerformance = {
+            tier: PERF_TIER,
+            reducedMotion: REDUCE,
+            finePointer: FINE,
+            cores: navigator.hardwareConcurrency || null,
+            memory: navigator.deviceMemory || null,
+            dpr: window.devicePixelRatio || 1
+        };
         const REVEAL_CACHE_KEY = 'kf_reveal_cache_v1';
         const REVEAL_CACHE_TTL = 5 * 60 * 1000;
         let revealCache = {};
@@ -1735,7 +1790,7 @@
 
             // 1 · SWIPE ONE (cover) — A wipes in solid while the old page fades out.
             tl.to(kfTxPanelSite, { xPercent: 0, duration: 0.6 * txSpeed, ease: 'power3.inOut' }, 0);
-            if (cur) tl.to(cur, { opacity: 0, filter: 'blur(3px)', duration: 0.5 * txSpeed, ease: 'power2.out' }, 0);
+            if (cur) tl.to(cur, { opacity: 0, filter: 'blur(' + PERF.transitionBlur + 'px)', duration: 0.5 * txSpeed, ease: 'power2.out' }, 0);
 
             // swap the site underneath the now fully-covering solid panel
             tl.add(doSwap, 0.62 * txSpeed);
@@ -1870,10 +1925,10 @@
             parallaxRaf = requestAnimationFrame(() => {
                 parallaxRaf = 0;
                 const r = pendingParallaxRatio;
-                const travel = (r - 0.5) * -150;
+                const travel = (r - 0.5) * -PERF.blobTravel;
                 ambientBlobEls.forEach((blob, i) => {
                     const depth = Number(blob.dataset.depth || 0.5);
-                    const offset = travel * depth + Math.sin((r + i * 0.071) * Math.PI * 2) * 4 * depth;
+                    const offset = travel * depth + Math.sin((r + i * 0.071) * Math.PI * 2) * PERF.blobSway * depth;
                     blob.style.setProperty('--sy', offset.toFixed(2) + 'px');
                 });
             });
@@ -1927,8 +1982,8 @@
         window.addEventListener('resize', updateProgress);
         if (FINE && !REDUCE) {
             window.addEventListener('mousemove', e => {
-                const x = (e.clientX / window.innerWidth - 0.5) * -7;
-                const y = (e.clientY / window.innerHeight - 0.5) * -5;
+                const x = (e.clientX / window.innerWidth - 0.5) * -7 * PERF.parallax;
+                const y = (e.clientY / window.innerHeight - 0.5) * -5 * PERF.parallax;
                 body.style.setProperty('--field-x', x.toFixed(2) + 'px');
                 body.style.setProperty('--field-y', y.toFixed(2) + 'px');
             }, { passive: true });
@@ -1941,7 +1996,7 @@
             if (!field) return;
             const seed = 1337;
             const palette = ['138,62,38', '106,43,27', '190,112,72', '239,218,190', '58,23,15'];
-            const count = REDUCE ? 4 : 8;
+            const count = REDUCE ? 4 : PERF.blobs;
 
             function hash(n) {
                 let h = Math.imul(n ^ seed, 0x45d9f3b);
